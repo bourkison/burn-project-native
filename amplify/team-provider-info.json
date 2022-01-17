@@ -1,0 +1,17 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-projectburn-dev-203659-authRole",
+      "UnauthRoleArn": "arn:aws:iam::586865842618:role/amplify-projectburn-dev-203659-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::586865842618:role/amplify-projectburn-dev-203659-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-projectburn-dev-203659-deployment",
+      "UnauthRoleName": "amplify-projectburn-dev-203659-unauthRole",
+      "StackName": "amplify-projectburn-dev-203659",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:586865842618:stack/amplify-projectburn-dev-203659/ebb9b390-eba1-11eb-ba83-021c8a17b68a",
+      "AmplifyAppId": "d3tp6kskh7ft9m",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-projectburn-dev-203659-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-projectburn-dev-203659-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    }
+  }
+}
