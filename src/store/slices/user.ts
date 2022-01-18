@@ -1,34 +1,37 @@
 import {
+    createAsyncThunk,
     createEntityAdapter,
     createSlice,
-    PayloadAction,
 } from '@reduxjs/toolkit';
+import {UserDocData} from '../../types/user';
+import {getUser} from '../services';
 
 const userAdapter = createEntityAdapter();
 
+export const fetchUser = createAsyncThunk(
+    'user/fetchUser',
+    async (username: string): Promise<UserDocData> => {
+        const user = await getUser({userId: username, init: {}});
+        console.log('User fetched:', user);
+        return user;
+    },
+);
+
 const initialState = userAdapter.getInitialState({
     loggedIn: false,
-    username: '',
+    docData: null as UserDocData | null,
 });
 
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {
-        login: {
-            reducer(state, action: PayloadAction<{username: string}>) {
-                state.username = action.payload.username;
-            },
-
-            prepare(username: string) {
-                return {
-                    payload: {username},
-                };
-            },
-        },
+    reducers: {},
+    extraReducers: builder => {
+        builder.addCase(fetchUser.fulfilled, (state, action) => {
+            state.loggedIn = true;
+            state.docData = action.payload;
+        });
     },
 });
-
-export const {login} = userSlice.actions;
 
 export default userSlice.reducer;

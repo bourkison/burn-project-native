@@ -2,14 +2,20 @@ import React, {useState} from 'react';
 import {Button, TextInput, View, StyleSheet, Text} from 'react-native';
 
 import {useAppSelector, useAppDispatch} from '../store/hooks';
-import {login as loginAction} from '../store/slices/user';
+import {fetchUser} from '../store/slices/user';
 
 import {Auth} from 'aws-amplify';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const loggedInUsername = useAppSelector(state => state.user.username);
+    const loggedInUsername = useAppSelector(state => {
+        if (state.user.docData && state.user.docData.username) {
+            return state.user.docData.username;
+        }
+
+        return '';
+    });
 
     const dispatch = useAppDispatch();
 
@@ -17,7 +23,7 @@ const Login = () => {
         console.log('Logging in...');
         try {
             const user = await Auth.signIn({username, password});
-            dispatch(loginAction((await Auth.currentUserInfo()).username));
+            dispatch(fetchUser((await Auth.currentUserInfo()).username));
             console.log('Logged in:', user);
         } catch (err) {
             console.error(err);
