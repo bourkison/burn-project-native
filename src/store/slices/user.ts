@@ -4,23 +4,66 @@ import {
     createSlice,
 } from '@reduxjs/toolkit';
 import {Auth} from 'aws-amplify';
-import {UserDocData} from '../../types/user';
-import {getUser} from '../services';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {UserDocData} from '@/types/user';
+import {getUser} from '@/store/services';
 
 const userAdapter = createEntityAdapter();
 
 export const fetchUser = createAsyncThunk(
     'user/fetchUser',
     async (): Promise<UserDocData> => {
-        const username = (await Auth.currentUserInfo()).username;
+        // First call Auth.currentSession so error is thrown if no logged in user.
+        await Auth.currentSession();
 
-        if (!username) {
-            throw new Error('No logged in user.');
+        let storageResponse: string | null = '';
+        try {
+            // Next try fetching docData from local storage.
+            storageResponse = await AsyncStorage.getItem('@currentUserDocData');
+        } catch (err) {
+            console.error('Error accessing user storage:', err);
+        } finally {
+            // If found, return response.
+            if (storageResponse) {
+                console.log('User found in local storage.');
+                return JSON.parse(storageResponse);
+            }
+
+            // Else pull from API.
+            console.log(
+                'No user found in local storage, fetching from API instead.',
+            );
+            const username = (await Auth.currentUserInfo()).username;
+
+            if (!username) {
+                throw new Error('No logged in user.');
+            }
+
+            const user = await getUser({userId: username, init: {}});
+
+            // Once successfully pulled from API, set to local storage.
+            try {
+                await AsyncStorage.setItem(
+                    '@currentUserDocData',
+                    JSON.stringify(user),
+                );
+            } catch (err) {
+                console.error(
+                    'Error setting to local storage, proceeding anyway.',
+                );
+            }
+
+            return user;
         }
+    },
+);
 
-        const user = await getUser({userId: username, init: {}});
-        console.log('User fetched:', user);
-        return user;
+export const logout = createAsyncThunk(
+    'user/logout',
+    async (): Promise<void> => {
+        await Auth.signOut();
+        await AsyncStorage.removeItem('@currentUserDocData');
     },
 );
 
@@ -43,6 +86,16 @@ const userSlice = createSlice({
                 state.loggedIn = true;
                 state.docData = action.payload;
                 state.status = 'succeeded';
+            })
+            .addCase(fetchUser.rejected, state => {
+                state.loggedIn = false;
+                state.docData = null;
+                state.status = 'idle';
+            })
+            .addCase(logout.fulfilled, state => {
+                state.loggedIn = false;
+                state.docData = null;
+                state.status = 'idle';
             });
     },
 });

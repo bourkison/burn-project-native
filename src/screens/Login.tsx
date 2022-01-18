@@ -6,10 +6,11 @@ import {
     StyleSheet,
     Text,
     ActivityIndicator,
+    SafeAreaView,
 } from 'react-native';
 
-import {useAppSelector, useAppDispatch} from '../store/hooks';
-import {fetchUser} from '../store/slices/user';
+import {useAppSelector, useAppDispatch} from '@/store/hooks';
+import {fetchUser} from '@/store/slices/user';
 
 import {Auth} from 'aws-amplify';
 
@@ -47,12 +48,14 @@ const Login = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <Text>{loggedInUsername}</Text>
-            <TextInput placeholder="Username" onChangeText={setUsername} />
-            <TextInput placeholder="Password" onChangeText={setPassword} />
-            {buttonComp}
-        </View>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
+                <Text>{loggedInUsername}</Text>
+                <TextInput placeholder="Username" onChangeText={setUsername} />
+                <TextInput placeholder="Password" onChangeText={setPassword} />
+                {buttonComp}
+            </View>
+        </SafeAreaView>
     );
 };
 

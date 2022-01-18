@@ -1,18 +1,22 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, SafeAreaView, Button} from 'react-native';
 
-import {useAppSelector} from '../store/hooks';
-import Login from './Login';
+import {useAppSelector, useAppDispatch} from '@/store/hooks';
+import {logout as logoutThunk} from '@/store/slices/user';
 
 const Home = () => {
-    const loggedIn = useAppSelector(state => state.user.loggedIn);
     const loggedInName = useAppSelector(state => state.user.docData?.firstName);
+    const dispatch = useAppDispatch();
+    const logout = () => {
+        dispatch(logoutThunk());
+    };
 
-    if (!loggedIn) {
-        return <Login />;
-    }
-
-    return <Text>Welcome, {loggedInName}</Text>;
+    return (
+        <SafeAreaView>
+            <Text>Welcome, {loggedInName}</Text>
+            <Button title="Logout" onPress={logout} />
+        </SafeAreaView>
+    );
 };
 
 export default Home;

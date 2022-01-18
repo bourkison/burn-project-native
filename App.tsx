@@ -9,45 +9,35 @@
  */
 
 import React from 'react';
-import {
-    SafeAreaView,
-    // StatusBar,
-    StyleSheet,
-    useColorScheme,
-} from 'react-native';
 import {Provider} from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import Home from './src/screens/Home';
+import Navigator from '@/nav/Navigator';
 
-import store from './src/store';
+import store from '@/store';
+import {fetchUser} from '@/store/slices/user';
+import {useEffect} from 'react';
 
 const App = () => {
-    const isDarkMode = useColorScheme() === 'dark';
+    useEffect(() => {
+        async function initFetch() {
+            store.dispatch(fetchUser());
+        }
 
-    const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    };
+        try {
+            initFetch();
+        } catch {
+            console.log('No logged in user. Proceeding.');
+        }
+    }, []);
 
     return (
         <Provider store={store}>
-            <SafeAreaView
-                style={{
-                    ...styles.container,
-                    backgroundColor: backgroundStyle.backgroundColor,
-                }}>
-                <Home />
-            </SafeAreaView>
+            <NavigationContainer>
+                <Navigator />
+            </NavigationContainer>
         </Provider>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
 
 export default App;
