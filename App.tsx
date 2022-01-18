@@ -18,7 +18,7 @@ import {
 import {Provider} from 'react-redux';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import Login from './src/screens/Login';
+import Home from './src/screens/Home';
 
 import store from './src/store';
 
@@ -36,7 +36,7 @@ const App = () => {
                     ...styles.container,
                     backgroundColor: backgroundStyle.backgroundColor,
                 }}>
-                <Login />
+                <Home />
             </SafeAreaView>
         </Provider>
     );

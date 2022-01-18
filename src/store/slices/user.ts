@@ -3,6 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from '@reduxjs/toolkit';
+import {Auth} from 'aws-amplify';
 import {UserDocData} from '../../types/user';
 import {getUser} from '../services';
 
@@ -10,7 +11,13 @@ const userAdapter = createEntityAdapter();
 
 export const fetchUser = createAsyncThunk(
     'user/fetchUser',
-    async (username: string): Promise<UserDocData> => {
+    async (): Promise<UserDocData> => {
+        const username = (await Auth.currentUserInfo()).username;
+
+        if (!username) {
+            throw new Error('No logged in user.');
+        }
+
         const user = await getUser({userId: username, init: {}});
         console.log('User fetched:', user);
         return user;
@@ -20,6 +27,7 @@ export const fetchUser = createAsyncThunk(
 const initialState = userAdapter.getInitialState({
     loggedIn: false,
     docData: null as UserDocData | null,
+    status: 'idle' as 'idle' | 'loading' | 'succeeded' | 'failed',
 });
 
 const userSlice = createSlice({
@@ -27,10 +35,15 @@ const userSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: builder => {
-        builder.addCase(fetchUser.fulfilled, (state, action) => {
-            state.loggedIn = true;
-            state.docData = action.payload;
-        });
+        builder
+            .addCase(fetchUser.pending, state => {
+                state.status = 'loading';
+            })
+            .addCase(fetchUser.fulfilled, (state, action) => {
+                state.loggedIn = true;
+                state.docData = action.payload;
+                state.status = 'succeeded';
+            });
     },
 });
 

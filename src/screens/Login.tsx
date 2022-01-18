@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Button, TextInput, View, StyleSheet, Text} from 'react-native';
+import {
+    Button,
+    TextInput,
+    View,
+    StyleSheet,
+    Text,
+    ActivityIndicator,
+} from 'react-native';
 
 import {useAppSelector, useAppDispatch} from '../store/hooks';
 import {fetchUser} from '../store/slices/user';
@@ -9,6 +16,8 @@ import {Auth} from 'aws-amplify';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const fetchingStatus = useAppSelector(state => state.user.status);
     const loggedInUsername = useAppSelector(state => {
         if (state.user.docData && state.user.docData.username) {
             return state.user.docData.username;
@@ -22,20 +31,27 @@ const Login = () => {
     const login = async () => {
         console.log('Logging in...');
         try {
+            setIsLoggingIn(true);
             const user = await Auth.signIn({username, password});
-            dispatch(fetchUser((await Auth.currentUserInfo()).username));
+            await dispatch(fetchUser());
             console.log('Logged in:', user);
         } catch (err) {
             console.error(err);
         }
     };
 
+    let buttonComp = <Button title="Login" onPress={login} />;
+
+    if (fetchingStatus === 'loading' || isLoggingIn) {
+        buttonComp = <ActivityIndicator />;
+    }
+
     return (
         <View style={styles.container}>
             <Text>{loggedInUsername}</Text>
             <TextInput placeholder="Username" onChangeText={setUsername} />
             <TextInput placeholder="Password" onChangeText={setPassword} />
-            <Button title="Login" onPress={login} />
+            {buttonComp}
         </View>
     );
 };
