@@ -11,13 +11,16 @@
 import React from 'react';
 import {
     SafeAreaView,
-    StatusBar,
+    // StatusBar,
     StyleSheet,
     useColorScheme,
 } from 'react-native';
+import {Provider} from 'react-redux';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Login from './src/screens/Login';
+
+import store from './src/store';
 
 const App = () => {
     const isDarkMode = useColorScheme() === 'dark';
@@ -27,13 +30,15 @@ const App = () => {
     };
 
     return (
-        <SafeAreaView
-            style={{
-                ...styles.container,
-                backgroundColor: backgroundStyle.backgroundColor,
-            }}>
-            <Login />
-        </SafeAreaView>
+        <Provider store={store}>
+            <SafeAreaView
+                style={{
+                    ...styles.container,
+                    backgroundColor: backgroundStyle.backgroundColor,
+                }}>
+                <Login />
+            </SafeAreaView>
+        </Provider>
     );
 };
 
