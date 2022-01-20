@@ -39,13 +39,13 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = BurnProjectNative/main.m; sourceTree = "<group>"; };
 		1D0AE47A65C8663E3B452821 /* Pods-BurnProjectNative-BurnProjectNativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BurnProjectNative-BurnProjectNativeTests.release.xcconfig"; path = "Target Support Files/Pods-BurnProjectNative-BurnProjectNativeTests/Pods-BurnProjectNative-BurnProjectNativeTests.release.xcconfig"; sourceTree = "<group>"; };
 		6423831EA8574132BED9D8CC /* libPods-BurnProjectNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BurnProjectNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6843A07696514D03A974C4A4 /* LeagueSpartan-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "LeagueSpartan-Bold.otf"; path = "../src/assets/fonts/LeagueSpartan-Bold.otf"; sourceTree = "<group>"; };
 		6C97AB639B58BBB4B15BBE30 /* Pods-BurnProjectNative-BurnProjectNativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BurnProjectNative-BurnProjectNativeTests.debug.xcconfig"; path = "Target Support Files/Pods-BurnProjectNative-BurnProjectNativeTests/Pods-BurnProjectNative-BurnProjectNativeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BurnProjectNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABFE59519B596E51CEFDCCC0 /* libPods-BurnProjectNative-BurnProjectNativeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BurnProjectNative-BurnProjectNativeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A881CF5CF3F2B244570E2A /* Pods-BurnProjectNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BurnProjectNative.debug.xcconfig"; path = "Target Support Files/Pods-BurnProjectNative/Pods-BurnProjectNative.debug.xcconfig"; sourceTree = "<group>"; };
 		D00AAFFCFCFDA5787532823F /* Pods-BurnProjectNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BurnProjectNative.release.xcconfig"; path = "Target Support Files/Pods-BurnProjectNative/Pods-BurnProjectNative.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		6843A07696514D03A974C4A4 /* LeagueSpartan-Bold.otf */ = {isa = PBXFileReference; name = "LeagueSpartan-Bold.otf"; path = "../src/assets/fonts/LeagueSpartan-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +83,14 @@
 				00E356F11AD99517003FC87E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		07E8375CEC21410A8E3F5CEE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6843A07696514D03A974C4A4 /* LeagueSpartan-Bold.otf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		13B07FAE1A68108700A75B9A /* BurnProjectNative */ = {
@@ -148,18 +156,8 @@
 				6C97AB639B58BBB4B15BBE30 /* Pods-BurnProjectNative-BurnProjectNativeTests.debug.xcconfig */,
 				1D0AE47A65C8663E3B452821 /* Pods-BurnProjectNative-BurnProjectNativeTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		07E8375CEC21410A8E3F5CEE /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				6843A07696514D03A974C4A4 /* LeagueSpartan-Bold.otf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 

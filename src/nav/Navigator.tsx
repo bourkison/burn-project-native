@@ -1,18 +1,38 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {useAppSelector} from '@/store/hooks';
 
 import Home from '@/screens/Home';
-import Login from '@/screens/Login';
+import HomeAuth from '@/screens/Auth/HomeAuth';
+import Login from '@/screens/Auth/Login';
 
+export type AuthStackParamList = {
+    HomeAuth: undefined;
+    Login: undefined;
+    SignUp: undefined;
+};
+
+const Stack = createNativeStackNavigator<AuthStackParamList>();
 const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
     const loggedIn = useAppSelector(state => state.user.loggedIn);
 
     if (!loggedIn) {
-        return <Login />;
+        return (
+            <Stack.Navigator initialRouteName="HomeAuth">
+                <Stack.Screen
+                    name="HomeAuth"
+                    component={HomeAuth}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen name="Login" component={Login} />
+            </Stack.Navigator>
+        );
     }
 
     return (

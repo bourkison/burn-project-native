@@ -3,7 +3,7 @@ import {GetUserParams, GetUserInit, UserDocData} from '../types/user';
 
 const API_NAME = 'projectburnapi';
 
-export async function fetchJwtToken() {
+export async function fetchJwtToken(): Promise<string> {
     try {
         return (await Auth.currentSession()).getIdToken().getJwtToken();
     } catch (err) {
