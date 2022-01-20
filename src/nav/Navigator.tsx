@@ -7,6 +7,7 @@ import {useAppSelector} from '@/store/hooks';
 import Home from '@/screens/Home';
 import HomeAuth from '@/screens/Auth/HomeAuth';
 import Login from '@/screens/Auth/Login';
+import SignUp from '@/screens/Auth/SignUp';
 
 export type AuthStackParamList = {
     HomeAuth: undefined;
@@ -30,7 +31,20 @@ const Navigator = () => {
                         headerShown: false,
                     }}
                 />
-                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name="SignUp"
+                    component={SignUp}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
             </Stack.Navigator>
         );
     }

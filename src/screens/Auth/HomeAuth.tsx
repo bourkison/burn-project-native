@@ -27,6 +27,11 @@ const HomeAuth = ({
         navigation.navigate('Login');
     };
 
+    const navigateSignUp = () => {
+        setVideoPaused(true);
+        navigation.navigate('SignUp');
+    };
+
     return (
         <View style={styles.container}>
             <Video
@@ -44,12 +49,14 @@ const HomeAuth = ({
                     <View style={styles.buttonsCont}>
                         <Pressable
                             style={styles.signUpButton}
-                            onPress={navigateLogin}>
+                            onPress={navigateSignUp}>
                             <Text style={styles.signUpButtonText}>
                                 Create Account
                             </Text>
                         </Pressable>
-                        <Pressable style={styles.loginButton}>
+                        <Pressable
+                            style={styles.loginButton}
+                            onPress={navigateLogin}>
                             <Text style={styles.loginButtonText}>Login</Text>
                         </Pressable>
                     </View>
@@ -99,7 +106,6 @@ const styles = StyleSheet.create({
     signUpButton: {
         padding: 10,
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        marginRight: 3,
         flex: 1,
         justifyContent: 'center',
         borderRadius: 25,
@@ -116,7 +122,6 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(255, 255, 255, 0.9)',
         borderWidth: 2,
         padding: 10,
-        marginLeft: 3,
         flex: 1,
         justifyContent: 'center',
         borderRadius: 25,
