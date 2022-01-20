@@ -11,6 +11,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
+import FlashMessage from 'react-native-flash-message';
 
 import Navigator from '@/nav/Navigator';
 
@@ -35,6 +36,7 @@ const App = () => {
         <Provider store={store}>
             <NavigationContainer>
                 <Navigator />
+                <FlashMessage position="bottom" />
             </NavigationContainer>
         </Provider>
     );
