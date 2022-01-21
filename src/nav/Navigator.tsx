@@ -8,11 +8,17 @@ import Home from '@/screens/Home';
 import HomeAuth from '@/screens/Auth/HomeAuth';
 import Login from '@/screens/Auth/Login';
 import SignUp from '@/screens/Auth/SignUp';
+import Verify from '@/screens/Auth/Verify';
 
 export type AuthStackParamList = {
     HomeAuth: undefined;
     Login: undefined;
     SignUp: undefined;
+    Verify: {
+        username: string;
+        password: string;
+        sendOnLoad: boolean;
+    };
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -36,11 +42,19 @@ const Navigator = () => {
                     component={Login}
                     options={{
                         headerShown: false,
+                        presentation: 'transparentModal',
                     }}
                 />
                 <Stack.Screen
                     name="SignUp"
                     component={SignUp}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name="Verify"
+                    component={Verify}
                     options={{
                         headerShown: false,
                     }}

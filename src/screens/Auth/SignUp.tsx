@@ -388,6 +388,7 @@ const Login = ({
             });
 
             setIsSigningUp(false);
+            navigation.push('Verify', {username, password, sendOnLoad: false});
         } catch (err: any) {
             showMessage({
                 message: err.message,
@@ -441,6 +442,10 @@ const Login = ({
                         style={styles.textInput}
                     />
                 </View>
+                <Text style={styles.textInputHint}>
+                    Emails are used for password recovery. We will not send you
+                    spam.
+                </Text>
                 <View style={styles.inputContainer}>
                     <Icon name="lock" size={17} />
                     <TextInput
@@ -505,6 +510,9 @@ const Login = ({
                         </Text>
                     </Pressable>
                 </View>
+                <Text style={styles.textInputHint}>
+                    You must be at least 16 years of age to use this app.
+                </Text>
 
                 <View style={styles.inputContainer}>
                     <Icon name="transgender" size={17} />
@@ -644,7 +652,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     signUpButton: {
-        marginTop: 10,
+        marginTop: 15,
         backgroundColor: '#E76F51',
         justifyContent: 'center',
         borderRadius: 25,

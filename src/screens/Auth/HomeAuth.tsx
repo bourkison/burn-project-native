@@ -16,14 +16,16 @@ const {height} = Dimensions.get('window');
 const HomeAuth = ({
     navigation,
 }: NativeStackScreenProps<AuthStackParamList, 'HomeAuth'>) => {
-    let [videoPaused, setVideoPaused] = useState(false);
+    const [videoPaused, setVideoPaused] = useState(false);
+    const [loginModal, setLoginModal] = useState(false);
 
     navigation.addListener('focus', () => {
         setVideoPaused(false);
+        setLoginModal(false);
     });
 
     const navigateLogin = () => {
-        setVideoPaused(true);
+        setLoginModal(true);
         navigation.navigate('Login');
     };
 
@@ -31,6 +33,30 @@ const HomeAuth = ({
         setVideoPaused(true);
         navigation.navigate('SignUp');
     };
+
+    let cont: JSX.Element | undefined;
+
+    if (!loginModal) {
+        cont = (
+            <View style={styles.formContainer}>
+                <Text style={styles.headers}>STRENIVE</Text>
+                <View style={styles.buttonsCont}>
+                    <Pressable
+                        style={styles.signUpButton}
+                        onPress={navigateSignUp}>
+                        <Text style={styles.signUpButtonText}>
+                            Create Account
+                        </Text>
+                    </Pressable>
+                    <Pressable
+                        style={styles.loginButton}
+                        onPress={navigateLogin}>
+                        <Text style={styles.loginButtonText}>Login</Text>
+                    </Pressable>
+                </View>
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -43,25 +69,7 @@ const HomeAuth = ({
                 repeat={true}
                 rate={1.0}
             />
-            <SafeAreaView style={styles.container}>
-                <View style={styles.formContainer}>
-                    <Text style={styles.headers}>STRENIVE</Text>
-                    <View style={styles.buttonsCont}>
-                        <Pressable
-                            style={styles.signUpButton}
-                            onPress={navigateSignUp}>
-                            <Text style={styles.signUpButtonText}>
-                                Create Account
-                            </Text>
-                        </Pressable>
-                        <Pressable
-                            style={styles.loginButton}
-                            onPress={navigateLogin}>
-                            <Text style={styles.loginButtonText}>Login</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </SafeAreaView>
+            <SafeAreaView style={styles.container}>{cont}</SafeAreaView>
         </View>
     );
 };
@@ -91,7 +99,7 @@ const styles = StyleSheet.create({
     headers: {
         fontSize: 48,
         marginBottom: 10,
-        color: 'white',
+        color: '#F3FCF0',
         textShadowRadius: 1,
         textShadowColor: 'black',
     },
@@ -99,13 +107,12 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         marginTop: 10,
         width: '100%',
-        paddingLeft: 50,
-        paddingRight: 50,
+        paddingHorizontal: 50,
         height: 90,
     },
     signUpButton: {
         padding: 10,
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        backgroundColor: 'rgba(243, 252, 240, 0.9)',
         flex: 1,
         justifyContent: 'center',
         borderRadius: 25,
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
     },
     loginButton: {
-        borderColor: 'rgba(255, 255, 255, 0.9)',
+        borderColor: 'rgba(243, 252, 240, 0.9)',
         borderWidth: 2,
         padding: 10,
         flex: 1,
@@ -129,7 +136,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     loginButtonText: {
-        color: 'rgba(255, 255, 255, 0.9)',
+        color: 'rgba(243, 252, 240, 0.9)',
         fontSize: 14,
         fontWeight: 'bold',
         textAlign: 'center',
