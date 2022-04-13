@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Text,
     Pressable,
+    ScrollView,
 } from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -402,189 +403,192 @@ const Login = ({
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.headerContainer}>
-                <View style={styles.headerLeft}>
-                    <Icon
-                        size={20}
-                        name="chevron-left"
-                        onPress={navigation.goBack}
-                        color="#F3FCF0"
-                    />
+            <ScrollView>
+                <View style={styles.headerContainer}>
+                    <View style={styles.headerLeft}>
+                        <Icon
+                            size={20}
+                            name="chevron-left"
+                            onPress={navigation.goBack}
+                            color="#F3FCF0"
+                        />
+                    </View>
+                    <View style={styles.headerTitle}>
+                        <Text style={styles.headerTitle}>Create Account</Text>
+                    </View>
+                    <View style={styles.headerRight} />
                 </View>
-                <View style={styles.headerTitle}>
-                    <Text style={styles.headerTitle}>Create Account</Text>
-                </View>
-                <View style={styles.headerRight} />
-            </View>
-            <View style={styles.formContainer}>
-                <View style={styles.inputContainer}>
-                    <Icon name="user" size={16} />
-                    <TextInput
-                        placeholder="Username"
-                        onChangeText={setUsername}
-                        autoComplete="off"
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        style={styles.textInput}
-                    />
-                </View>
-                <Text style={styles.textInputHint}>
-                    Usernames must be unique, and between 3 and 24 characters.
-                </Text>
-                <View style={styles.inputContainer}>
-                    <Icon name="envelope" size={16} />
-                    <TextInput
-                        placeholder="Email"
-                        onChangeText={setEmail}
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect={false}
-                        style={styles.textInput}
-                    />
-                </View>
-                <Text style={styles.textInputHint}>
-                    Emails are used for password recovery. We will not send you
-                    spam.
-                </Text>
-                <View style={styles.inputContainer}>
-                    <Icon name="lock" size={17} />
-                    <TextInput
-                        placeholder="Password"
-                        onChangeText={setPassword}
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect={false}
-                        secureTextEntry={true}
-                        style={styles.textInput}
-                    />
-                </View>
-                <Text style={styles.textInputHint}>
-                    Passwords must contain letters and numbers.
-                </Text>
-                <View style={styles.inputContainer}>
-                    <Icon name="lock" size={17} />
-                    <TextInput
-                        placeholder="Confirm password"
-                        onChangeText={setConfPassword}
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect={false}
-                        secureTextEntry={true}
-                        style={styles.textInput}
-                    />
-                </View>
+                <View style={styles.formContainer}>
+                    <View style={styles.inputContainer}>
+                        <Icon name="user" size={16} />
+                        <TextInput
+                            placeholder="Username"
+                            onChangeText={setUsername}
+                            autoComplete="off"
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            style={styles.textInput}
+                        />
+                    </View>
+                    <Text style={styles.textInputHint}>
+                        Usernames must be unique, and between 3 and 24
+                        characters.
+                    </Text>
+                    <View style={styles.inputContainer}>
+                        <Icon name="envelope" size={16} />
+                        <TextInput
+                            placeholder="Email"
+                            onChangeText={setEmail}
+                            autoCapitalize="none"
+                            autoComplete="off"
+                            autoCorrect={false}
+                            style={styles.textInput}
+                        />
+                    </View>
+                    <Text style={styles.textInputHint}>
+                        Emails are used for password recovery. We will not send
+                        you spam.
+                    </Text>
+                    <View style={styles.inputContainer}>
+                        <Icon name="lock" size={17} />
+                        <TextInput
+                            placeholder="Password"
+                            onChangeText={setPassword}
+                            autoCapitalize="none"
+                            autoComplete="off"
+                            autoCorrect={false}
+                            secureTextEntry={true}
+                            style={styles.textInput}
+                        />
+                    </View>
+                    <Text style={styles.textInputHint}>
+                        Passwords must contain letters and numbers.
+                    </Text>
+                    <View style={styles.inputContainer}>
+                        <Icon name="lock" size={17} />
+                        <TextInput
+                            placeholder="Confirm password"
+                            onChangeText={setConfPassword}
+                            autoCapitalize="none"
+                            autoComplete="off"
+                            autoCorrect={false}
+                            secureTextEntry={true}
+                            style={styles.textInput}
+                        />
+                    </View>
 
-                <View style={styles.inputContainer}>
-                    <Icon name="signature" size={17} />
-                    <TextInput
-                        placeholder="First name"
-                        onChangeText={setFirstName}
-                        autoComplete="off"
-                        autoCorrect={false}
-                        style={styles.textInput}
-                    />
-                </View>
+                    <View style={styles.inputContainer}>
+                        <Icon name="signature" size={17} />
+                        <TextInput
+                            placeholder="First name"
+                            onChangeText={setFirstName}
+                            autoComplete="off"
+                            autoCorrect={false}
+                            style={styles.textInput}
+                        />
+                    </View>
 
-                <View style={styles.inputContainer}>
-                    <Icon name="signature" size={17} />
-                    <TextInput
-                        placeholder="Surname"
-                        onChangeText={setSurname}
-                        autoComplete="off"
-                        autoCorrect={false}
-                        style={styles.textInput}
-                    />
-                </View>
+                    <View style={styles.inputContainer}>
+                        <Icon name="signature" size={17} />
+                        <TextInput
+                            placeholder="Surname"
+                            onChangeText={setSurname}
+                            autoComplete="off"
+                            autoCorrect={false}
+                            style={styles.textInput}
+                        />
+                    </View>
 
-                <View style={styles.inputContainer}>
-                    <Icon name="calendar" size={17} />
+                    <View style={styles.inputContainer}>
+                        <Icon name="calendar" size={17} />
+                        <Pressable
+                            style={styles.textInput}
+                            onPress={() => {
+                                setDateModal(true);
+                            }}>
+                            <Text style={{...styles.textInput, marginLeft: 0}}>
+                                {dob
+                                    ? dob.toISOString().split('T')[0]
+                                    : 'Date of birth'}
+                            </Text>
+                        </Pressable>
+                    </View>
+                    <Text style={styles.textInputHint}>
+                        You must be at least 16 years of age to use this app.
+                    </Text>
+
+                    <View style={styles.inputContainer}>
+                        <Icon name="transgender" size={17} />
+                        <RNPickerSelect
+                            onValueChange={setGender}
+                            placeholder={{
+                                label: 'Select gender...',
+                                value: null,
+                            }}
+                            style={{
+                                inputIOS: styles.textInput,
+                                inputAndroid: styles.textInput,
+                            }}
+                            items={[
+                                {label: 'Male', value: 'male'},
+                                {label: 'Female', value: 'female'},
+                                {label: 'Other', value: 'other'},
+                            ]}
+                        />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Icon name="globe" size={17} />
+                        <RNPickerSelect
+                            onValueChange={setCountry}
+                            placeholder={{
+                                label: 'Select country...',
+                                value: null,
+                            }}
+                            style={{
+                                inputIOS: styles.textInput,
+                                inputAndroid: styles.textInput,
+                            }}
+                            items={countries}
+                        />
+                    </View>
+
                     <Pressable
-                        style={styles.textInput}
-                        onPress={() => {
-                            setDateModal(true);
-                        }}>
-                        <Text style={{...styles.textInput, marginLeft: 0}}>
-                            {dob
-                                ? dob.toISOString().split('T')[0]
-                                : 'Date of birth'}
-                        </Text>
+                        style={styles.signUpButton}
+                        onPress={signUp}
+                        disabled={isSigningUp}>
+                        {!isSigningUp ? (
+                            <Text style={styles.signUpButtonText}>
+                                Create Account
+                            </Text>
+                        ) : (
+                            <Text>
+                                <CircleSnail
+                                    indeterminate={true}
+                                    color="#F3FCF0"
+                                    size={29}
+                                    style={styles.signUpButtonSpinner}
+                                />
+                            </Text>
+                        )}
                     </Pressable>
                 </View>
-                <Text style={styles.textInputHint}>
-                    You must be at least 16 years of age to use this app.
-                </Text>
 
-                <View style={styles.inputContainer}>
-                    <Icon name="transgender" size={17} />
-                    <RNPickerSelect
-                        onValueChange={setGender}
-                        placeholder={{
-                            label: 'Select gender...',
-                            value: null,
-                        }}
-                        style={{
-                            inputIOS: styles.textInput,
-                            inputAndroid: styles.textInput,
-                        }}
-                        items={[
-                            {label: 'Male', value: 'male'},
-                            {label: 'Female', value: 'female'},
-                            {label: 'Other', value: 'other'},
-                        ]}
-                    />
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <Icon name="globe" size={17} />
-                    <RNPickerSelect
-                        onValueChange={setCountry}
-                        placeholder={{
-                            label: 'Select country...',
-                            value: null,
-                        }}
-                        style={{
-                            inputIOS: styles.textInput,
-                            inputAndroid: styles.textInput,
-                        }}
-                        items={countries}
-                    />
-                </View>
-
-                <Pressable
-                    style={styles.signUpButton}
-                    onPress={signUp}
-                    disabled={isSigningUp}>
-                    {!isSigningUp ? (
-                        <Text style={styles.signUpButtonText}>
-                            Create Account
-                        </Text>
-                    ) : (
-                        <Text>
-                            <CircleSnail
-                                indeterminate={true}
-                                color="#F3FCF0"
-                                size={29}
-                                style={styles.signUpButtonSpinner}
-                            />
-                        </Text>
-                    )}
-                </Pressable>
-            </View>
-
-            <DatePicker
-                modal
-                open={dateModal}
-                maximumDate={new Date()}
-                mode="date"
-                onConfirm={date => {
-                    setDateModal(false);
-                    setDob(date);
-                }}
-                onCancel={() => {
-                    setDateModal(false);
-                }}
-                date={dob || new Date()}
-            />
+                <DatePicker
+                    modal
+                    open={dateModal}
+                    maximumDate={new Date()}
+                    mode="date"
+                    onConfirm={date => {
+                        setDateModal(false);
+                        setDob(date);
+                    }}
+                    onCancel={() => {
+                        setDateModal(false);
+                    }}
+                    date={dob || new Date()}
+                />
+            </ScrollView>
         </SafeAreaView>
     );
 };
