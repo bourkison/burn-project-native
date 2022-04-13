@@ -31,7 +31,7 @@ const HomeAuth = ({
 
     const navigateSignUp = () => {
         setVideoPaused(true);
-        navigation.navigate('SignUp');
+        navigation.navigate('UsernameInput');
     };
 
     let cont: JSX.Element | undefined;

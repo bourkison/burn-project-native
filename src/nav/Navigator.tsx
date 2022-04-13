@@ -9,6 +9,8 @@ import HomeAuth from '@/screens/Auth/HomeAuth';
 import Login from '@/screens/Auth/Login';
 import SignUp from '@/screens/Auth/SignUp';
 import Verify from '@/screens/Auth/Verify';
+import UsernameInput from '@/screens/Auth/SignUp_Test/UsernameInput';
+import DobInput from '@/screens/Auth/SignUp_Test/DobInput';
 
 export type AuthStackParamList = {
     HomeAuth: undefined;
@@ -18,6 +20,12 @@ export type AuthStackParamList = {
         username: string;
         password: string;
         sendOnLoad: boolean;
+    };
+    UsernameInput: undefined;
+    DobInput: {
+        username: string;
+        firstName: string;
+        surname: string;
     };
 };
 
@@ -43,6 +51,7 @@ const Navigator = () => {
                     options={{
                         headerShown: false,
                         presentation: 'transparentModal',
+                        animation: 'slide_from_bottom',
                     }}
                 />
                 <Stack.Screen
@@ -50,6 +59,7 @@ const Navigator = () => {
                     component={SignUp}
                     options={{
                         headerShown: false,
+                        animation: 'slide_from_right',
                     }}
                 />
                 <Stack.Screen
@@ -57,6 +67,22 @@ const Navigator = () => {
                     component={Verify}
                     options={{
                         headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name="UsernameInput"
+                    component={UsernameInput}
+                    options={{
+                        headerShown: false,
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name="DobInput"
+                    component={DobInput}
+                    options={{
+                        headerShown: false,
+                        animation: 'slide_from_right',
                     }}
                 />
             </Stack.Navigator>
