@@ -68,13 +68,13 @@ const Login = ({
                     />
                 </View>
                 <View style={styles.headerTitle}>
-                    <Text style={styles.headerTitle}>Login</Text>
+                    <Text style={styles.headerTitleText}>Login</Text>
                 </View>
                 <View style={styles.headerRight} />
             </View>
             <View style={styles.formContainer}>
                 <View style={styles.inputContainer}>
-                    <Icon name="user" size={16} />
+                    <Icon name="user" size={16} color="#272f38" />
                     <TextInput
                         placeholder="Username"
                         onChangeText={setUsername}
@@ -86,7 +86,7 @@ const Login = ({
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <Icon name="lock" size={17} />
+                    <Icon name="lock" size={17} color="#272f38" />
                     <TextInput
                         placeholder="Password"
                         onChangeText={setPassword}
@@ -106,14 +106,14 @@ const Login = ({
                         {!isLoggingIn ? (
                             <Text style={styles.loginButtonText}>Login</Text>
                         ) : (
-                            <Text>
+                            <View>
                                 <CircleSnail
                                     indeterminate={true}
                                     color="#F3FCF0"
                                     size={29}
                                     style={styles.loginButtonSpinner}
                                 />
-                            </Text>
+                            </View>
                         )}
                     </Pressable>
                 </View>
@@ -135,17 +135,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 10,
+        marginVertical: 10,
     },
     headerLeft: {
         flex: 1,
-        fontSize: 24,
         alignItems: 'flex-start',
     },
     headerTitle: {
         flex: 3,
-        textAlign: 'center',
+    },
+    headerTitleText: {
         fontSize: 20,
         color: '#F3FCF0',
+        textAlign: 'center',
     },
     headerRight: {
         flex: 1,
@@ -177,6 +179,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginLeft: 10,
         width: '100%',
+        paddingVertical: 2,
     },
     buttonCont: {
         paddingHorizontal: 50,

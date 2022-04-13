@@ -414,13 +414,15 @@ const Login = ({
                         />
                     </View>
                     <View style={styles.headerTitle}>
-                        <Text style={styles.headerTitle}>Create Account</Text>
+                        <Text style={styles.headerTitleText}>
+                            Create Account
+                        </Text>
                     </View>
                     <View style={styles.headerRight} />
                 </View>
                 <View style={styles.formContainer}>
                     <View style={styles.inputContainer}>
-                        <Icon name="user" size={16} />
+                        <Icon name="user" size={16} color="#272f38" />
                         <TextInput
                             placeholder="Username"
                             onChangeText={setUsername}
@@ -435,7 +437,7 @@ const Login = ({
                         characters.
                     </Text>
                     <View style={styles.inputContainer}>
-                        <Icon name="envelope" size={16} />
+                        <Icon name="envelope" size={16} color="#272f38" />
                         <TextInput
                             placeholder="Email"
                             onChangeText={setEmail}
@@ -450,7 +452,7 @@ const Login = ({
                         you spam.
                     </Text>
                     <View style={styles.inputContainer}>
-                        <Icon name="lock" size={17} />
+                        <Icon name="lock" size={17} color="#272f38" />
                         <TextInput
                             placeholder="Password"
                             onChangeText={setPassword}
@@ -465,7 +467,7 @@ const Login = ({
                         Passwords must contain letters and numbers.
                     </Text>
                     <View style={styles.inputContainer}>
-                        <Icon name="lock" size={17} />
+                        <Icon name="lock" size={17} color="#272f38" />
                         <TextInput
                             placeholder="Confirm password"
                             onChangeText={setConfPassword}
@@ -478,7 +480,7 @@ const Login = ({
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Icon name="signature" size={17} />
+                        <Icon name="id-card" size={17} color="#272f38" />
                         <TextInput
                             placeholder="First name"
                             onChangeText={setFirstName}
@@ -489,7 +491,7 @@ const Login = ({
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Icon name="signature" size={17} />
+                        <Icon name="id-card" size={17} color="#272f38" />
                         <TextInput
                             placeholder="Surname"
                             onChangeText={setSurname}
@@ -500,13 +502,13 @@ const Login = ({
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Icon name="calendar" size={17} />
+                        <Icon name="calendar" size={17} color="#272f38" />
                         <Pressable
                             style={styles.textInput}
                             onPress={() => {
                                 setDateModal(true);
                             }}>
-                            <Text style={{...styles.textInput, marginLeft: 0}}>
+                            <Text style={{...styles.textInput, marginLeft: 2}}>
                                 {dob
                                     ? dob.toISOString().split('T')[0]
                                     : 'Date of birth'}
@@ -518,7 +520,7 @@ const Login = ({
                     </Text>
 
                     <View style={styles.inputContainer}>
-                        <Icon name="transgender" size={17} />
+                        <Icon name="transgender" size={17} color="#272f38" />
                         <RNPickerSelect
                             onValueChange={setGender}
                             placeholder={{
@@ -538,7 +540,7 @@ const Login = ({
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Icon name="globe" size={17} />
+                        <Icon name="globe" size={17} color="#272f38" />
                         <RNPickerSelect
                             onValueChange={setCountry}
                             placeholder={{
@@ -562,14 +564,14 @@ const Login = ({
                                 Create Account
                             </Text>
                         ) : (
-                            <Text>
+                            <View>
                                 <CircleSnail
                                     indeterminate={true}
                                     color="#F3FCF0"
                                     size={29}
                                     style={styles.signUpButtonSpinner}
                                 />
-                            </Text>
+                            </View>
                         )}
                     </Pressable>
                 </View>
@@ -606,6 +608,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 10,
+        marginTop: 10,
     },
     headerLeft: {
         flex: 1,
@@ -614,6 +617,8 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         flex: 3,
+    },
+    headerTitleText: {
         textAlign: 'center',
         fontSize: 20,
         color: '#F3FCF0',
@@ -646,6 +651,7 @@ const styles = StyleSheet.create({
     textInput: {
         textAlign: 'left',
         fontSize: 18,
+        paddingVertical: 2,
         marginLeft: 10,
         width: '100%',
     },
