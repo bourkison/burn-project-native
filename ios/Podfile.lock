@@ -354,7 +354,7 @@ PODS:
     - React-Core
   - RNCCheckbox (0.5.9):
     - React-Core
-  - RNCPicker (2.2.1):
+  - RNCPicker (2.4.0):
     - React-Core
   - RNScreens (3.10.2):
     - React-Core
@@ -584,7 +584,7 @@ SPEC CHECKSUMS:
   RNAWSCognito: 333af0842a22f0616eb66535d02d9aea73704809
   RNCAsyncStorage: 0bef6a21517c0254bd6bd59a3672963abfa0d18e
   RNCCheckbox: 6369808337432cdbd5025d62ceced2480b4c51df
-  RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
+  RNCPicker: 6d5d64e7b90c240c779ee0938ec433c11e2dd758
   RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8

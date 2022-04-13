@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     hint: {
         color: '#f3fcf0',
         fontSize: 12,
+        paddingHorizontal: '2.5%',
     },
     buttonText: {
         color: '#f3fcf0',

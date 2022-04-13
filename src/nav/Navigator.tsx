@@ -11,6 +11,7 @@ import SignUp from '@/screens/Auth/SignUp';
 import Verify from '@/screens/Auth/Verify';
 import UsernameInput from '@/screens/Auth/SignUp_Test/UsernameInput';
 import DobInput from '@/screens/Auth/SignUp_Test/DobInput';
+import OtherInput from '@/screens/Auth/SignUp_Test/OtherInput';
 
 export type AuthStackParamList = {
     HomeAuth: undefined;
@@ -26,6 +27,12 @@ export type AuthStackParamList = {
         username: string;
         firstName: string;
         surname: string;
+    };
+    OtherInput: {
+        username: string;
+        firstName: string;
+        surname: string;
+        dob: Date;
     };
 };
 
@@ -80,6 +87,14 @@ const Navigator = () => {
                 <Stack.Screen
                     name="DobInput"
                     component={DobInput}
+                    options={{
+                        headerShown: false,
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name="OtherInput"
+                    component={OtherInput}
                     options={{
                         headerShown: false,
                         animation: 'slide_from_right',

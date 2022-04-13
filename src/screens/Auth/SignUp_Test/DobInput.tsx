@@ -5,15 +5,20 @@ import {AuthStackParamList} from '@/nav/Navigator';
 import {View, SafeAreaView, Pressable, StyleSheet, Text} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-const DobInput = ({}: NativeStackScreenProps<
-    AuthStackParamList,
-    'DobInput'
->) => {
+const DobInput = ({
+    navigation,
+    route,
+}: NativeStackScreenProps<AuthStackParamList, 'DobInput'>) => {
     const [dob, setDob] = useState<Date>(new Date());
     const [open, setOpen] = useState(false);
 
     const buttonPress = () => {
-        console.log(dob);
+        navigation.navigate('OtherInput', {
+            username: route.params.username,
+            firstName: route.params.firstName,
+            surname: route.params.surname,
+            dob: dob,
+        });
     };
 
     return (
