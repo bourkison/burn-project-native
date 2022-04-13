@@ -41,6 +41,7 @@ export const fetchUser = createAsyncThunk(
             }
 
             const user = await getUser({userId: username, init: {}});
+            console.log('User retrieved:', user);
 
             // Once successfully pulled from API, set to local storage.
             try {
