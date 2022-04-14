@@ -161,7 +161,13 @@ const PasswordInput = ({
                         <Text style={styles.buttonText}>Create Account</Text>
                     ) : (*/
                         <View style={styles.spinnerContainer}>
-                            <Spinner />
+                            <Spinner
+                                style={styles.spinner}
+                                diameter={28}
+                                spinnerWidth={4}
+                                backgroundColor="#f3fcf0"
+                                spinnerColor="#343E4B"
+                            />
                         </View>
                         /*)*/
                     }
@@ -227,14 +233,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     spinnerContainer: {
+        flex: 1,
+    },
+    spinner: {
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    signUpButtonSpinner: {
-        paddingVertical: 5,
-        justifySelf: 'center',
-        alignSelf: 'center',
-        backgroundColor: 'black',
+        flex: 1,
     },
 });
 
