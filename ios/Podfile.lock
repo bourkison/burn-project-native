@@ -356,6 +356,8 @@ PODS:
     - React-Core
   - RNCPicker (2.4.0):
     - React-Core
+  - RNGestureHandler (2.4.0):
+    - React-Core
   - RNReanimated (2.7.0):
     - DoubleConversion
     - FBLazyVector
@@ -455,6 +457,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -553,6 +556,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/checkbox"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -615,6 +620,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 0bef6a21517c0254bd6bd59a3672963abfa0d18e
   RNCCheckbox: 6369808337432cdbd5025d62ceced2480b4c51df
   RNCPicker: 6d5d64e7b90c240c779ee0938ec433c11e2dd758
+  RNGestureHandler: 50e6ffee79932d14ea747d4ea4cc99aac0f24e86
   RNReanimated: a05a0a5ba7c20a0be99fa15d18d0fbf21b025a57
   RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f

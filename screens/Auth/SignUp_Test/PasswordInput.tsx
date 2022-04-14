@@ -13,6 +13,7 @@ import validator from 'email-validator';
 import {Auth} from 'aws-amplify';
 import dayjs from 'dayjs';
 import Spinner from '@/components/Utility/Spinner';
+import {showMessage} from 'react-native-flash-message';
 
 const PasswordInput = ({
     navigation,
@@ -89,8 +90,14 @@ const PasswordInput = ({
                     },
                 ],
             });
-        } catch (err) {
+        } catch (err: any) {
             // TODO: Handle an error with sign up.
+            showMessage({
+                message: err.message,
+                type: 'danger',
+                position: 'bottom',
+            });
+
             console.error(err);
         }
     };
@@ -142,8 +149,9 @@ const PasswordInput = ({
 
             <View style={styles.row}>
                 <Text style={styles.hint}>
-                    Passwords must contain both letters and numbers. Emails are
-                    used for password recovery - we will not send you spam.
+                    Passwords must contain both uppercase letters, lowercase
+                    letters and numbers. Emails are used for password recovery -
+                    we will not send you spam.
                 </Text>
             </View>
 

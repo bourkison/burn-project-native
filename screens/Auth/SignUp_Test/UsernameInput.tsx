@@ -1,14 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@/nav/Navigator';
-import {
-    TextInput,
-    View,
-    SafeAreaView,
-    Pressable,
-    StyleSheet,
-    Text,
-} from 'react-native';
+import {TextInput, View, SafeAreaView, StyleSheet, Text} from 'react-native';
+import Button from '@/components/Utility/Button';
 
 const UsernameInput = ({
     navigation,
@@ -35,6 +29,7 @@ const UsernameInput = ({
     }, [username, firstName, surname]);
 
     const next = () => {
+        console.log('Press in parent.');
         navigation.navigate('DobInput', {username, firstName, surname});
     };
 
@@ -83,16 +78,15 @@ const UsernameInput = ({
             </View>
 
             <View style={styles.row}>
-                <Pressable
-                    onPress={next}
+                <Button
+                    text="Next"
+                    style={styles.button}
+                    textStyle={styles.buttonText}
+                    pressedColor="#D5576C"
+                    disabledColor="grey"
                     disabled={!validForm}
-                    style={({pressed}) => {
-                        return !pressed && validForm
-                            ? styles.button
-                            : {...styles.button, backgroundColor: '#D5576C'};
-                    }}>
-                    <Text style={styles.buttonText}>Next</Text>
-                </Pressable>
+                    onPress={next}
+                />
             </View>
         </SafeAreaView>
     );

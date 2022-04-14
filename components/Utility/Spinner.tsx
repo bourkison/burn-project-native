@@ -47,7 +47,7 @@ const Spinner: React.FC<SpinnerProps> = ({
         );
 
         return () => cancelAnimation(rotation);
-    }, []);
+    }, [rotation]);
 
     const styles = StyleSheet.create({
         container: style,

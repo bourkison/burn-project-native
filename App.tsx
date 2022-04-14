@@ -11,6 +11,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import FlashMessage from 'react-native-flash-message';
 
 import Navigator from '@/nav/Navigator';
@@ -34,10 +35,12 @@ const App = () => {
 
     return (
         <Provider store={store}>
-            <NavigationContainer>
-                <Navigator />
-                <FlashMessage position="bottom" />
-            </NavigationContainer>
+            <GestureHandlerRootView style={{flex: 1}}>
+                <NavigationContainer>
+                    <Navigator />
+                    <FlashMessage position="bottom" />
+                </NavigationContainer>
+            </GestureHandlerRootView>
         </Provider>
     );
 };
