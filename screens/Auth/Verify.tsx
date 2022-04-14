@@ -13,7 +13,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@/nav/Navigator';
 
 const Verify = ({
-    navigation,
     route,
 }: NativeStackScreenProps<AuthStackParamList, 'Verify'>) => {
     const [verificationCode, setVerificationCode] = useState('');

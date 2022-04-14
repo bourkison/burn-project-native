@@ -1,5 +1,5 @@
 import {Auth, API} from 'aws-amplify';
-import {GetUserParams, GetUserInit, UserDocData} from '../types/user';
+import {GetUserParams, GetUserInit, UserDocData} from '@/types/user';
 
 const API_NAME = 'projectburnapi';
 

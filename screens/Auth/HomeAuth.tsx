@@ -8,7 +8,7 @@ import {
     Dimensions,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AuthStackParamList} from '@/nav/Navigator';
+import {AuthStackParamList} from 'nav/Navigator';
 import Video from 'react-native-video';
 const {height} = Dimensions.get('window');
 // import backgroundVid from '@/assets/videos/loginVideo.mp4';

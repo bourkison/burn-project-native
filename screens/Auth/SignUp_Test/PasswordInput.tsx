@@ -12,7 +12,7 @@ import {
 import validator from 'email-validator';
 import {Auth} from 'aws-amplify';
 import dayjs from 'dayjs';
-import {CircleSnail} from 'react-native-progress';
+import Spinner from '@/components/Utility/Spinner';
 
 const PasswordInput = ({
     navigation,
@@ -161,12 +161,7 @@ const PasswordInput = ({
                         <Text style={styles.buttonText}>Create Account</Text>
                     ) : (*/
                         <View style={styles.spinnerContainer}>
-                            <CircleSnail
-                                indeterminate={true}
-                                color="#F3FCF0"
-                                size={28}
-                                style={styles.signUpButtonSpinner}
-                            />
+                            <Spinner />
                         </View>
                         /*)*/
                     }
@@ -192,6 +187,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#f3fcf0',
         fontSize: 18,
+        marginVertical: 10,
     },
     textInput: {
         marginHorizontal: '2%',
