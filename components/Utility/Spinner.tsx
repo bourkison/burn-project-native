@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 
-import {View, StyleSheet, ViewStyle, TextStyle, ImageStyle} from 'react-native';
+import {View, StyleSheet, ViewStyle} from 'react-native';
 import Animated, {
     useAnimatedStyle,
     useSharedValue,

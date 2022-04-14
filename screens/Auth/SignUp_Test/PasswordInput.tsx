@@ -156,21 +156,17 @@ const PasswordInput = ({
                             ? styles.button
                             : {...styles.button, backgroundColor: '#D5576C'};
                     }}>
-                    {
-                        /*!isSigningUp ? (
+                    {!isSigningUp ? (
                         <Text style={styles.buttonText}>Create Account</Text>
-                    ) : (*/
-                        <View style={styles.spinnerContainer}>
-                            <Spinner
-                                style={styles.spinner}
-                                diameter={28}
-                                spinnerWidth={4}
-                                backgroundColor="#f3fcf0"
-                                spinnerColor="#343E4B"
-                            />
-                        </View>
-                        /*)*/
-                    }
+                    ) : (
+                        <Spinner
+                            style={styles.spinner}
+                            diameter={28}
+                            spinnerWidth={4}
+                            backgroundColor="#f3fcf0"
+                            spinnerColor="#343E4B"
+                        />
+                    )}
                 </Pressable>
             </View>
         </SafeAreaView>
@@ -215,6 +211,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#ce3b54',
         borderRadius: 5,
         height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     label: {
         color: '#f3fcf0',
