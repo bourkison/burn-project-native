@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@/nav/Navigator';
 import {
@@ -17,7 +17,24 @@ const UsernameInput = ({
     const [firstName, setFirstName] = useState('');
     const [surname, setSurname] = useState('');
 
-    const buttonPress = () => {
+    const [validForm, setValidForm] = useState(false);
+
+    useEffect(() => {
+        if (!firstName || !surname) {
+            setValidForm(false);
+            return;
+        }
+
+        if (!username) {
+            // TODO: check for unique username.
+            setValidForm(false);
+            return;
+        }
+
+        setValidForm(true);
+    }, [username, firstName, surname]);
+
+    const next = () => {
         navigation.navigate('DobInput', {username, firstName, surname});
     };
 
@@ -67,13 +84,14 @@ const UsernameInput = ({
 
             <View style={styles.row}>
                 <Pressable
-                    onPress={buttonPress}
+                    onPress={next}
+                    disabled={!validForm}
                     style={({pressed}) => {
-                        return !pressed
+                        return !pressed && validForm
                             ? styles.button
                             : {...styles.button, backgroundColor: '#D5576C'};
                     }}>
-                    <Text style={styles.buttonText}>Press</Text>
+                    <Text style={styles.buttonText}>Next</Text>
                 </Pressable>
             </View>
         </SafeAreaView>
@@ -95,6 +113,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#f3fcf0',
         fontSize: 18,
+        marginVertical: 10,
     },
     usernameInput: {
         width: '90%',

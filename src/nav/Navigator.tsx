@@ -12,6 +12,7 @@ import Verify from '@/screens/Auth/Verify';
 import UsernameInput from '@/screens/Auth/SignUp_Test/UsernameInput';
 import DobInput from '@/screens/Auth/SignUp_Test/DobInput';
 import OtherInput from '@/screens/Auth/SignUp_Test/OtherInput';
+import PasswordInput from '@/screens/Auth/SignUp_Test/PasswordInput';
 
 export type AuthStackParamList = {
     HomeAuth: undefined;
@@ -33,6 +34,18 @@ export type AuthStackParamList = {
         firstName: string;
         surname: string;
         dob: Date;
+        country: string;
+    };
+    PasswordInput: {
+        username: string;
+        firstName: string;
+        surname: string;
+        dob: Date;
+        country: string;
+        gender: string;
+        metric: boolean;
+        weight: number;
+        height: number;
     };
 };
 
@@ -95,6 +108,14 @@ const Navigator = () => {
                 <Stack.Screen
                     name="OtherInput"
                     component={OtherInput}
+                    options={{
+                        headerShown: false,
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name="PasswordInput"
+                    component={PasswordInput}
                     options={{
                         headerShown: false,
                         animation: 'slide_from_right',

@@ -10,17 +10,29 @@ import {
     TextInput,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import {Switch} from 'react-native-elements';
 
-const OtherInput = ({}: NativeStackScreenProps<
-    AuthStackParamList,
-    'OtherInput'
->) => {
+const OtherInput = ({
+    navigation,
+    route,
+}: NativeStackScreenProps<AuthStackParamList, 'OtherInput'>) => {
     const [gender, setGender] = useState('male');
+    const [metric, setMetric] = useState(true);
     const [weight, setWeight] = useState(0);
     const [height, setHeight] = useState(0);
 
     const buttonPress = () => {
-        console.log(gender);
+        navigation.navigate('PasswordInput', {
+            username: route.params.username,
+            firstName: route.params.firstName,
+            surname: route.params.surname,
+            dob: route.params.dob,
+            country: route.params.country,
+            gender: gender,
+            metric: metric,
+            weight: weight,
+            height: height,
+        });
     };
 
     return (
@@ -62,31 +74,49 @@ const OtherInput = ({}: NativeStackScreenProps<
             </View>
 
             <View style={styles.row}>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="Height"
-                    placeholderTextColor="#97A5B6"
-                    onChangeText={val => {
-                        setHeight(parseInt(val));
+                <Text style={styles.label}>Imperial</Text>
+                <Switch
+                    style={styles.switch}
+                    value={metric}
+                    onValueChange={v => {
+                        setMetric(v);
                     }}
-                    autoComplete="off"
-                    autoCorrect={false}
-                    keyboardType="number-pad"
-                    returnKeyType="done"
                 />
+                <Text style={styles.label}>Metric</Text>
+            </View>
 
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="Weight"
-                    placeholderTextColor="#97A5B6"
-                    onChangeText={val => {
-                        setWeight(parseInt(val));
-                    }}
-                    autoComplete="off"
-                    autoCorrect={false}
-                    keyboardType="number-pad"
-                    returnKeyType="done"
-                />
+            <View style={styles.row}>
+                <View style={styles.textInputContainer}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Height"
+                        placeholderTextColor="#97A5B6"
+                        onChangeText={val => {
+                            setHeight(parseInt(val, 10));
+                        }}
+                        autoComplete="off"
+                        autoCorrect={false}
+                        keyboardType="number-pad"
+                        returnKeyType="done"
+                    />
+                    <Text style={styles.label}>{metric ? 'cm' : 'inches'}</Text>
+                </View>
+
+                <View style={styles.textInputContainer}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Weight"
+                        placeholderTextColor="#97A5B6"
+                        onChangeText={val => {
+                            setWeight(parseInt(val, 10));
+                        }}
+                        autoComplete="off"
+                        autoCorrect={false}
+                        keyboardType="number-pad"
+                        returnKeyType="done"
+                    />
+                    <Text style={styles.label}>{metric ? 'kg' : 'lbs'}</Text>
+                </View>
             </View>
 
             <View style={styles.row}>
@@ -105,7 +135,7 @@ const OtherInput = ({}: NativeStackScreenProps<
                             ? styles.button
                             : {...styles.button, backgroundColor: '#D5576C'};
                     }}>
-                    <Text style={styles.buttonText}>Press</Text>
+                    <Text style={styles.buttonText}>Next</Text>
                 </Pressable>
             </View>
         </SafeAreaView>
@@ -121,6 +151,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
         marginBottom: 10,
     },
     pickerRow: {
@@ -131,9 +162,18 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#f3fcf0',
         fontSize: 18,
+        marginVertical: 10,
+    },
+    textInputContainer: {
+        marginHorizontal: '2%',
+        height: 40,
+        width: '43%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     textInput: {
-        marginHorizontal: '2%',
+        flex: 3,
         backgroundColor: '#343E4B',
         color: '#f3fcf0',
         borderColor: '#97A5B6',
@@ -141,8 +181,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         fontSize: 14,
-        height: 40,
-        width: '43%',
     },
     dateButton: {
         backgroundColor: '#343E4B',
@@ -167,8 +205,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     label: {
-        color: '#97A5B6',
+        color: '#f3fcf0',
         fontSize: 14,
+        marginLeft: 3,
+    },
+    switch: {
+        marginHorizontal: 3,
     },
     hint: {
         color: '#f3fcf0',
