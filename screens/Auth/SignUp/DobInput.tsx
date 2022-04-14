@@ -1,24 +1,13 @@
-import React, {useState} from 'react';
-import {
-    TextInput,
-    View,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    Pressable,
-    ScrollView,
-} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import DatePicker from 'react-native-date-picker';
-import RNPickerSelect from 'react-native-picker-select';
-import {CircleSnail} from 'react-native-progress';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@/nav/Navigator';
-
+import {View, SafeAreaView, Pressable, StyleSheet, Text} from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import {Picker} from '@react-native-picker/picker';
 import dayjs from 'dayjs';
+import AnimatedButton from '@/components/Utility/AnimatedButton';
 
-import {Auth} from 'aws-amplify';
 const countries = [
     {label: 'Afghanistan', value: 'Afghanistan'},
     {label: 'Albania', value: 'Albania'},
@@ -327,270 +316,120 @@ const countries = [
     {label: 'Åland Islands', value: 'Åland Islands'},
 ];
 
-const Login = ({
+const DobInput = ({
     navigation,
-}: NativeStackScreenProps<AuthStackParamList, 'SignUp'>) => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confPassword, setConfPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [surname, setSurname] = useState('');
-    const [dob, setDob] = useState<Date | undefined>();
-    const [gender, setGender] = useState('');
-    const [country, setCountry] = useState('');
-    const [dateModal, setDateModal] = useState(false);
-    const [isSigningUp, setIsSigningUp] = useState(false);
+    route,
+}: NativeStackScreenProps<AuthStackParamList, 'DobInput'>) => {
+    const [dob, setDob] = useState<Date>(new Date());
+    const [open, setOpen] = useState(false);
+    const [country, setCountry] = useState(countries[0].value);
 
-    const signUp = async () => {
-        setIsSigningUp(true);
-        try {
-            if (!username) {
-                throw new Error('No username entered');
-            }
+    const [validForm, setValidForm] = useState(false);
 
-            if (!email) {
-                throw new Error('No email entered');
-            }
-
-            if (password.length < 8) {
-                throw new Error(
-                    'Password must be at least 8 characters in length',
-                );
-            }
-
-            if (password !== confPassword) {
-                throw new Error('Passwords do not match');
-            }
-
-            if (!firstName || !surname) {
-                throw new Error('No name entered');
-            }
-
-            if (!dob) {
-                throw new Error('No date of birth entered');
-            }
-
-            if (!country) {
-                throw new Error('No country entered');
-            }
-
-            await Auth.signUp({
-                username: username,
-                password: password,
-                attributes: {
-                    email: email,
-                    birthdate: dayjs(dob).format('YYYY-MM-DD'),
-                    gender: gender,
-                    given_name: firstName,
-                    family_name: surname,
-                    locale: country,
-                },
-            });
-
-            setIsSigningUp(false);
-            navigation.push('Verify', {username, password, sendOnLoad: false});
-        } catch (err: any) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-                position: 'bottom',
-            });
-
-            setIsSigningUp(false);
-        }
+    const next = () => {
+        navigation.navigate('OtherInput', {
+            username: route.params.username,
+            firstName: route.params.firstName,
+            surname: route.params.surname,
+            country: country,
+            dob: dob,
+        });
     };
+
+    useEffect(() => {
+        if (dayjs(dob).isBefore(dayjs().subtract(16, 'year'))) {
+            setValidForm(true);
+            return;
+        }
+
+        setValidForm(false);
+    }, [dob]);
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <View style={styles.headerContainer}>
-                    <View style={styles.headerLeft}>
-                        <Icon
-                            size={20}
-                            name="chevron-left"
-                            onPress={navigation.goBack}
-                            color="#F3FCF0"
-                        />
-                    </View>
-                    <View style={styles.headerTitle}>
-                        <Text style={styles.headerTitleText}>
-                            Create Account
-                        </Text>
-                    </View>
-                    <View style={styles.headerRight} />
+            <View style={styles.row}>
+                <Text style={styles.header}>How old are you?</Text>
+            </View>
+
+            <View style={{...styles.row, ...styles.pickerRow}}>
+                <View style={{width: '100%'}}>
+                    <Text style={styles.label}>Date of Birth</Text>
                 </View>
-                <View style={styles.formContainer}>
-                    <View style={styles.inputContainer}>
-                        <Icon name="user" size={16} color="#272f38" />
-                        <TextInput
-                            placeholder="Username"
-                            onChangeText={setUsername}
-                            autoComplete="off"
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            style={styles.textInput}
-                        />
-                    </View>
-                    <Text style={styles.textInputHint}>
-                        Usernames must be unique, and between 3 and 24
-                        characters.
-                    </Text>
-                    <View style={styles.inputContainer}>
-                        <Icon name="envelope" size={16} color="#272f38" />
-                        <TextInput
-                            placeholder="Email"
-                            onChangeText={setEmail}
-                            autoCapitalize="none"
-                            autoComplete="off"
-                            autoCorrect={false}
-                            style={styles.textInput}
-                        />
-                    </View>
-                    <Text style={styles.textInputHint}>
-                        Emails are used for password recovery. We will not send
-                        you spam.
-                    </Text>
-                    <View style={styles.inputContainer}>
-                        <Icon name="lock" size={17} color="#272f38" />
-                        <TextInput
-                            placeholder="Password"
-                            onChangeText={setPassword}
-                            autoCapitalize="none"
-                            autoComplete="off"
-                            autoCorrect={false}
-                            secureTextEntry={true}
-                            style={styles.textInput}
-                        />
-                    </View>
-                    <Text style={styles.textInputHint}>
-                        Passwords must contain letters and numbers.
-                    </Text>
-                    <View style={styles.inputContainer}>
-                        <Icon name="lock" size={17} color="#272f38" />
-                        <TextInput
-                            placeholder="Confirm password"
-                            onChangeText={setConfPassword}
-                            autoCapitalize="none"
-                            autoComplete="off"
-                            autoCorrect={false}
-                            secureTextEntry={true}
-                            style={styles.textInput}
-                        />
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Icon name="id-card" size={17} color="#272f38" />
-                        <TextInput
-                            placeholder="First name"
-                            onChangeText={setFirstName}
-                            autoComplete="off"
-                            autoCorrect={false}
-                            style={styles.textInput}
-                        />
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Icon name="id-card" size={17} color="#272f38" />
-                        <TextInput
-                            placeholder="Surname"
-                            onChangeText={setSurname}
-                            autoComplete="off"
-                            autoCorrect={false}
-                            style={styles.textInput}
-                        />
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Icon name="calendar" size={17} color="#272f38" />
-                        <Pressable
-                            style={styles.textInput}
-                            onPress={() => {
-                                setDateModal(true);
-                            }}>
-                            <Text style={{...styles.textInput, marginLeft: 2}}>
-                                {dob
-                                    ? dob.toISOString().split('T')[0]
-                                    : 'Date of birth'}
-                            </Text>
-                        </Pressable>
-                    </View>
-                    <Text style={styles.textInputHint}>
-                        You must be at least 16 years of age to use this app.
-                    </Text>
-
-                    <View style={styles.inputContainer}>
-                        <Icon name="transgender" size={17} color="#272f38" />
-                        <RNPickerSelect
-                            onValueChange={setGender}
-                            placeholder={{
-                                label: 'Select gender...',
-                                value: null,
-                            }}
-                            style={{
-                                inputIOS: styles.textInput,
-                                inputAndroid: styles.textInput,
-                            }}
-                            items={[
-                                {label: 'Male', value: 'male'},
-                                {label: 'Female', value: 'female'},
-                                {label: 'Other', value: 'other'},
-                            ]}
-                        />
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Icon name="globe" size={17} color="#272f38" />
-                        <RNPickerSelect
-                            onValueChange={setCountry}
-                            placeholder={{
-                                label: 'Select country...',
-                                value: null,
-                            }}
-                            style={{
-                                inputIOS: styles.textInput,
-                                inputAndroid: styles.textInput,
-                            }}
-                            items={countries}
-                        />
-                    </View>
-
+                <View style={{width: '100%'}}>
                     <Pressable
-                        style={styles.signUpButton}
-                        onPress={signUp}
-                        disabled={isSigningUp}>
-                        {!isSigningUp ? (
-                            <Text style={styles.signUpButtonText}>
-                                Create Account
+                        style={styles.dateButton}
+                        onPress={() => {
+                            setOpen(true);
+                        }}>
+                        <View style={styles.dateButtonView}>
+                            <Text style={styles.dateButtonText}>
+                                {dob.toDateString()}
                             </Text>
-                        ) : (
-                            <View>
-                                <CircleSnail
-                                    indeterminate={true}
-                                    color="#F3FCF0"
-                                    size={29}
-                                    style={styles.signUpButtonSpinner}
-                                />
-                            </View>
-                        )}
+                            <Icon
+                                name="chevron-down"
+                                size={14}
+                                color="#f3fcf0"
+                            />
+                        </View>
                     </Pressable>
                 </View>
+            </View>
 
-                <DatePicker
-                    modal
-                    open={dateModal}
-                    maximumDate={new Date()}
-                    mode="date"
-                    onConfirm={date => {
-                        setDateModal(false);
-                        setDob(date);
-                    }}
-                    onCancel={() => {
-                        setDateModal(false);
-                    }}
-                    date={dob || new Date()}
+            <View style={{...styles.row, ...styles.pickerRow}}>
+                <View style={{width: '100%'}}>
+                    <Text style={styles.label}>Country</Text>
+                </View>
+                <View style={{width: '100%'}}>
+                    <Picker
+                        dropdownIconColor="#f3fcf0"
+                        selectedValue={country}
+                        onValueChange={val => {
+                            setCountry(val);
+                        }}>
+                        {countries.map((item, index) => (
+                            <Picker.Item
+                                color="#f3fcf0"
+                                key={index}
+                                value={item.value}
+                                label={item.label}
+                            />
+                        ))}
+                    </Picker>
+                </View>
+            </View>
+
+            <View style={styles.row}>
+                <Text style={styles.hint}>
+                    You must be at least 16 years of age to use Strenive.
+                </Text>
+            </View>
+
+            <View style={styles.row}>
+                <AnimatedButton
+                    content="Next"
+                    style={styles.button}
+                    textStyle={styles.buttonText}
+                    pressedColor="#D5576C"
+                    disabledColor="grey"
+                    disabled={!validForm}
+                    onPress={next}
                 />
-            </ScrollView>
+            </View>
+
+            <DatePicker
+                modal
+                open={open}
+                mode="date"
+                date={dob}
+                maximumDate={new Date()}
+                onConfirm={date => {
+                    setOpen(false);
+                    setDob(date);
+                }}
+                onCancel={() => {
+                    setOpen(false);
+                }}
+            />
         </SafeAreaView>
     );
 };
@@ -598,89 +437,61 @@ const Login = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
-        width: '100%',
-        backgroundColor: '#264653',
+        backgroundColor: '#272f38',
     },
-    headerContainer: {
+    row: {
+        width: '100%',
         flexDirection: 'row',
-        width: '100%',
         justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 10,
-        marginTop: 10,
+        marginBottom: 10,
     },
-    headerLeft: {
-        flex: 1,
-        fontSize: 24,
-        alignItems: 'flex-start',
+    pickerRow: {
+        flexDirection: 'column',
+        paddingHorizontal: '5%',
     },
-    headerTitle: {
-        flex: 3,
-    },
-    headerTitleText: {
-        textAlign: 'center',
-        fontSize: 20,
-        color: '#F3FCF0',
-    },
-    headerRight: {
-        flex: 1,
-    },
-    formContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        padding: 20,
-    },
-    inputContainer: {
-        width: '100%',
-        marginBottom: 5,
-        marginTop: 20,
-        marginHorizontal: 5,
-        backgroundColor: '#F3FCF0',
-        shadowColor: 'black',
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        borderRadius: 10,
-        paddingVertical: 7,
-        paddingHorizontal: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    textInput: {
-        textAlign: 'left',
+    header: {
+        fontWeight: '600',
+        color: '#f3fcf0',
         fontSize: 18,
-        paddingVertical: 2,
-        marginLeft: 10,
-        width: '100%',
+        marginVertical: 10,
     },
-    textInputHint: {
-        fontSize: 10,
-        color: '#F3FCF0',
-        textAlign: 'left',
-        alignSelf: 'flex-start',
-    },
-    signUpButton: {
-        marginTop: 15,
-        backgroundColor: '#E76F51',
-        justifyContent: 'center',
-        borderRadius: 25,
-        width: '100%',
-        flexDirection: 'row',
-    },
-    signUpButtonText: {
-        color: '#F3FCF0',
-        margin: 10,
+    dateButton: {
+        backgroundColor: '#343E4B',
+        borderColor: '#97A5B6',
+        borderRadius: 5,
+        borderWidth: 1,
+        padding: 10,
         fontSize: 14,
-        fontWeight: 'bold',
-        textAlign: 'center',
+        height: 40,
+        marginTop: 5,
     },
-    signUpButtonSpinner: {
-        paddingVertical: 5,
-        justifySelf: 'center',
+    dateButtonView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    dateButtonText: {
+        color: '#f3fcf0',
+    },
+    button: {
+        width: '90%',
+        backgroundColor: '#ce3b54',
+        borderRadius: 5,
+    },
+    label: {
+        color: '#f3fcf0',
+        fontSize: 14,
+        marginLeft: 3,
+    },
+    hint: {
+        color: '#f3fcf0',
+        fontSize: 12,
+    },
+    buttonText: {
+        color: '#f3fcf0',
+        fontSize: 14,
+        paddingVertical: 8,
         alignSelf: 'center',
     },
 });
 
-export default Login;
+export default DobInput;

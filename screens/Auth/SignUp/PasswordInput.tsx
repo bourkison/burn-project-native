@@ -1,19 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@/nav/Navigator';
-import {
-    View,
-    SafeAreaView,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-} from 'react-native';
+import {View, SafeAreaView, StyleSheet, Text, TextInput} from 'react-native';
 import validator from 'email-validator';
 import {Auth} from 'aws-amplify';
 import dayjs from 'dayjs';
 import Spinner from '@/components/Utility/Spinner';
 import {showMessage} from 'react-native-flash-message';
+import AnimatedButton from '@/components/Utility/AnimatedButton';
 
 const PasswordInput = ({
     navigation,
@@ -56,6 +50,7 @@ const PasswordInput = ({
 
     const buttonPress = async () => {
         setIsSigningUp(true);
+        setValidForm(false);
 
         try {
             if (!validateSignUp()) {
@@ -98,7 +93,10 @@ const PasswordInput = ({
                 position: 'bottom',
             });
 
-            console.error(err);
+            // console.error(err);
+        } finally {
+            setIsSigningUp(false);
+            setValidForm(true);
         }
     };
 
@@ -156,26 +154,27 @@ const PasswordInput = ({
             </View>
 
             <View style={styles.row}>
-                <Pressable
-                    onPress={buttonPress}
+                <AnimatedButton
+                    content={
+                        !isSigningUp ? (
+                            'Create Account'
+                        ) : (
+                            <Spinner
+                                style={styles.spinner}
+                                diameter={28}
+                                spinnerWidth={4}
+                                backgroundColor="#f3fcf0"
+                                spinnerColor="#343E4B"
+                            />
+                        )
+                    }
+                    style={styles.button}
+                    textStyle={styles.buttonText}
+                    pressedColor="#D5576C"
+                    disabledColor="grey"
                     disabled={!validForm}
-                    style={({pressed}) => {
-                        return !pressed && validForm && !isSigningUp
-                            ? styles.button
-                            : {...styles.button, backgroundColor: '#D5576C'};
-                    }}>
-                    {!isSigningUp ? (
-                        <Text style={styles.buttonText}>Create Account</Text>
-                    ) : (
-                        <Spinner
-                            style={styles.spinner}
-                            diameter={28}
-                            spinnerWidth={4}
-                            backgroundColor="#f3fcf0"
-                            spinnerColor="#343E4B"
-                        />
-                    )}
-                </Pressable>
+                    onPress={buttonPress}
+                />
             </View>
         </SafeAreaView>
     );

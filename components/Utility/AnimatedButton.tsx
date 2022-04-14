@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {useEffect} from 'react';
 import {StyleProp, ViewStyle, Text} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
@@ -9,22 +9,22 @@ import Animated, {
     runOnJS,
 } from 'react-native-reanimated';
 
-type ButtonType = {
+type AnimatedButtonType = {
     onPress?: () => void;
     disabled?: boolean;
-    text: string;
+    content: string | ReactElement;
     style: ViewStyle;
     pressedColor?: string;
     disabledColor?: string;
     textStyle: StyleProp<ViewStyle>;
 };
 
-const Button: React.FC<ButtonType> = ({
+const AnimatedButton: React.FC<AnimatedButtonType> = ({
     onPress,
     disabled,
     style,
     textStyle,
-    text,
+    content,
     pressedColor,
     disabledColor,
 }) => {
@@ -85,10 +85,14 @@ const Button: React.FC<ButtonType> = ({
     return (
         <GestureDetector gesture={tapGesture}>
             <Animated.View style={[style, animatedStyle]}>
-                <Text style={textStyle}>{text}</Text>
+                {typeof content === 'string' ? (
+                    <Text style={textStyle}>{content}</Text>
+                ) : (
+                    content
+                )}
             </Animated.View>
         </GestureDetector>
     );
 };
 
-export default Button;
+export default AnimatedButton;

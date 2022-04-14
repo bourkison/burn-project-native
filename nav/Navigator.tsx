@@ -7,17 +7,15 @@ import {useAppSelector} from '@/store/hooks';
 import Home from '@/screens/Home';
 import HomeAuth from '@/screens/Auth/HomeAuth';
 import Login from '@/screens/Auth/Login';
-import SignUp from '@/screens/Auth/SignUp';
 import Verify from '@/screens/Auth/Verify';
-import UsernameInput from '@/screens/Auth/SignUp_Test/UsernameInput';
-import DobInput from '@/screens/Auth/SignUp_Test/DobInput';
-import OtherInput from '@/screens/Auth/SignUp_Test/OtherInput';
-import PasswordInput from '@/screens/Auth/SignUp_Test/PasswordInput';
+import UsernameInput from '@/screens/Auth/SignUp/UsernameInput';
+import DobInput from '@/screens/Auth/SignUp/DobInput';
+import OtherInput from '@/screens/Auth/SignUp/OtherInput';
+import PasswordInput from '@/screens/Auth/SignUp/PasswordInput';
 
 export type AuthStackParamList = {
     HomeAuth: undefined;
     Login: undefined;
-    SignUp: undefined;
     Verify: {
         username: string;
         password: string;
@@ -72,14 +70,6 @@ const Navigator = () => {
                         headerShown: false,
                         presentation: 'transparentModal',
                         animation: 'slide_from_bottom',
-                    }}
-                />
-                <Stack.Screen
-                    name="SignUp"
-                    component={SignUp}
-                    options={{
-                        headerShown: false,
-                        animation: 'slide_from_right',
                     }}
                 />
                 <Stack.Screen

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@/nav/Navigator';
 import {TextInput, View, SafeAreaView, StyleSheet, Text} from 'react-native';
-import Button from '@/components/Utility/Button';
+import AnimatedButton from '@/components/Utility/AnimatedButton';
 
 const UsernameInput = ({
     navigation,
@@ -78,8 +78,8 @@ const UsernameInput = ({
             </View>
 
             <View style={styles.row}>
-                <Button
-                    text="Next"
+                <AnimatedButton
+                    content="Next"
                     style={styles.button}
                     textStyle={styles.buttonText}
                     pressedColor="#D5576C"

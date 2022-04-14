@@ -1,16 +1,10 @@
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@/nav/Navigator';
-import {
-    View,
-    SafeAreaView,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-} from 'react-native';
+import {View, SafeAreaView, StyleSheet, Text, TextInput} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {Switch} from 'react-native-elements';
+import AnimatedButton from '@/components/Utility/AnimatedButton';
 
 const OtherInput = ({
     navigation,
@@ -21,7 +15,7 @@ const OtherInput = ({
     const [weight, setWeight] = useState(0);
     const [height, setHeight] = useState(0);
 
-    const buttonPress = () => {
+    const next = () => {
         navigation.navigate('PasswordInput', {
             username: route.params.username,
             firstName: route.params.firstName,
@@ -128,15 +122,14 @@ const OtherInput = ({
             </View>
 
             <View style={styles.row}>
-                <Pressable
-                    onPress={buttonPress}
-                    style={({pressed}) => {
-                        return !pressed
-                            ? styles.button
-                            : {...styles.button, backgroundColor: '#D5576C'};
-                    }}>
-                    <Text style={styles.buttonText}>Next</Text>
-                </Pressable>
+                <AnimatedButton
+                    content="Next"
+                    style={styles.button}
+                    textStyle={styles.buttonText}
+                    pressedColor="#D5576C"
+                    disabledColor="grey"
+                    onPress={next}
+                />
             </View>
         </SafeAreaView>
     );
