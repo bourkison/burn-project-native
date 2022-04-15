@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Post, PostReference} from '@/types/post';
 import {StyleSheet, Text, View} from 'react-native';
 import {getPost} from '@/store/services';
+import PostSkeleton from './PostSkeleton';
 
 type PostComponentProps = {
     postReference: PostReference;
@@ -9,7 +10,7 @@ type PostComponentProps = {
 
 const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [post, setPost] = useState<Post | undefined>();
+    const [post, setPost] = useState<Post>();
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -23,21 +24,18 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
 
     return (
         <View>
-            {!isLoading && post ? (
-                <Text>{post.content}</Text>
-            ) : (
-                <Text>Loading</Text>
-            )}
+            <Text>{post?.content}</Text>
+            <PostSkeleton />
         </View>
     );
 };
 
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: 'red',
-//         height: 50,
-//     },
-// });
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'red',
+        height: 50,
+    },
+});
 
 export default PostComponent;

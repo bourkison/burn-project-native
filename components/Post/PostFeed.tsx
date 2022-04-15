@@ -19,10 +19,9 @@ const PostFeed = () => {
                         init: {queryStringParameters: {loadAmount: 5}},
                     }),
                 );
+                setIsLoading(false);
             } catch (err) {
                 console.error(err);
-            } finally {
-                setIsLoading(false);
             }
         };
 
