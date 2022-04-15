@@ -3,8 +3,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {useAppSelector} from '@/store/hooks';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import Home from '@/screens/Home';
 import HomeAuth from '@/screens/Auth/HomeAuth';
 import Login from '@/screens/Auth/Login';
 import Verify from '@/screens/Auth/Verify';
@@ -12,6 +12,9 @@ import UsernameInput from '@/screens/Auth/SignUp/UsernameInput';
 import DobInput from '@/screens/Auth/SignUp/DobInput';
 import OtherInput from '@/screens/Auth/SignUp/OtherInput';
 import PasswordInput from '@/screens/Auth/SignUp/PasswordInput';
+
+import Home from '@/screens/Home';
+import ExerciseHome from '@/screens/Exercise/ExerciseHome';
 
 export type AuthStackParamList = {
     HomeAuth: undefined;
@@ -126,6 +129,41 @@ const Navigator = () => {
                         color: '#f3fcf0',
                     },
                     tabBarStyle: styles.loggedInContainer,
+                    tabBarLabelStyle: {
+                        color: '#f3fcf0',
+                    },
+                    tabBarIcon: ({size, focused}) => {
+                        return (
+                            <Icon
+                                name="home"
+                                size={size}
+                                color={focused ? '#f3fcf0' : '#97A5B6'}
+                            />
+                        );
+                    },
+                }}
+            />
+            <Tab.Screen
+                name="Exercises"
+                component={ExerciseHome}
+                options={{
+                    headerStyle: styles.loggedInContainer,
+                    headerTitleStyle: {
+                        color: '#f3fcf0',
+                    },
+                    tabBarStyle: styles.loggedInContainer,
+                    tabBarLabelStyle: {
+                        color: '#f3fcf0',
+                    },
+                    tabBarIcon: ({size, focused}) => {
+                        return (
+                            <Icon
+                                name="dumbbell"
+                                size={size}
+                                color={focused ? '#f3fcf0' : '#97A5B6'}
+                            />
+                        );
+                    },
                 }}
             />
         </Tab.Navigator>
