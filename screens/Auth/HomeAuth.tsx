@@ -1,15 +1,9 @@
 import React, {useState} from 'react';
-import {
-    View,
-    StyleSheet,
-    Text,
-    SafeAreaView,
-    Pressable,
-    Dimensions,
-} from 'react-native';
+import {View, StyleSheet, Text, SafeAreaView, Dimensions} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from 'nav/Navigator';
 import Video from 'react-native-video';
+import AnimatedButton from '@/components/Utility/AnimatedButton';
 const {height} = Dimensions.get('window');
 // import backgroundVid from '@/assets/videos/loginVideo.mp4';
 
@@ -41,18 +35,18 @@ const HomeAuth = ({
             <View style={styles.formContainer}>
                 <Text style={styles.headers}>STRENIVE</Text>
                 <View style={styles.buttonsCont}>
-                    <Pressable
+                    <AnimatedButton
                         style={styles.signUpButton}
-                        onPress={navigateSignUp}>
-                        <Text style={styles.signUpButtonText}>
-                            Create Account
-                        </Text>
-                    </Pressable>
-                    <Pressable
+                        onPress={navigateSignUp}
+                        content="Create Account"
+                        textStyle={styles.signUpButtonText}
+                    />
+                    <AnimatedButton
                         style={styles.loginButton}
-                        onPress={navigateLogin}>
-                        <Text style={styles.loginButtonText}>Login</Text>
-                    </Pressable>
+                        onPress={navigateLogin}
+                        content="Login"
+                        textStyle={styles.loginButtonText}
+                    />
                 </View>
             </View>
         );

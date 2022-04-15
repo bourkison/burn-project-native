@@ -1,6 +1,6 @@
 import React, {ReactElement} from 'react';
 import {useEffect} from 'react';
-import {StyleProp, ViewStyle, Text} from 'react-native';
+import {StyleProp, ViewStyle, Text, TextStyle} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
     useAnimatedStyle,
@@ -16,7 +16,8 @@ type AnimatedButtonType = {
     style: ViewStyle;
     pressedColor?: string;
     disabledColor?: string;
-    textStyle: StyleProp<ViewStyle>;
+    textStyle: StyleProp<ViewStyle> | StyleProp<TextStyle>;
+    scale?: number;
 };
 
 const AnimatedButton: React.FC<AnimatedButtonType> = ({
@@ -27,6 +28,7 @@ const AnimatedButton: React.FC<AnimatedButtonType> = ({
     content,
     pressedColor,
     disabledColor,
+    scale = 0.98,
 }) => {
     const sScaleX = useSharedValue(1);
     const sScaleY = useSharedValue(1);
@@ -62,8 +64,8 @@ const AnimatedButton: React.FC<AnimatedButtonType> = ({
     const tapGesture = Gesture.Tap()
         .onTouchesDown(() => {
             if (!disabled) {
-                sScaleX.value -= 0.03;
-                sScaleY.value -= 0.03;
+                sScaleX.value = scale;
+                sScaleY.value = scale;
 
                 if (pressedColor) {
                     sBackgroundColor.value = pressedColor;

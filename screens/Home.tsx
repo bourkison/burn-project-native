@@ -3,6 +3,7 @@ import {Text, SafeAreaView, Button} from 'react-native';
 
 import {useAppSelector, useAppDispatch} from '@/store/hooks';
 import {logout as logoutThunk} from '@/store/slices/user';
+import PostFeed from '@/components/Post/PostFeed';
 
 const Home = () => {
     const loggedInName = useAppSelector(state => state.user.docData?.firstName);
@@ -15,6 +16,7 @@ const Home = () => {
         <SafeAreaView>
             <Text>Welcome, {loggedInName}</Text>
             <Button title="Logout" onPress={logout} />
+            <PostFeed />
         </SafeAreaView>
     );
 };
