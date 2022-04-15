@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.24,
         shadowRadius: 3,
+        marginBottom: 10,
     },
     container: {
         overflow: 'hidden',

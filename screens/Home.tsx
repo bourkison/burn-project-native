@@ -14,8 +14,6 @@ const Home = () => {
 
     return (
         <SafeAreaView>
-            <Text>Welcome, {loggedInName}</Text>
-            <Button title="Logout" onPress={logout} />
             <PostFeed />
         </SafeAreaView>
     );

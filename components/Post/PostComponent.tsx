@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Post, PostReference} from '@/types/post';
-import {StyleSheet, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {getPost} from '@/store/services';
 import PostSkeleton from './PostSkeleton';
 import CommentSection from '../Comment/CommentSection';
+import {SliderBox} from 'react-native-image-slider-box';
+import {Storage} from 'aws-amplify';
 
 type PostComponentProps = {
     postReference: PostReference;
@@ -15,6 +17,9 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [commentCount, setCommentCount] = useState(0);
+    const [imageUrls, setImageUrls] = useState<string[]>([]);
+
+    const sliderHeight = Dimensions.get('window').width / 0.9;
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -26,6 +31,24 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
                 setIsLiked(data.isLiked);
                 setLikeCount(data.likeCount);
                 setCommentCount(data.commentCount);
+
+                if (
+                    data.filePaths.length &&
+                    data.filePaths[0].fileType === 'image'
+                ) {
+                    const urlPromises: Promise<string>[] = [];
+                    const temp: string[] = [];
+
+                    data.filePaths.forEach(file => {
+                        urlPromises.push(Storage.get(file.key));
+                    });
+
+                    const urls = await Promise.all(urlPromises);
+                    urls.forEach(url => {
+                        temp.push(url);
+                    });
+                    setImageUrls(temp);
+                }
             }
 
             setIsLoading(false);
@@ -58,6 +81,17 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
                         </Text>
                     </View>
 
+                    {imageUrls && imageUrls.length ? (
+                        <View>
+                            <SliderBox
+                                images={imageUrls}
+                                sliderBoxHeight={sliderHeight}
+                            />
+                        </View>
+                    ) : (
+                        <View />
+                    )}
+
                     <View style={styles.contentContainer}>
                         <Text style={styles.content}>{post?.content}</Text>
                     </View>
@@ -82,11 +116,6 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'red',
-        height: 50,
-    },
     card: {
         width: '100%',
         backgroundColor: '#343E4B',
@@ -97,6 +126,10 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.24,
         shadowRadius: 3,
+        marginBottom: 10,
+    },
+    skeleton: {
+        marginBottom: 10,
     },
     headerContainer: {
         paddingBottom: 20,

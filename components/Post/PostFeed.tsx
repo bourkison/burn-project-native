@@ -1,7 +1,7 @@
 import {queryPost} from '@/store/services';
 import {PostReference} from '@/types/post';
 import React, {useEffect, useState} from 'react';
-import {ScrollView, Text} from 'react-native';
+import {ScrollView, Text, StyleSheet} from 'react-native';
 import PostComponent from '@/components/Post/PostComponent';
 
 const PostFeed = () => {
@@ -29,7 +29,7 @@ const PostFeed = () => {
     }, []);
 
     return (
-        <ScrollView>
+        <ScrollView style={styles.container}>
             {isLoading ? (
                 <Text>Loading</Text>
             ) : (
@@ -40,5 +40,11 @@ const PostFeed = () => {
         </ScrollView>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        height: '100%',
+    },
+});
 
 export default PostFeed;
