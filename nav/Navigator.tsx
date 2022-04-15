@@ -116,10 +116,28 @@ const Navigator = () => {
     }
 
     return (
-        <Tab.Navigator>
-            <Tab.Screen name="Home" component={Home} />
+        <Tab.Navigator sceneContainerStyle={styles.loggedInContainer}>
+            <Tab.Screen
+                name="Home"
+                component={Home}
+                options={{
+                    headerStyle: styles.loggedInContainer,
+                    headerTitleStyle: {
+                        color: '#f3fcf0',
+                    },
+                    tabBarStyle: styles.loggedInContainer,
+                }}
+            />
         </Tab.Navigator>
     );
+};
+
+const styles = {
+    loggedInContainer: {
+        backgroundColor: '#3F4C5B',
+        borderTopColor: '#f3fcf0',
+        shadowColor: '#f3fcf0',
+    },
 };
 
 export default Navigator;

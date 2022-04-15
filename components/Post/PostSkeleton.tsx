@@ -32,7 +32,7 @@ const PostSkeleton: React.FC<PostSkeletonProps> = ({skeletons}) => {
             const numSkels = Math.floor(Math.random() * 4) + 4;
 
             for (let i = 0; i < numSkels; i++) {
-                const skelWidth = Math.floor(Math.random() * 70) + 30;
+                const skelWidth = Math.floor(Math.random() * 40) + 60;
                 temp.push({width: skelWidth});
             }
 
@@ -62,8 +62,6 @@ const PostSkeleton: React.FC<PostSkeletonProps> = ({skeletons}) => {
             }),
             -1,
         );
-
-        console.log('Animated:', animatedValue.value);
 
         return () => cancelAnimation(animatedValue);
     }, [animatedValue]);
@@ -100,6 +98,13 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: '#343E4B',
         padding: 25,
+        shadowColor: 'rgba(243, 252, 240, 0.3)',
+        shadowOffset: {
+            width: 3,
+            height: 4,
+        },
+        shadowOpacity: 0.24,
+        shadowRadius: 3,
     },
     container: {
         overflow: 'hidden',

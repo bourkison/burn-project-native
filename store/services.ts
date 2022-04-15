@@ -1,4 +1,10 @@
 import {Auth, API} from 'aws-amplify';
+import {
+    CreateLikeParams,
+    CreateLikeInit,
+    DeleteLikeParams,
+    DeleteLikeInit,
+} from '@/types';
 import {GetUserParams, GetUserInit, UserDocData} from '@/types/user';
 import {
     QueryPostParams,
@@ -130,4 +136,41 @@ export async function getPost(input: GetPostParams): Promise<Post> {
     }
 
     return response;
+}
+
+/*
+ *
+ * LIKE SERVICES
+ *
+ */
+export async function createLike(input: CreateLikeParams): Promise<void> {
+    const path = '/like';
+    let myInit: CreateLikeInit = input.init;
+
+    if (!myInit.headers) {
+        myInit.headers = {
+            Authorization: await fetchJwtToken(),
+        };
+    } else if (!myInit.headers.Authorization) {
+        myInit.headers.Authorization = await fetchJwtToken();
+    }
+
+    await API.post(API_NAME, path, myInit);
+    return;
+}
+
+export async function deleteLike(input: DeleteLikeParams): Promise<void> {
+    const path = '/like';
+    let myInit: DeleteLikeInit = input.init;
+
+    if (!myInit.headers) {
+        myInit.headers = {
+            Authorization: await fetchJwtToken(),
+        };
+    } else if (!myInit.headers.Authorization) {
+        myInit.headers.Authorization = await fetchJwtToken();
+    }
+
+    await API.del(API_NAME, path, myInit);
+    return;
 }
