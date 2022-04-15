@@ -16,6 +16,7 @@ type CommentSectionProps = {
     isFollowed: boolean;
     isFollowable: boolean;
     onLike?: Function;
+    onComment?: Function;
 };
 
 const CommentSection: React.FC<CommentSectionProps> = ({
@@ -25,6 +26,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     docId,
     coll,
     isLiked,
+    onComment,
 }) => {
     const [isLiking, setIsLiking] = useState(false);
 
@@ -84,6 +86,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                     textStyle={{}}
                 />
                 <AnimatedButton
+                    onPress={() => {
+                        onComment ? onComment() : null;
+                    }}
                     content={
                         <Icon
                             name={'comment-o'}

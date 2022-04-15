@@ -8,6 +8,9 @@ import CommentSection from '../Comment/CommentSection';
 import {SliderBox} from 'react-native-image-slider-box';
 import {Storage} from 'aws-amplify';
 import RenderHtml from 'react-native-render-html';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {MainTabParamList} from '@/nav/Navigator';
 
 type PostComponentProps = {
     postReference: PostReference;
@@ -23,6 +26,9 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
 
     const {width} = useWindowDimensions();
     const sliderHeight = width / 0.9;
+
+    const navigation =
+        useNavigation<NativeStackNavigationProp<MainTabParamList>>();
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -72,6 +78,10 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
         }
     };
 
+    const commentHandler = () => {
+        navigation.navigate('Post', {screen: 'PostView', params: {post: post}});
+    };
+
     return (
         <View>
             {isLoading ? (
@@ -114,6 +124,7 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
                             isFollowed={true}
                             isFollowable={true}
                             onLike={likeHandler}
+                            onComment={commentHandler}
                         />
                     </View>
                 </View>
@@ -125,7 +136,7 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
 const styles = StyleSheet.create({
     card: {
         width: '100%',
-        backgroundColor: '#343E4B',
+        backgroundColor: '#272f38',
         shadowColor: 'rgba(243, 252, 240, 0.3)',
         shadowOffset: {
             width: 3,
@@ -133,7 +144,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.24,
         shadowRadius: 3,
-        marginBottom: 10,
+        marginBottom: 20,
     },
     skeleton: {
         marginBottom: 10,

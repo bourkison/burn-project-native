@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, SafeAreaView, Button} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 
 import {useAppSelector, useAppDispatch} from '@/store/hooks';
 import {logout as logoutThunk} from '@/store/slices/user';
@@ -13,10 +13,16 @@ const Home = () => {
     };
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.container}>
             <PostFeed />
         </SafeAreaView>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#1A1F25',
+    },
+});
 
 export default Home;

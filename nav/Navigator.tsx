@@ -13,8 +13,9 @@ import DobInput from '@/screens/Auth/SignUp/DobInput';
 import OtherInput from '@/screens/Auth/SignUp/OtherInput';
 import PasswordInput from '@/screens/Auth/SignUp/PasswordInput';
 
-import Home from '@/screens/Home';
+import PostNavigator, {PostStackParamList} from '@/nav/PostNavigator';
 import ExerciseHome from '@/screens/Exercise/ExerciseHome';
+import {NavigatorScreenParams} from '@react-navigation/native';
 
 export type AuthStackParamList = {
     HomeAuth: undefined;
@@ -50,8 +51,13 @@ export type AuthStackParamList = {
     };
 };
 
+export type MainTabParamList = {
+    Post: NavigatorScreenParams<PostStackParamList>;
+    Exercise: undefined;
+};
+
 const Stack = createNativeStackNavigator<AuthStackParamList>();
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<MainTabParamList>();
 
 const Navigator = () => {
     const loggedIn = useAppSelector(state => state.user.loggedIn);
@@ -121,10 +127,11 @@ const Navigator = () => {
     return (
         <Tab.Navigator sceneContainerStyle={styles.loggedInContainer}>
             <Tab.Screen
-                name="Home"
-                component={Home}
+                name="Post"
+                component={PostNavigator}
                 options={{
                     headerStyle: styles.loggedInContainer,
+                    headerTitle: 'Home',
                     headerTitleStyle: {
                         color: '#f3fcf0',
                     },
@@ -132,6 +139,7 @@ const Navigator = () => {
                     tabBarLabelStyle: {
                         color: '#f3fcf0',
                     },
+                    tabBarLabel: 'Home',
                     tabBarIcon: ({size, focused}) => {
                         return (
                             <Icon
@@ -144,7 +152,7 @@ const Navigator = () => {
                 }}
             />
             <Tab.Screen
-                name="Exercises"
+                name="Exercise"
                 component={ExerciseHome}
                 options={{
                     headerStyle: styles.loggedInContainer,
@@ -172,7 +180,7 @@ const Navigator = () => {
 
 const styles = {
     loggedInContainer: {
-        backgroundColor: '#3F4C5B',
+        backgroundColor: '#1A1F25',
         borderTopColor: '#f3fcf0',
         shadowColor: '#f3fcf0',
     },
