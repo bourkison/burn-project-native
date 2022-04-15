@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Post, PostReference} from '@/types/post';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
 import {getPost} from '@/store/services';
 import PostSkeleton from './PostSkeleton';
 import CommentSection from '../Comment/CommentSection';
+// @ts-ignore
 import {SliderBox} from 'react-native-image-slider-box';
 import {Storage} from 'aws-amplify';
+import RenderHtml from 'react-native-render-html';
 
 type PostComponentProps = {
     postReference: PostReference;
@@ -19,7 +21,8 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
     const [commentCount, setCommentCount] = useState(0);
     const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-    const sliderHeight = Dimensions.get('window').width / 0.9;
+    const {width} = useWindowDimensions();
+    const sliderHeight = width / 0.9;
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -93,7 +96,11 @@ const PostComponent: React.FC<PostComponentProps> = ({postReference}) => {
                     )}
 
                     <View style={styles.contentContainer}>
-                        <Text style={styles.content}>{post?.content}</Text>
+                        <RenderHtml
+                            contentWidth={width}
+                            source={{html: post?.content || ''}}
+                            baseStyle={styles.content}
+                        />
                     </View>
 
                     <View style={styles.commentBarContainer}>
