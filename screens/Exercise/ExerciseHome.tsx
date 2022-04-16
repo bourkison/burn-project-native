@@ -58,10 +58,8 @@ const ExerciseHome = () => {
         })
         .onEnd(() => {
             if (sNavTranslateX.value > width / 4) {
-                console.log('Ended', 1, sNavTranslateX.value, width / 2);
                 runOnJS(normaliseTracker)(1);
             } else {
-                console.log('Ended', 0, sNavTranslateX.value, width / 2);
                 runOnJS(normaliseTracker)(0);
             }
         });
@@ -95,10 +93,10 @@ const ExerciseHome = () => {
                     </View>
                     <Animated.View style={rPageStyle}>
                         <View>
-                            <ExerciseFeed active={pageIndex === 0} />
+                            <ExerciseFeed isActive={pageIndex === 0} />
                         </View>
                         <View>
-                            <ExerciseFeed active={pageIndex === 1} />
+                            <ExerciseFeed isActive={pageIndex === 1} />
                         </View>
                     </Animated.View>
                 </View>

@@ -14,6 +14,11 @@ import {
     GetPostInit,
     Post,
 } from '@/types/post';
+import {
+    ExerciseReference,
+    QueryExerciseParams,
+    QueryExerciseInit,
+} from '@/types/exercise';
 
 const API_NAME = 'projectburnapi';
 
@@ -173,4 +178,49 @@ export async function deleteLike(input: DeleteLikeParams): Promise<void> {
 
     await API.del(API_NAME, path, myInit);
     return;
+}
+
+/*
+ *
+ * EXERCISE SERVICES
+ *
+ */
+export async function queryExercise(
+    input: QueryExerciseParams,
+): Promise<ExerciseReference[]> {
+    const path = '/exercise';
+    let myInit: QueryExerciseInit = input.init;
+
+    if (!myInit.headers) {
+        myInit.headers = {
+            Authorization: await fetchJwtToken(),
+        };
+    } else if (!myInit.headers.Authorization) {
+        myInit.headers.Authorization = await fetchJwtToken();
+    }
+
+    const data = await API.get(API_NAME, path, myInit);
+
+    if (!data.success) {
+        throw new Error('Query exercise unsuccessful: ' + data.message);
+    }
+
+    let response: ExerciseReference[] = [];
+    data.data.forEach((exerciseReference: any) => {
+        response.push({
+            exerciseId: exerciseReference.exerciseId,
+            name: exerciseReference.name,
+            muscleGroups: exerciseReference.muscleGroups,
+            tags: exerciseReference.tags,
+            createdBy: {
+                username: exerciseReference.createdBy.username,
+                userId: exerciseReference.createdBy.userId,
+                profilePhoto: exerciseReference.createdBy.profilePhoto,
+            },
+            createdAt: exerciseReference.createdAt,
+            isFollow: exerciseReference.isFollow,
+        });
+    });
+
+    return response;
 }

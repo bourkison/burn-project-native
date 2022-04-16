@@ -21,6 +21,7 @@ const PostFeed = () => {
                 );
                 setIsLoading(false);
             } catch (err) {
+                // TODO: Better error handling.
                 console.error(err);
             }
         };
