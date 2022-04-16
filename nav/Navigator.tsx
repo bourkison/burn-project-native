@@ -14,7 +14,9 @@ import OtherInput from '@/screens/Auth/SignUp/OtherInput';
 import PasswordInput from '@/screens/Auth/SignUp/PasswordInput';
 
 import PostNavigator, {PostStackParamList} from '@/nav/PostNavigator';
-import ExerciseHome from '@/screens/Exercise/ExerciseHome';
+import ExerciseNavigator, {
+    ExerciseStackParamList,
+} from '@/nav/ExerciseNavigator';
 import {NavigatorScreenParams} from '@react-navigation/native';
 
 export type AuthStackParamList = {
@@ -53,7 +55,7 @@ export type AuthStackParamList = {
 
 export type MainTabParamList = {
     Post: NavigatorScreenParams<PostStackParamList>;
-    Exercise: undefined;
+    Exercise: NavigatorScreenParams<ExerciseStackParamList>;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -153,7 +155,7 @@ const Navigator = () => {
             />
             <Tab.Screen
                 name="Exercise"
-                component={ExerciseHome}
+                component={ExerciseNavigator}
                 options={{
                     headerStyle: styles.loggedInContainer,
                     headerTitleStyle: {
