@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import {ExerciseReference} from '@/types/exercise';
 import {queryExercise} from '@/store/services';
+import ExerciseComponent from './ExerciseComponent';
 
 type ExerciseFeedProps = {
     isActive: boolean;
@@ -15,6 +16,7 @@ const ExerciseFeed: React.FC<ExerciseFeedProps> = ({isActive}) => {
     useEffect(() => {
         if (isActive && !isLoaded) {
             const fetchExercises = async () => {
+                console.log('Fetching exercises...');
                 setIsLoading(true);
 
                 try {
@@ -29,11 +31,13 @@ const ExerciseFeed: React.FC<ExerciseFeedProps> = ({isActive}) => {
                         }),
                     );
 
-                    setIsLoading(false);
                     setIsLoaded(true);
+                    console.log('Exercises fetched.');
                 } catch (err) {
                     // TODO: Better error handling.
                     console.error(err);
+                } finally {
+                    setIsLoading(false);
                 }
             };
 
@@ -41,29 +45,28 @@ const ExerciseFeed: React.FC<ExerciseFeedProps> = ({isActive}) => {
         }
     }, [isActive, isLoaded]);
 
-    let content: JSX.Element;
-
-    if (isLoading) {
-        content = <Text>Loading</Text>;
-    } else if (!isLoading && isLoaded && exercises.length) {
-        content = (
-            <View>
+    if (!isLoading && exercises.length) {
+        return (
+            <ScrollView>
                 {exercises.map(exercise => (
-                    <Text>{exercise.name}</Text>
+                    <ExerciseComponent
+                        exerciseReference={exercise}
+                        key={exercise.exerciseId}
+                    />
                 ))}
-            </View>
+            </ScrollView>
         );
+    } else if (isLoading) {
+        return <Text>LOADING FEED</Text>;
     } else {
-        content = <View />;
+        return <Text>No Content</Text>;
     }
-
-    return <ScrollView style={styles.container}>{content}</ScrollView>;
 };
 
-const styles = StyleSheet.create({
-    container: {
-        height: '100%',
-    },
-});
+// const styles = StyleSheet.create({
+//     container: {
+//         height: 1000,
+//     },
+// });
 
 export default ExerciseFeed;

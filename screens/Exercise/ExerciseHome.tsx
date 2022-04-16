@@ -65,7 +65,7 @@ const ExerciseHome = () => {
         });
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.savContainer}>
             <GestureDetector gesture={panGesture}>
                 <View style={styles.container}>
                     <View style={styles.topNavBar}>
@@ -91,7 +91,7 @@ const ExerciseHome = () => {
                         </View>
                         <Animated.View style={[styles.selector, rNavStyle]} />
                     </View>
-                    <Animated.View style={rPageStyle}>
+                    <Animated.View style={[styles.feedContainer, rPageStyle]}>
                         <View>
                             <ExerciseFeed isActive={pageIndex === 0} />
                         </View>
@@ -106,9 +106,12 @@ const ExerciseHome = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
+    savContainer: {
         backgroundColor: '#1A1F25',
         height: '100%',
+    },
+    container: {
+        flex: 1,
     },
     topNavBar: {
         justifyContent: 'center',
@@ -140,6 +143,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#f3fcf0',
         flex: 1,
         width: '50%',
+    },
+    feedContainer: {
+        flex: 1,
     },
 });
 

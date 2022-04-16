@@ -18,6 +18,9 @@ import {
     ExerciseReference,
     QueryExerciseParams,
     QueryExerciseInit,
+    GetExerciseParams,
+    GetExerciseInit,
+    Exercise,
 } from '@/types/exercise';
 
 const API_NAME = 'projectburnapi';
@@ -223,4 +226,48 @@ export async function queryExercise(
     });
 
     return response;
+}
+
+export async function getExercise(input: GetExerciseParams): Promise<Exercise> {
+    const path = '/exercise/' + input.exerciseId;
+    let myInit: GetExerciseInit = input.init;
+
+    if (!myInit.headers) {
+        myInit.headers = {
+            Authorization: await fetchJwtToken(),
+        };
+    } else if (!myInit.headers.Authorization) {
+        myInit.headers.Authorization = await fetchJwtToken();
+    }
+
+    const data = await API.get(API_NAME, path, myInit);
+
+    if (!data.success) {
+        throw new Error('Get exercise unsuccessful: ' + data.message);
+    }
+
+    return {
+        _id: data.data._id,
+        createdBy: {
+            username: data.data.createdBy.username,
+            userId: data.data.createdBy.userId,
+            profilePhoto: data.data.createdBy.profilePhoto,
+        },
+        description: data.data.description,
+        difficulty: data.data.difficulty,
+        measureBy: data.data.measureBy,
+        name: data.data.name,
+        filePaths: data.data.filePaths,
+        muscleGroups: data.data.muscleGroups,
+        tags: data.data.tags,
+        likeCount: data.data.likeCount,
+        commentCount: data.data.commentCount,
+        followCount: data.data.followCount,
+        usedAmount: data.data.usedAmount,
+        public: data.data.public,
+        isLiked: data.data.isLiked,
+        isFollowed: data.data.isFollowed,
+        isFollowable: data.data.isFollowable,
+        createdAt: data.data.createdAt,
+    };
 }
