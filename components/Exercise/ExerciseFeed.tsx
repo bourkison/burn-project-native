@@ -1,7 +1,11 @@
 import React from 'react';
 import {Text} from 'react-native-elements';
 
-const ExerciseFeed = () => {
+type ExerciseFeedProps = {
+    active: boolean;
+};
+
+const ExerciseFeed: React.FC<ExerciseFeedProps> = () => {
     return <Text>Exercise Feed</Text>;
 };
 
