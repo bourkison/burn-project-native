@@ -1,5 +1,9 @@
 # Burn Project Native
 
+## Introduction
+
+Burn Project Native is the mobile application for [Burn Project](https://github.com/bourkison/burn-project-v3). I started the project to learn React Native, a technology I had never used before.
+
 ## Useful Resources
 
 * Workouts
