@@ -7,6 +7,7 @@ import {Storage} from 'aws-amplify';
 import {SliderBox} from 'react-native-image-slider-box';
 import RenderHtml from 'react-native-render-html';
 import CommentSection from '../Comment/CommentSection';
+import PostSkeleton from '@/components/Post/PostSkeleton';
 
 type ExerciseComponentProps = {
     exerciseReference: ExerciseReference;
@@ -69,7 +70,7 @@ const ExerciseComponent: React.FC<ExerciseComponentProps> = ({
     return (
         <View>
             {isLoading ? (
-                <Text>LOADING COMPONENT</Text>
+                <PostSkeleton />
             ) : (
                 <View style={styles.card}>
                     {imageUrls && imageUrls.length ? (

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
+import {Text, ScrollView} from 'react-native';
 import {ExerciseReference} from '@/types/exercise';
 import {queryExercise} from '@/store/services';
 import ExerciseComponent from './ExerciseComponent';

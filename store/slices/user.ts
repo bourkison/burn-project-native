@@ -27,6 +27,7 @@ export const fetchUser = createAsyncThunk(
             // If found, return response.
             if (storageResponse) {
                 console.log('User found in local storage.');
+                // TODO: Update the user docData anyway (though don't wait for it?)
                 return JSON.parse(storageResponse);
             }
 
@@ -40,22 +41,25 @@ export const fetchUser = createAsyncThunk(
                 throw new Error('No logged in user.');
             }
 
-            const user = await getUser({userId: username, init: {}});
-            console.log('User retrieved:', user);
-
-            // Once successfully pulled from API, set to local storage.
             try {
+                const user = await getUser({userId: username, init: {}});
+                console.log('User retrieved:', user);
+
+                // Once successfully pulled from API, set to local storage.
                 await AsyncStorage.setItem(
                     '@currentUserDocData',
                     JSON.stringify(user),
-                );
-            } catch (err) {
-                console.error(
-                    'Error setting to local storage, proceeding anyway.',
-                );
-            }
+                ).catch(() => {
+                    console.error(
+                        'Error setting to local storage, proceeding anyway.',
+                    );
+                });
 
-            return user;
+                return user;
+            } catch (err) {
+                console.error('ERROR RETRIEVING USER', err);
+                throw err;
+            }
         }
     },
 );
