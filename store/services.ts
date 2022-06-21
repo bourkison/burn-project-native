@@ -25,6 +25,34 @@ import {
 
 const API_NAME = 'projectburnapi';
 
+export const prettifyTime = (startTime: number) => {
+    const now = new Date().getTime();
+    let duration = now - startTime;
+
+    let hours = Math.floor(
+        (duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 24),
+    );
+    let minutes = Math.floor(
+        (duration % (1000 * 60 * 60)) / (1000 * 60),
+    ).toLocaleString('en-US', {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+    });
+    let seconds = Math.floor((duration % (1000 * 60)) / 1000).toLocaleString(
+        'en-US',
+        {
+            minimumIntegerDigits: 2,
+            useGrouping: false,
+        },
+    );
+
+    if (!hours) {
+        return minutes + ':' + seconds;
+    } else {
+        return hours + ':' + minutes + ':' + seconds;
+    }
+};
+
 export async function fetchJwtToken(): Promise<string> {
     try {
         return (await Auth.currentSession()).getIdToken().getJwtToken();

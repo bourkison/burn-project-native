@@ -20,6 +20,8 @@ import ExerciseNavigator, {
 import {NavigatorScreenParams} from '@react-navigation/native';
 import WorkoutNavigator, {WorkoutStackParamList} from '@/nav/WorkoutNavigator';
 
+import BottomTabBar from '@/nav/components/BottomTabBar';
+
 export type AuthStackParamList = {
     HomeAuth: undefined;
     Login: undefined;
@@ -129,7 +131,9 @@ const Navigator = () => {
     }
 
     return (
-        <Tab.Navigator sceneContainerStyle={styles.loggedInContainer}>
+        <Tab.Navigator
+            sceneContainerStyle={styles.loggedInContainer}
+            tabBar={props => <BottomTabBar {...props} />}>
             <Tab.Screen
                 name="Post"
                 component={PostNavigator}

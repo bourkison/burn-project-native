@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text, ScrollView} from 'react-native';
+import {Text, ScrollView, View} from 'react-native';
 import {ExerciseReference} from '@/types/exercise';
 import {queryExercise} from '@/store/services';
 import ExerciseComponent from './ExerciseComponent';
@@ -56,6 +56,8 @@ const ExerciseFeed: React.FC<ExerciseFeedProps> = ({isActive}) => {
                 ))}
             </ScrollView>
         );
+    } else if (!isActive) {
+        return <View />;
     } else if (isLoading) {
         return <Text>LOADING FEED</Text>;
     } else {
