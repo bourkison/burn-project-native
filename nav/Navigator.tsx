@@ -18,6 +18,7 @@ import ExerciseNavigator, {
     ExerciseStackParamList,
 } from '@/nav/ExerciseNavigator';
 import {NavigatorScreenParams} from '@react-navigation/native';
+import WorkoutNavigator, {WorkoutStackParamList} from '@/nav/WorkoutNavigator';
 
 export type AuthStackParamList = {
     HomeAuth: undefined;
@@ -56,6 +57,7 @@ export type AuthStackParamList = {
 export type MainTabParamList = {
     Post: NavigatorScreenParams<PostStackParamList>;
     Exercise: NavigatorScreenParams<ExerciseStackParamList>;
+    Workout: NavigatorScreenParams<WorkoutStackParamList>;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -156,6 +158,29 @@ const Navigator = () => {
             <Tab.Screen
                 name="Exercise"
                 component={ExerciseNavigator}
+                options={{
+                    headerStyle: styles.loggedInContainer,
+                    headerTitleStyle: {
+                        color: '#f3fcf0',
+                    },
+                    tabBarStyle: styles.loggedInContainer,
+                    tabBarLabelStyle: {
+                        color: '#f3fcf0',
+                    },
+                    tabBarIcon: ({size, focused}) => {
+                        return (
+                            <Icon
+                                name="dumbbell"
+                                size={size}
+                                color={focused ? '#f3fcf0' : '#97A5B6'}
+                            />
+                        );
+                    },
+                }}
+            />
+            <Tab.Screen
+                name="Workout"
+                component={WorkoutNavigator}
                 options={{
                     headerStyle: styles.loggedInContainer,
                     headerTitleStyle: {

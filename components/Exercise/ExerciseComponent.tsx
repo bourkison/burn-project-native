@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Exercise, ExerciseReference} from '@/types/exercise';
-import {Text, useWindowDimensions, View, StyleSheet} from 'react-native';
+import {useWindowDimensions, View, StyleSheet} from 'react-native';
 import {getExercise} from '@/store/services';
 import {Storage} from 'aws-amplify';
 // @ts-ignore
