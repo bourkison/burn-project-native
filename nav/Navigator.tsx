@@ -3,7 +3,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {useAppSelector} from '@/store/hooks';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import HomeAuth from '@/screens/Auth/HomeAuth';
 import Login from '@/screens/Auth/Login';
@@ -148,15 +147,6 @@ const Navigator = () => {
                         color: '#f3fcf0',
                     },
                     tabBarLabel: 'Home',
-                    tabBarIcon: ({size, focused}) => {
-                        return (
-                            <Icon
-                                name="home"
-                                size={size}
-                                color={focused ? '#f3fcf0' : '#97A5B6'}
-                            />
-                        );
-                    },
                 }}
             />
             <Tab.Screen
@@ -170,15 +160,6 @@ const Navigator = () => {
                     tabBarStyle: styles.loggedInContainer,
                     tabBarLabelStyle: {
                         color: '#f3fcf0',
-                    },
-                    tabBarIcon: ({size, focused}) => {
-                        return (
-                            <Icon
-                                name="dumbbell"
-                                size={size}
-                                color={focused ? '#f3fcf0' : '#97A5B6'}
-                            />
-                        );
                     },
                 }}
             />
@@ -194,15 +175,6 @@ const Navigator = () => {
                     tabBarLabelStyle: {
                         color: '#f3fcf0',
                     },
-                    tabBarIcon: ({size, focused}) => {
-                        return (
-                            <Icon
-                                name="dumbbell"
-                                size={size}
-                                color={focused ? '#f3fcf0' : '#97A5B6'}
-                            />
-                        );
-                    },
                 }}
             />
         </Tab.Navigator>
@@ -212,7 +184,6 @@ const Navigator = () => {
 const styles = {
     loggedInContainer: {
         backgroundColor: '#1A1F25',
-        borderTopColor: '#f3fcf0',
         shadowColor: '#f3fcf0',
     },
 };
