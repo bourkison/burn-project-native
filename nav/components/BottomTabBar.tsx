@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {Pressable, View, SafeAreaView, StyleSheet} from 'react-native';
 import {Text} from 'react-native-elements';
@@ -15,13 +15,16 @@ const BottomTabBar: React.FC<BottomTabBarProps> = ({
         storeState => storeState.activeWorkout.workoutCommenced,
     );
 
-    useEffect(() => {
-        console.log(descriptors);
-    }, [descriptors]);
+    const [popoverExpanded, setPopoverExpanded] = useState(false);
 
     return (
         <SafeAreaView style={styles.container}>
-            {workoutCommenced ? <WorkoutNew /> : null}
+            {workoutCommenced ? (
+                <WorkoutNew
+                    popoverExpanded={popoverExpanded}
+                    setPopoverExpanded={setPopoverExpanded}
+                />
+            ) : null}
             <View style={styles.navContainer}>
                 {state.routes.map((route, index) => {
                     const {options} = descriptors[route.key];
@@ -76,6 +79,7 @@ const BottomTabBar: React.FC<BottomTabBarProps> = ({
                         });
 
                         if (!isFocused && !event.defaultPrevented) {
+                            setPopoverExpanded(false);
                             // The `merge: true` option makes sure that the params inside the tab screen are preserved
                             navigation.navigate({
                                 name: route.name,
