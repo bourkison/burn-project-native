@@ -136,11 +136,17 @@ const WorkoutPopover: React.FC<WorkoutPopoverProps> = ({
         setPopoverExpanded,
     ]);
 
-    // Clear interval when workout start time changes.
+    // Clear interval when workout start time changes, or when component unmounts.
     useEffect(() => {
         if (intervalId) {
             clearInterval(intervalId);
         }
+
+        return () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [workoutStartTime]);
 
