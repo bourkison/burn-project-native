@@ -10,6 +10,8 @@ import Animated, {
     useAnimatedStyle,
     useSharedValue,
     withSpring,
+    withTiming,
+    Easing,
 } from 'react-native-reanimated';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 
@@ -42,7 +44,10 @@ const ExerciseHome = () => {
 
     const normaliseTracker = (index: number) => {
         sNavTranslateX.value = withSpring(index * (width / 2));
-        sPageTranslateX.value = withSpring(index * -width);
+        sPageTranslateX.value = withTiming(index * -width, {
+            duration: 300,
+            easing: Easing.bezier(0.25, 1, 0.25, 1),
+        });
     };
 
     const panGesture = Gesture.Pan()

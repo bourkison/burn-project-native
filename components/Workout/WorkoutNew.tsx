@@ -12,10 +12,10 @@ import Animated, {
 import {StyleSheet, useWindowDimensions, View} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 
-const WorkoutNew = () => {
-    const MINIMIZED_HEIGHT = 80;
-    const HEADER_HEIGHT = 140;
+const MINIMIZED_HEIGHT = 80;
+const TAB_HEIGHT = 140;
 
+const WorkoutNew = () => {
     const workoutCommenced = useAppSelector(
         storeState => storeState.activeWorkout.workoutCommenced,
     );
@@ -27,7 +27,7 @@ const WorkoutNew = () => {
     const [timeString, setTimeString] = useState('00:00');
     const [expanded, setExpanded] = useState(true); // Set to true as always opens up expanded.
 
-    const expandedHeight = useWindowDimensions().height - HEADER_HEIGHT; // 140 is height of header.
+    const expandedHeight = useWindowDimensions().height - TAB_HEIGHT; // 140 is height of header.
 
     const context = useSharedValue(0);
     const sHeight = useSharedValue(0);
@@ -70,8 +70,6 @@ const WorkoutNew = () => {
                 easing: Easing.bezier(0.25, 1, 0.25, 1),
             });
         }
-
-        console.log('Correcting.');
     };
 
     const panGesture = Gesture.Pan()
@@ -118,12 +116,35 @@ const WorkoutNew = () => {
 
     return (
         <Animated.View style={[styles.container, rStyle]}>
-            <View style={{flex: 1, height: 20, alignItems: 'center'}}>
-                <GestureDetector gesture={panGesture}>
-                    <View style={styles.handle} />
-                </GestureDetector>
+            <View style={styles.headerContainer}>
+                <View style={{alignItems: 'center'}}>
+                    <GestureDetector gesture={panGesture}>
+                        <View style={styles.handle} />
+                    </GestureDetector>
+                </View>
+
+                <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View style={{flex: 1}}>
+                        <Text style={{color: '#f3fcf0', fontWeight: 'bold'}}>
+                            New Workout
+                        </Text>
+                    </View>
+                    <View style={{flex: 1}}>
+                        <Text style={{color: '#f3fcf0', textAlign: 'center'}}>
+                            {timeString}
+                        </Text>
+                    </View>
+                    <View style={{flex: 1}}></View>
+                </View>
             </View>
-            <Text style={{color: '#f3fcf0'}}>{timeString}</Text>
+            <View
+                style={{
+                    position: 'relative',
+                    flex: 1,
+                    flexGrow: 1,
+                }}>
+                <Text style={{color: '#f3fcf0', fontSize: 80}}>CONTENT.</Text>
+            </View>
         </Animated.View>
     );
 };
@@ -133,6 +154,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#1A1F25',
         borderTopColor: 'rgba(243, 252, 240, 0.4)',
         borderTopWidth: 1,
+        flexDirection: 'column',
+        alignItems: 'stretch',
+    },
+    headerContainer: {
+        flex: 1,
+        flexBasis: MINIMIZED_HEIGHT,
+        flexGrow: 0,
     },
     handle: {
         marginTop: 15,
