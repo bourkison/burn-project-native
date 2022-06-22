@@ -3,7 +3,7 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {Pressable, View, SafeAreaView, StyleSheet} from 'react-native';
 import {Text} from 'react-native-elements';
 import {useAppSelector} from '@/store/hooks';
-import WorkoutNew from '@/components/Workout/WorkoutNew';
+import WorkoutNew from '@/components/Workout/WorkoutPopover';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const BottomTabBar: React.FC<BottomTabBarProps> = ({

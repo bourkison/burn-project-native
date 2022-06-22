@@ -17,8 +17,13 @@ const activeWorkoutSlice = createSlice({
             state.startTime = new Date().getTime();
             console.log('VALUES:', state.workoutCommenced, state.startTime);
         },
+
+        finishWorkout(state) {
+            state.workoutCommenced = false;
+            state.startTime = 0;
+        },
     },
 });
 
-export const {startWorkout} = activeWorkoutSlice.actions;
+export const {startWorkout, finishWorkout} = activeWorkoutSlice.actions;
 export default activeWorkoutSlice.reducer;
