@@ -41,7 +41,7 @@ const WorkoutPopover: React.FC<WorkoutPopoverProps> = ({
     const [timeString, setTimeString] = useState('00:00');
     const [actualExpanded, setActualExpanded] = useState(false);
 
-    const expandedHeight = useWindowDimensions().height - TAB_HEIGHT; // 140 is height of header.
+    const expandedHeight = useWindowDimensions().height - TAB_HEIGHT;
 
     const context = useSharedValue(0);
     const sHeight = useSharedValue(0);
@@ -175,7 +175,7 @@ const WorkoutPopover: React.FC<WorkoutPopoverProps> = ({
                             onPress={finishWorkoutButton}
                             style={styles.finishButton}
                             textStyle={styles.finishButtonText}
-                            content="Finish"
+                            content="Finish Workout"
                         />
                     </View>
                 </View>
@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#f3fcf0',
         fontWeight: 'bold',
+        marginLeft: 10,
     },
     timer: {
         color: '#f3fcf0',
@@ -231,9 +232,12 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     finishButton: {
-        width: 40,
-        height: 20,
         backgroundColor: '#29955B',
+        borderRadius: 5,
+        alignSelf: 'flex-end',
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        marginRight: 10,
     },
     finishButtonText: {
         color: '#f3fcf0',
