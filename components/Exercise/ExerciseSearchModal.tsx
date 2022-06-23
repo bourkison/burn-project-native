@@ -1,5 +1,6 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import {Modal, StyleSheet, View} from 'react-native';
+import {Text} from 'react-native-elements';
 import ExerciseSearch from '@/components/Exercise/ExerciseSearch';
 import AnimatedButton from '../Utility/AnimatedButton';
 
@@ -22,36 +23,71 @@ const ExerciseSearchModal: React.FC<ExerciseSearchModalType> = ({
             animationType="slide"
             onRequestClose={closeModal}
             transparent={true}>
-            <View style={styles.addExerciseModal}>
-                <View style={styles.modalHeader}>
-                    <View>
-                        <Text>Exercise Search</Text>
+            <View style={styles.modalContainer}>
+                <View style={styles.addExerciseModal}>
+                    <View style={styles.modalHeader}>
+                        <View style={styles.modalTitleContainer}>
+                            <Text style={styles.modalTitle}>
+                                Exercise Search
+                            </Text>
+                        </View>
+                        <View style={styles.closeButtonContainer}>
+                            <AnimatedButton
+                                onPress={closeModal}
+                                style={styles.closeButton}
+                                textStyle={styles.closeButtonText}>
+                                x
+                            </AnimatedButton>
+                        </View>
                     </View>
-                    <View>
-                        <AnimatedButton>x</AnimatedButton>
-                    </View>
+                    <ExerciseSearch />
                 </View>
-                <ExerciseSearch />
             </View>
         </Modal>
     );
 };
 
 const styles = StyleSheet.create({
-    addExerciseModal: {
+    modalContainer: {
         flex: 1,
+        padding: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
     },
-    modalHeader: {},
+    addExerciseModal: {
+        width: '100%',
+        justifyContent: 'center',
+        borderColor: 'rgba(243, 252, 240, 0.4)',
+        borderWidth: 1,
+        borderRadius: 3,
+        padding: 5,
+    },
+    modalHeader: {
+        flexDirection: 'row',
+    },
+    modalTitleContainer: {
+        flex: 1,
+    },
+    modalTitle: {
+        color: '#f3fcf0',
+        fontWeight: 'bold',
+        fontSize: 16,
+        alignSelf: 'flex-start',
+    },
+    closeButtonContainer: {
+        flex: 1,
+        alignSelf: 'flex-end',
+    },
+    closeButton: {
+        height: 20,
+        width: 20,
+        borderRadius: 3,
+        alignSelf: 'flex-end',
+    },
+    closeButtonText: {
+        color: '#f3fcf0',
+        textAlign: 'right',
+    },
 });
 
 export default ExerciseSearchModal;
