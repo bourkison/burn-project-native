@@ -3,15 +3,18 @@ import {Modal, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
 import ExerciseSearch from '@/components/Exercise/ExerciseSearch';
 import AnimatedButton from '../Utility/AnimatedButton';
+import {ExerciseReference} from '@/types/exercise';
 
 type ExerciseSearchModalType = {
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
+    addExercise: (e: ExerciseReference) => void;
 };
 
 const ExerciseSearchModal: React.FC<ExerciseSearchModalType> = ({
     visible,
     setVisible,
+    addExercise,
 }) => {
     const closeModal = () => {
         setVisible(false);
@@ -40,7 +43,12 @@ const ExerciseSearchModal: React.FC<ExerciseSearchModalType> = ({
                             </AnimatedButton>
                         </View>
                     </View>
-                    <ExerciseSearch />
+                    <ExerciseSearch
+                        addExercise={e => {
+                            addExercise(e);
+                            closeModal();
+                        }}
+                    />
                 </View>
             </View>
         </Modal>
@@ -61,6 +69,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 3,
         padding: 5,
+        backgroundColor: '#1A1F25',
     },
     modalHeader: {
         flexDirection: 'row',

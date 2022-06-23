@@ -1,3 +1,5 @@
+import {ExerciseReference} from '@/types/exercise';
+import {RecordedExercise} from '@/types/workout';
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
@@ -6,10 +8,32 @@ import AnimatedButton from '../Utility/AnimatedButton';
 
 const WorkoutNew = () => {
     const [exerciseSearchModal, setExerciseSearchModal] = useState(false);
+    const [exercises, setExercises] = useState<RecordedExercise[]>([]);
 
     const addExerciseButton = () => {
         console.log('Add Exercise.');
         setExerciseSearchModal(true);
+    };
+
+    const addExercise = (e: ExerciseReference) => {
+        setExercises(arr => [
+            ...arr,
+            {
+                exerciseReference: e,
+                notes: '',
+                options: {
+                    measureBy: 'reps',
+                    weightUnit: 'kg',
+                },
+                sets: [
+                    {
+                        weightAmount: 0,
+                        measureAmount: 0,
+                        measureBy: 'reps',
+                    },
+                ],
+            },
+        ]);
     };
 
     return (
@@ -17,8 +41,16 @@ const WorkoutNew = () => {
             <ExerciseSearchModal
                 visible={exerciseSearchModal}
                 setVisible={setExerciseSearchModal}
+                addExercise={addExercise}
             />
             <Text style={styles.content}>CONTENT.</Text>
+            {exercises.map(e => {
+                return (
+                    <Text style={{color: '#f3fcf0'}}>
+                        {e.exerciseReference.name}
+                    </Text>
+                );
+            })}
             <View style={styles.buttonCont}>
                 <AnimatedButton
                     onPress={addExerciseButton}

@@ -1,10 +1,21 @@
 import {queryExercise} from '@/store/services';
 import {ExerciseReference} from '@/types/exercise';
 import React, {useEffect, useState} from 'react';
-import {TextInput, View, StyleSheet, Text} from 'react-native';
+import {
+    TextInput,
+    View,
+    StyleSheet,
+    Text,
+    ViewStyle,
+    Pressable,
+} from 'react-native';
 import Spinner from '../Utility/Spinner';
 
-const ExerciseSearch = () => {
+type ExerciseSearchType = {
+    addExercise: (e: ExerciseReference) => void;
+};
+
+const ExerciseSearch: React.FC<ExerciseSearchType> = ({addExercise}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [searchText, setSearchText] = useState('');
     const [exercises, setExercises] = useState<ExerciseReference[]>([]);
@@ -35,8 +46,34 @@ const ExerciseSearch = () => {
         fetchExercises();
     }, []);
 
+    const exerciseListStyle = (
+        s: ViewStyle,
+        i: number,
+        l: number,
+    ): ViewStyle => {
+        let r: ViewStyle = JSON.parse(JSON.stringify(s));
+
+        if (i === 0) {
+            r.borderTopStartRadius = 3;
+            r.borderTopEndRadius = 3;
+        }
+
+        if (i === l - 1) {
+            r.borderBottomStartRadius = 3;
+            r.borderBottomEndRadius = 3;
+            r.borderBottomColor = s.borderColor;
+        }
+
+        return r;
+    };
+
+    const selectExercise = (e: ExerciseReference) => {
+        console.log('Selected Exercise:', e);
+        addExercise(e);
+    };
+
     return (
-        <View>
+        <View style={styles.container}>
             <View style={styles.textInputContainer}>
                 <TextInput
                     style={styles.textInput}
@@ -49,7 +86,7 @@ const ExerciseSearch = () => {
                 />
             </View>
 
-            <View>
+            <View style={styles.optionsContainer}>
                 {isLoading ? (
                     <Spinner
                         diameter={28}
@@ -58,18 +95,31 @@ const ExerciseSearch = () => {
                         spinnerColor="#343E4B"
                     />
                 ) : (
-                    exercises.map(e => {
-                        return (
-                            <View
-                                style={{
-                                    marginTop: 5,
-                                    height: 30,
-                                    backgroundColor: 'white',
-                                }}>
-                                <Text style={styles.text}>{e.name}</Text>
-                            </View>
-                        );
-                    })
+                    exercises
+                        .filter(e => {
+                            return e.name
+                                .toLowerCase()
+                                .includes(searchText.toLowerCase());
+                        })
+                        .map((e, i, arr) => {
+                            return (
+                                <Pressable
+                                    onPress={() => {
+                                        selectExercise(e);
+                                    }}>
+                                    <View
+                                        style={exerciseListStyle(
+                                            styles.exerciseOption,
+                                            i,
+                                            arr.length,
+                                        )}>
+                                        <Text style={styles.text}>
+                                            {e.name}
+                                        </Text>
+                                    </View>
+                                </Pressable>
+                            );
+                        })
                 )}
             </View>
         </View>
@@ -77,6 +127,9 @@ const ExerciseSearch = () => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        marginTop: 5,
+    },
     textInputContainer: {
         flex: 1,
         flexBasis: 30,
@@ -92,9 +145,20 @@ const styles = StyleSheet.create({
         fontSize: 12,
         height: 30,
     },
+    optionsContainer: {
+        marginTop: 10,
+        paddingHorizontal: 15,
+    },
+    exerciseOption: {
+        padding: 5,
+        borderColor: '#97A5B6',
+        borderWidth: 1,
+        backgroundColor: '#343E4B',
+        borderBottomColor: 'transparent',
+    },
     text: {
         color: '#f3fcf0',
-        fontSize: 18,
+        fontSize: 12,
     },
 });
 

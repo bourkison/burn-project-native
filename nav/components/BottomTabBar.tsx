@@ -116,6 +116,8 @@ const BottomTabBar: React.FC<BottomTabBarProps> = ({
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#1A1F25',
+        zIndex: 10,
+        elevation: 10,
         // shadowColor: '#f3fcf0',
         // shadowOffset: {
         //     height: -1,
@@ -129,9 +131,9 @@ const styles = StyleSheet.create({
         paddingTop: 12,
         borderTopColor: 'rgba(243, 252, 240, 0.4)',
         borderTopWidth: 1,
+        backgroundColor: '#1A1F25',
         zIndex: 10,
         elevation: 10,
-        backgroundColor: '#1A1F25',
     },
     iconContainer: {flex: 1},
     label: {
