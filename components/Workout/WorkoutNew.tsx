@@ -31,8 +31,8 @@ const WorkoutNew = () => {
                 addExercise={addExercise}
             />
             <Text style={styles.content}>CONTENT</Text>
-            {exercises.map(e => {
-                return <ExerciseRecorder exercise={e} />;
+            {exercises.map((e, i) => {
+                return <ExerciseRecorder exercise={e} index={i} />;
             })}
             <View style={styles.buttonCont}>
                 <AnimatedButton

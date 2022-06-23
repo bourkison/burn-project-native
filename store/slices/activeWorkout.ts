@@ -3,7 +3,7 @@ import {
     createSlice,
     PayloadAction,
 } from '@reduxjs/toolkit';
-import {RecordedExercise} from '@/types/workout';
+import {RecordedExercise, RecordedSet} from '@/types/workout';
 import {ExerciseReference} from '@/types/exercise';
 
 const activeWorkoutAdapter = createEntityAdapter();
@@ -14,6 +14,11 @@ const initialState = activeWorkoutAdapter.getInitialState({
     finishTime: 0,
     exercises: [] as RecordedExercise[],
 });
+
+type AddSetPayload = {
+    index: number;
+    set: RecordedSet;
+};
 
 const activeWorkoutSlice = createSlice({
     name: 'activeWorkout',
@@ -52,9 +57,21 @@ const activeWorkoutSlice = createSlice({
                 },
             ];
         },
+
+        ADD_SET(state, action: PayloadAction<AddSetPayload>) {
+            console.log('ADD_SET 1');
+
+            if (state.exercises[action.payload.index]) {
+                console.log('ADD_SET 2');
+                state.exercises[action.payload.index].sets = [
+                    ...state.exercises[action.payload.index].sets,
+                    action.payload.set,
+                ];
+            }
+        },
     },
 });
 
-export const {START_WORKOUT, FINISH_WORKOUT, ADD_EXERCISE} =
+export const {START_WORKOUT, FINISH_WORKOUT, ADD_EXERCISE, ADD_SET} =
     activeWorkoutSlice.actions;
 export default activeWorkoutSlice.reducer;
