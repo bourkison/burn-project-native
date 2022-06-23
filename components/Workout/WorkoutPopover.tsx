@@ -1,7 +1,7 @@
 import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
 import {Text} from 'react-native-elements';
 import {useAppDispatch, useAppSelector} from '@/store/hooks';
-import {finishWorkout} from '@/store/slices/activeWorkout';
+import {FINISH_WORKOUT} from '@/store/slices/activeWorkout';
 import {prettifyTime} from '@/store/services';
 import Animated, {
     runOnJS,
@@ -151,7 +151,7 @@ const WorkoutPopover: React.FC<WorkoutPopoverProps> = ({
     }, [workoutStartTime]);
 
     const onAnimationFinish = () => {
-        dispatch(finishWorkout());
+        dispatch(FINISH_WORKOUT());
     };
 
     const finishWorkoutButton = () => {

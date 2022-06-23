@@ -1,5 +1,10 @@
-import {createEntityAdapter, createSlice} from '@reduxjs/toolkit';
+import {
+    createEntityAdapter,
+    createSlice,
+    PayloadAction,
+} from '@reduxjs/toolkit';
 import {RecordedExercise} from '@/types/workout';
+import {ExerciseReference} from '@/types/exercise';
 
 const activeWorkoutAdapter = createEntityAdapter();
 
@@ -14,7 +19,7 @@ const activeWorkoutSlice = createSlice({
     name: 'activeWorkout',
     initialState,
     reducers: {
-        startWorkout(state) {
+        START_WORKOUT(state) {
             console.log('WORKOUT COMMENCED');
             state.workoutCommenced = true;
             state.startTime = new Date().getTime();
@@ -22,12 +27,34 @@ const activeWorkoutSlice = createSlice({
             console.log('VALUES:', state.workoutCommenced, state.startTime);
         },
 
-        finishWorkout(state) {
+        FINISH_WORKOUT(state) {
             state.workoutCommenced = false;
             state.startTime = 0;
+        },
+
+        ADD_EXERCISE(state, action: PayloadAction<ExerciseReference>) {
+            state.exercises = [
+                ...state.exercises,
+                {
+                    exerciseReference: action.payload,
+                    notes: '',
+                    options: {
+                        measureBy: 'reps',
+                        weightUnit: 'kg',
+                    },
+                    sets: [
+                        {
+                            weightAmount: 0,
+                            measureAmount: 0,
+                            measureBy: 'reps',
+                        },
+                    ],
+                },
+            ];
         },
     },
 });
 
-export const {startWorkout, finishWorkout} = activeWorkoutSlice.actions;
+export const {START_WORKOUT, FINISH_WORKOUT, ADD_EXERCISE} =
+    activeWorkoutSlice.actions;
 export default activeWorkoutSlice.reducer;

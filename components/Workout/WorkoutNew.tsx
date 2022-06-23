@@ -1,14 +1,18 @@
+import {useAppDispatch, useAppSelector} from '@/store/hooks';
+import {ADD_EXERCISE} from '@/store/slices/activeWorkout';
 import {ExerciseReference} from '@/types/exercise';
-import {RecordedExercise} from '@/types/workout';
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
 import ExerciseSearchModal from '../Exercise/ExerciseSearchModal';
 import AnimatedButton from '../Utility/AnimatedButton';
+import ExerciseRecorder from './ExerciseRecorder';
 
 const WorkoutNew = () => {
     const [exerciseSearchModal, setExerciseSearchModal] = useState(false);
-    const [exercises, setExercises] = useState<RecordedExercise[]>([]);
+
+    const dispatch = useAppDispatch();
+    const exercises = useAppSelector(state => state.activeWorkout.exercises);
 
     const addExerciseButton = () => {
         console.log('Add Exercise.');
@@ -16,40 +20,19 @@ const WorkoutNew = () => {
     };
 
     const addExercise = (e: ExerciseReference) => {
-        setExercises(arr => [
-            ...arr,
-            {
-                exerciseReference: e,
-                notes: '',
-                options: {
-                    measureBy: 'reps',
-                    weightUnit: 'kg',
-                },
-                sets: [
-                    {
-                        weightAmount: 0,
-                        measureAmount: 0,
-                        measureBy: 'reps',
-                    },
-                ],
-            },
-        ]);
+        dispatch(ADD_EXERCISE(e));
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <ExerciseSearchModal
                 visible={exerciseSearchModal}
                 setVisible={setExerciseSearchModal}
                 addExercise={addExercise}
             />
-            <Text style={styles.content}>CONTENT.</Text>
+            <Text style={styles.content}>CONTENT</Text>
             {exercises.map(e => {
-                return (
-                    <Text style={{color: '#f3fcf0'}}>
-                        {e.exerciseReference.name}
-                    </Text>
-                );
+                return <ExerciseRecorder exercise={e} />;
             })}
             <View style={styles.buttonCont}>
                 <AnimatedButton
@@ -64,6 +47,9 @@ const WorkoutNew = () => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 10,
+    },
     content: {
         color: '#f3fcf0',
         fontSize: 80,

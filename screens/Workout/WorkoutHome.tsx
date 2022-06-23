@@ -1,14 +1,14 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import AnimatedButton from '@/components/Utility/AnimatedButton';
-import {startWorkout} from '@/store/slices/activeWorkout';
+import {START_WORKOUT} from '@/store/slices/activeWorkout';
 import {useAppDispatch} from '@/store/hooks';
 
 const WorkoutHome = () => {
     const dispatch = useAppDispatch();
 
     const startWorkoutButton = () => {
-        dispatch(startWorkout());
+        dispatch(START_WORKOUT());
     };
 
     return (
