@@ -31,7 +31,14 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({
             <Text style={styles.title}>{exercise.exerciseReference.name}</Text>
             <View>
                 {exercise.sets.map((set, i) => {
-                    return <SetRecorder set={set} index={i} />;
+                    return (
+                        <SetRecorder
+                            set={set}
+                            index={i}
+                            key={i}
+                            exerciseIndex={index}
+                        />
+                    );
                 })}
             </View>
             <View>

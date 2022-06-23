@@ -20,6 +20,11 @@ type AddSetPayload = {
     set: RecordedSet;
 };
 
+type DeleteSetPayload = {
+    exerciseIndex: number;
+    index: number;
+};
+
 const activeWorkoutSlice = createSlice({
     name: 'activeWorkout',
     initialState,
@@ -69,9 +74,28 @@ const activeWorkoutSlice = createSlice({
                 ];
             }
         },
+
+        REMOVE_SET(state, action: PayloadAction<DeleteSetPayload>) {
+            if (
+                state.exercises[action.payload.exerciseIndex] &&
+                state.exercises[action.payload.exerciseIndex].sets[
+                    action.payload.index
+                ]
+            ) {
+                state.exercises[action.payload.exerciseIndex].sets.splice(
+                    action.payload.index,
+                    1,
+                );
+            }
+        },
     },
 });
 
-export const {START_WORKOUT, FINISH_WORKOUT, ADD_EXERCISE, ADD_SET} =
-    activeWorkoutSlice.actions;
+export const {
+    START_WORKOUT,
+    FINISH_WORKOUT,
+    ADD_EXERCISE,
+    ADD_SET,
+    REMOVE_SET,
+} = activeWorkoutSlice.actions;
 export default activeWorkoutSlice.reducer;

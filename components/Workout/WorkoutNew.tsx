@@ -32,7 +32,7 @@ const WorkoutNew = () => {
             />
             <Text style={styles.content}>CONTENT</Text>
             {exercises.map((e, i) => {
-                return <ExerciseRecorder exercise={e} index={i} />;
+                return <ExerciseRecorder exercise={e} index={i} key={i} />;
             })}
             <View style={styles.buttonCont}>
                 <AnimatedButton
