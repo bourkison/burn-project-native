@@ -155,26 +155,24 @@ const PasswordInput = ({
 
             <View style={styles.row}>
                 <AnimatedButton
-                    content={
-                        !isSigningUp ? (
-                            'Create Account'
-                        ) : (
-                            <Spinner
-                                style={styles.spinner}
-                                diameter={28}
-                                spinnerWidth={4}
-                                backgroundColor="#f3fcf0"
-                                spinnerColor="#343E4B"
-                            />
-                        )
-                    }
                     style={styles.button}
                     textStyle={styles.buttonText}
                     pressedColor="#D5576C"
                     disabledColor="grey"
                     disabled={!validForm}
-                    onPress={buttonPress}
-                />
+                    onPress={buttonPress}>
+                    {!isSigningUp ? (
+                        'Create Account'
+                    ) : (
+                        <Spinner
+                            style={styles.spinner}
+                            diameter={28}
+                            spinnerWidth={4}
+                            backgroundColor="#f3fcf0"
+                            spinnerColor="#343E4B"
+                        />
+                    )}
+                </AnimatedButton>
             </View>
         </SafeAreaView>
     );

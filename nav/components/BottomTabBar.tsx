@@ -3,7 +3,7 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {Pressable, View, SafeAreaView, StyleSheet} from 'react-native';
 import {Text} from 'react-native-elements';
 import {useAppSelector} from '@/store/hooks';
-import WorkoutNew from '@/components/Workout/WorkoutPopover';
+import WorkoutPopOver from '@/components/Workout/WorkoutPopover';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const BottomTabBar: React.FC<BottomTabBarProps> = ({
@@ -20,7 +20,7 @@ const BottomTabBar: React.FC<BottomTabBarProps> = ({
     return (
         <SafeAreaView style={styles.container}>
             {workoutCommenced ? (
-                <WorkoutNew
+                <WorkoutPopOver
                     popoverExpanded={popoverExpanded}
                     setPopoverExpanded={setPopoverExpanded}
                 />
@@ -129,6 +129,9 @@ const styles = StyleSheet.create({
         paddingTop: 12,
         borderTopColor: 'rgba(243, 252, 240, 0.4)',
         borderTopWidth: 1,
+        zIndex: 10,
+        elevation: 10,
+        backgroundColor: '#1A1F25',
     },
     iconContainer: {flex: 1},
     label: {

@@ -82,47 +82,43 @@ const Verify = ({
             <View style={styles.row}>
                 {/* TODO: Make buttons nicer. */}
                 <AnimatedButton
-                    content={
-                        !isResending ? (
-                            'Resend'
-                        ) : (
-                            <Spinner
-                                style={styles.spinner}
-                                diameter={28}
-                                spinnerWidth={4}
-                                backgroundColor="#f3fcf0"
-                                spinnerColor="#343E4B"
-                            />
-                        )
-                    }
                     style={styles.button}
                     textStyle={styles.buttonText}
                     pressedColor="#D5576C"
                     disabledColor="grey"
                     onPress={resendVerification}
-                    disabled={isResending}
-                />
+                    disabled={isResending}>
+                    {!isResending ? (
+                        'Resend'
+                    ) : (
+                        <Spinner
+                            style={styles.spinner}
+                            diameter={28}
+                            spinnerWidth={4}
+                            backgroundColor="#f3fcf0"
+                            spinnerColor="#343E4B"
+                        />
+                    )}
+                </AnimatedButton>
                 <AnimatedButton
-                    content={
-                        !isVerifying ? (
-                            'Create Account'
-                        ) : (
-                            <Spinner
-                                style={styles.spinner}
-                                diameter={28}
-                                spinnerWidth={4}
-                                backgroundColor="#f3fcf0"
-                                spinnerColor="#343E4B"
-                            />
-                        )
-                    }
                     style={styles.button}
                     textStyle={styles.buttonText}
                     pressedColor="#D5576C"
                     disabledColor="grey"
                     disabled={!validForm}
-                    onPress={verifyEmail}
-                />
+                    onPress={verifyEmail}>
+                    {!isVerifying ? (
+                        'Create Account'
+                    ) : (
+                        <Spinner
+                            style={styles.spinner}
+                            diameter={28}
+                            spinnerWidth={4}
+                            backgroundColor="#f3fcf0"
+                            spinnerColor="#343E4B"
+                        />
+                    )}
+                </AnimatedButton>
             </View>
         </SafeAreaView>
     );

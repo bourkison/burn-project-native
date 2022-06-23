@@ -12,12 +12,12 @@ import Animated, {
 type AnimatedButtonType = {
     onPress?: () => void;
     disabled?: boolean;
-    content: string | ReactElement;
     style: ViewStyle;
     pressedColor?: string;
     disabledColor?: string;
     textStyle: StyleProp<ViewStyle> | StyleProp<TextStyle>;
     scale?: number;
+    children: string | ReactElement;
 };
 
 const AnimatedButton: React.FC<AnimatedButtonType> = ({
@@ -25,10 +25,10 @@ const AnimatedButton: React.FC<AnimatedButtonType> = ({
     disabled,
     style,
     textStyle,
-    content,
     pressedColor,
     disabledColor,
     scale = 0.98,
+    children,
 }) => {
     const sScaleX = useSharedValue(1);
     const sScaleY = useSharedValue(1);
@@ -87,10 +87,10 @@ const AnimatedButton: React.FC<AnimatedButtonType> = ({
     return (
         <GestureDetector gesture={tapGesture}>
             <Animated.View style={[style, animatedStyle]}>
-                {typeof content === 'string' ? (
-                    <Text style={textStyle}>{content}</Text>
+                {typeof children === 'string' ? (
+                    <Text style={textStyle}>{children}</Text>
                 ) : (
-                    content
+                    children
                 )}
             </Animated.View>
         </GestureDetector>

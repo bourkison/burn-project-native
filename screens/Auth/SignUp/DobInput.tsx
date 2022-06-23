@@ -406,14 +406,14 @@ const DobInput = ({
 
             <View style={styles.row}>
                 <AnimatedButton
-                    content="Next"
                     style={styles.button}
                     textStyle={styles.buttonText}
                     pressedColor="#D5576C"
                     disabledColor="grey"
                     disabled={!validForm}
-                    onPress={next}
-                />
+                    onPress={next}>
+                    Next
+                </AnimatedButton>
             </View>
 
             <DatePicker

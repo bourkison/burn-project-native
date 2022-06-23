@@ -72,34 +72,27 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     return (
         <View style={styles.container}>
             <View style={styles.leftCont}>
-                <AnimatedButton
-                    onPress={likeHandler}
-                    content={
-                        <Icon
-                            name={isLiked ? 'heart' : 'heart-o'}
-                            color={isLiked ? '#ce3b54' : '#f3fcf0'}
-                            size={20}
-                            style={styles.icon}
-                        />
-                    }
-                    style={{}}
-                    textStyle={{}}
-                />
+                <AnimatedButton onPress={likeHandler} style={{}} textStyle={{}}>
+                    <Icon
+                        name={isLiked ? 'heart' : 'heart-o'}
+                        color={isLiked ? '#ce3b54' : '#f3fcf0'}
+                        size={20}
+                        style={styles.icon}
+                    />
+                </AnimatedButton>
                 <AnimatedButton
                     onPress={() => {
                         onComment ? onComment() : null;
                     }}
-                    content={
-                        <Icon
-                            name={'comment-o'}
-                            color="#f3fcf0"
-                            size={20}
-                            style={styles.icon}
-                        />
-                    }
                     style={{}}
-                    textStyle={{}}
-                />
+                    textStyle={{}}>
+                    <Icon
+                        name={'comment-o'}
+                        color="#f3fcf0"
+                        size={20}
+                        style={styles.icon}
+                    />
+                </AnimatedButton>
             </View>
             <View style={styles.rightCont}>
                 <Text style={styles.counters}>{commentCount} comments</Text>

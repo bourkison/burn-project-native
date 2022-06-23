@@ -150,8 +150,22 @@ const WorkoutPopover: React.FC<WorkoutPopoverProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [workoutStartTime]);
 
-    const finishWorkoutButton = () => {
+    const onAnimationFinish = () => {
         dispatch(finishWorkout());
+    };
+
+    const finishWorkoutButton = () => {
+        sHeight.value = withTiming(
+            0,
+            {
+                duration: actualExpanded ? 500 : 300,
+            },
+            e => {
+                if (e) {
+                    runOnJS(onAnimationFinish)();
+                }
+            },
+        );
     };
 
     return (
@@ -174,9 +188,9 @@ const WorkoutPopover: React.FC<WorkoutPopoverProps> = ({
                         <AnimatedButton
                             onPress={finishWorkoutButton}
                             style={styles.finishButton}
-                            textStyle={styles.finishButtonText}
-                            content="Finish Workout"
-                        />
+                            textStyle={styles.finishButtonText}>
+                            Finish Workout
+                        </AnimatedButton>
                     </View>
                 </View>
             </View>
@@ -194,6 +208,8 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         flexDirection: 'column',
         alignItems: 'stretch',
+        zIndex: 9,
+        elevation: 9,
     },
     headerContainer: {
         flex: 1,

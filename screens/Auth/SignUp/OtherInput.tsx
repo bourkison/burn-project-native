@@ -123,13 +123,13 @@ const OtherInput = ({
 
             <View style={styles.row}>
                 <AnimatedButton
-                    content="Next"
                     style={styles.button}
                     textStyle={styles.buttonText}
                     pressedColor="#D5576C"
                     disabledColor="grey"
-                    onPress={next}
-                />
+                    onPress={next}>
+                    Next
+                </AnimatedButton>
             </View>
         </SafeAreaView>
     );

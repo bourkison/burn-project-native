@@ -1,10 +1,13 @@
 import {createEntityAdapter, createSlice} from '@reduxjs/toolkit';
+import {RecordedExercise} from '@/types/workout';
 
 const activeWorkoutAdapter = createEntityAdapter();
 
 const initialState = activeWorkoutAdapter.getInitialState({
     workoutCommenced: false,
     startTime: 0,
+    finishTime: 0,
+    exercises: [] as RecordedExercise[],
 });
 
 const activeWorkoutSlice = createSlice({
@@ -15,6 +18,7 @@ const activeWorkoutSlice = createSlice({
             console.log('WORKOUT COMMENCED');
             state.workoutCommenced = true;
             state.startTime = new Date().getTime();
+            state.exercises = [];
             console.log('VALUES:', state.workoutCommenced, state.startTime);
         },
 

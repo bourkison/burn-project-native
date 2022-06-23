@@ -14,11 +14,11 @@ const WorkoutHome = () => {
     return (
         <SafeAreaView style={styles.container}>
             <AnimatedButton
-                content="New Workout"
                 style={styles.newWorkoutButton}
                 textStyle={styles.newWorkoutButtonText}
-                onPress={startWorkoutButton}
-            />
+                onPress={startWorkoutButton}>
+                New Workout
+            </AnimatedButton>
         </SafeAreaView>
     );
 };

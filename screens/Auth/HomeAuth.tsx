@@ -38,15 +38,15 @@ const HomeAuth = ({
                     <AnimatedButton
                         style={styles.signUpButton}
                         onPress={navigateSignUp}
-                        content="Create Account"
-                        textStyle={styles.signUpButtonText}
-                    />
+                        textStyle={styles.signUpButtonText}>
+                        Create Account
+                    </AnimatedButton>
                     <AnimatedButton
                         style={styles.loginButton}
                         onPress={navigateLogin}
-                        content="Login"
-                        textStyle={styles.loginButtonText}
-                    />
+                        textStyle={styles.loginButtonText}>
+                        Login
+                    </AnimatedButton>
                 </View>
             </View>
         );

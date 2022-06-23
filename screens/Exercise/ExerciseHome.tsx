@@ -76,23 +76,23 @@ const ExerciseHome = () => {
                     <View style={styles.topNavBar}>
                         <View style={styles.buttonsContainer}>
                             <AnimatedButton
-                                content="Followed"
                                 style={styles.topNavButton}
                                 textStyle={styles.topNavText}
                                 scale={1}
                                 onPress={() => {
                                     switchPage(0);
-                                }}
-                            />
+                                }}>
+                                Followed
+                            </AnimatedButton>
                             <AnimatedButton
-                                content="Explore"
                                 style={styles.topNavButton}
                                 textStyle={styles.topNavText}
                                 scale={1}
                                 onPress={() => {
                                     switchPage(1);
-                                }}
-                            />
+                                }}>
+                                Explore
+                            </AnimatedButton>
                         </View>
                         <Animated.View style={[styles.selector, rNavStyle]} />
                     </View>
