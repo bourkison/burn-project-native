@@ -5,7 +5,7 @@ import {ScrollView, Text, StyleSheet, View} from 'react-native';
 import AnimatedButton from '../Utility/AnimatedButton';
 import PostComponent from '@/components/Post/PostComponent';
 import {useAppDispatch} from '@/store/hooks';
-import {logout} from '@/store/slices/user';
+import {LOGOUT} from '@/store/slices/user';
 
 const PostFeed = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -34,8 +34,8 @@ const PostFeed = () => {
         fetchPosts();
     }, []);
 
-    const logoutButton = () => {
-        dispatch(logout());
+    const logout = () => {
+        dispatch(LOGOUT());
     };
 
     return (
@@ -53,7 +53,7 @@ const PostFeed = () => {
                     pressedColor="#D5576C"
                     style={styles.logoutButton}
                     textStyle={styles.logoutButtonText}
-                    onPress={logoutButton}>
+                    onPress={logout}>
                     Logout
                 </AnimatedButton>
             </View>

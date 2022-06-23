@@ -14,7 +14,7 @@ import {AuthStackParamList} from '@/nav/Navigator';
 import {CircleSnail} from 'react-native-progress';
 
 import {useAppDispatch} from '@/store/hooks';
-import {fetchUser} from '@/store/slices/user';
+import {FETCH_USER} from '@/store/slices/user';
 
 import {Auth} from 'aws-amplify';
 
@@ -49,7 +49,7 @@ const Login = ({
                 }
             });
             console.log('Logged in:', user, isLoggingIn);
-            await dispatch(fetchUser());
+            await dispatch(FETCH_USER());
         } catch (err: any) {
             setIsLoggingIn(false);
             console.error(err, err.code);

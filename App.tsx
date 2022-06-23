@@ -17,13 +17,14 @@ import FlashMessage from 'react-native-flash-message';
 import Navigator from '@/nav/Navigator';
 
 import store from '@/store';
-import {fetchUser} from '@/store/slices/user';
+import {FETCH_USER} from '@/store/slices/user';
 import {useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 
 const App = () => {
     useEffect(() => {
         async function initFetch() {
-            store.dispatch(fetchUser());
+            store.dispatch(FETCH_USER());
         }
 
         try {
@@ -35,7 +36,7 @@ const App = () => {
 
     return (
         <Provider store={store}>
-            <GestureHandlerRootView style={{flex: 1}}>
+            <GestureHandlerRootView style={styles.flex}>
                 <NavigationContainer>
                     <Navigator />
                     <FlashMessage position="bottom" />
@@ -44,5 +45,11 @@ const App = () => {
         </Provider>
     );
 };
+
+const styles = StyleSheet.create({
+    flex: {
+        flex: 1,
+    },
+});
 
 export default App;

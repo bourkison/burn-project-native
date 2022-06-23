@@ -9,7 +9,7 @@ import AnimatedButton from '@/components/Utility/AnimatedButton';
 import Spinner from '@/components/Utility/Spinner';
 
 import {useAppDispatch} from '@/store/hooks';
-import {fetchUser} from '@/store/slices/user';
+import {FETCH_USER} from '@/store/slices/user';
 
 const Verify = ({
     route,
@@ -32,7 +32,7 @@ const Verify = ({
                 throw err;
             });
 
-            await dispatch(fetchUser());
+            await dispatch(FETCH_USER());
         } catch (err: any) {
             showMessage({
                 message: err.message,

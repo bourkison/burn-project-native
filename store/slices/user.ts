@@ -11,8 +11,8 @@ import {getUser} from '@/store/services';
 
 const userAdapter = createEntityAdapter();
 
-export const fetchUser = createAsyncThunk(
-    'user/fetchUser',
+export const FETCH_USER = createAsyncThunk(
+    'user/FETCH_USER',
     async (): Promise<UserDocData> => {
         // First call Auth.currentSession so error is thrown if no logged in user.
         await Auth.currentSession();
@@ -64,7 +64,7 @@ export const fetchUser = createAsyncThunk(
     },
 );
 
-export const logout = createAsyncThunk(
+export const LOGOUT = createAsyncThunk(
     'user/logout',
     async (): Promise<void> => {
         await Auth.signOut();
@@ -84,20 +84,20 @@ const userSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
-            .addCase(fetchUser.pending, state => {
+            .addCase(FETCH_USER.pending, state => {
                 state.status = 'loading';
             })
-            .addCase(fetchUser.fulfilled, (state, action) => {
+            .addCase(FETCH_USER.fulfilled, (state, action) => {
                 state.loggedIn = true;
                 state.docData = action.payload;
                 state.status = 'succeeded';
             })
-            .addCase(fetchUser.rejected, state => {
+            .addCase(FETCH_USER.rejected, state => {
                 state.loggedIn = false;
                 state.docData = null;
                 state.status = 'idle';
             })
-            .addCase(logout.fulfilled, state => {
+            .addCase(LOGOUT.fulfilled, state => {
                 state.loggedIn = false;
                 state.docData = null;
                 state.status = 'idle';
