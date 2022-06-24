@@ -31,9 +31,11 @@ const WorkoutNew = () => {
                 addExercise={addExercise}
             />
             <Text style={styles.content}>CONTENT</Text>
-            {exercises.map((e, i) => {
-                return <ExerciseRecorder exercise={e} index={i} key={i} />;
-            })}
+            <View style={styles.exercisesContainer}>
+                {exercises.map((e, i) => {
+                    return <ExerciseRecorder index={i} key={i} />;
+                })}
+            </View>
             <View style={styles.buttonCont}>
                 <AnimatedButton
                     onPress={addExerciseButton}
@@ -49,10 +51,17 @@ const WorkoutNew = () => {
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 10,
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        flex: 1,
     },
     content: {
         color: '#f3fcf0',
         fontSize: 80,
+    },
+    exercisesContainer: {
+        alignItems: 'stretch',
+        flexDirection: 'column',
     },
     buttonCont: {
         paddingHorizontal: 20,

@@ -1,21 +1,19 @@
-import {RecordedExercise} from '@/types/workout';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import SetRecorder from './SetRecorder';
 import AnimatedButton from '@/components/Utility/AnimatedButton';
-import {useAppDispatch} from '@/store/hooks';
-import {ADD_SET} from '@/store/slices/activeWorkout';
+import {useAppDispatch, useAppSelector} from '@/store/hooks';
+import {ADD_SET, REMOVE_SET} from '@/store/slices/activeWorkout';
 
 type ExerciseRecorderProps = {
-    exercise: RecordedExercise;
     index: number;
 };
 
-const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({
-    exercise,
-    index,
-}) => {
+const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
     const dispatch = useAppDispatch();
+    const exercise = useAppSelector(
+        state => state.activeWorkout.exercises[index],
+    );
 
     const addSet = () => {
         dispatch(
@@ -26,17 +24,24 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({
         );
     };
 
+    const deleteSet = useCallback(
+        (i: number) => {
+            dispatch(REMOVE_SET({index: i, exerciseIndex: index}));
+        },
+        [dispatch, index],
+    );
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{exercise.exerciseReference.name}</Text>
-            <View>
+            <View style={styles.setContainer}>
                 {exercise.sets.map((set, i) => {
                     return (
                         <SetRecorder
-                            set={set}
                             index={i}
-                            key={i}
-                            exerciseIndex={index}
+                            key={set.uid}
+                            set={set}
+                            onDismiss={deleteSet}
                         />
                     );
                 })}
@@ -60,6 +65,12 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 3,
         borderWidth: 1,
+    },
+    setContainer: {
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        flexWrap: 'nowrap',
+        alignContent: 'flex-start',
     },
     title: {
         color: '#f3fcf0',

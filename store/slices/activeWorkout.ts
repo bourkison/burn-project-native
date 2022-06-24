@@ -5,6 +5,7 @@ import {
 } from '@reduxjs/toolkit';
 import {RecordedExercise, RecordedSet} from '@/types/workout';
 import {ExerciseReference} from '@/types/exercise';
+import uuid from 'react-native-uuid';
 
 const activeWorkoutAdapter = createEntityAdapter();
 
@@ -30,11 +31,9 @@ const activeWorkoutSlice = createSlice({
     initialState,
     reducers: {
         START_WORKOUT(state) {
-            console.log('WORKOUT COMMENCED');
             state.workoutCommenced = true;
             state.startTime = new Date().getTime();
             state.exercises = [];
-            console.log('VALUES:', state.workoutCommenced, state.startTime);
         },
 
         FINISH_WORKOUT(state) {
@@ -57,20 +56,24 @@ const activeWorkoutSlice = createSlice({
                             weightAmount: 0,
                             measureAmount: 0,
                             measureBy: 'reps',
+                            uid: uuid.v4() as string,
                         },
                     ],
+                    uid: uuid.v4() as string,
                 },
             ];
         },
 
         ADD_SET(state, action: PayloadAction<AddSetPayload>) {
-            console.log('ADD_SET 1');
+            let s: RecordedSet = {
+                ...action.payload.set,
+                uid: uuid.v4() as string,
+            };
 
             if (state.exercises[action.payload.index]) {
-                console.log('ADD_SET 2');
                 state.exercises[action.payload.index].sets = [
                     ...state.exercises[action.payload.index].sets,
-                    action.payload.set,
+                    s,
                 ];
             }
         },
@@ -82,10 +85,15 @@ const activeWorkoutSlice = createSlice({
                     action.payload.index
                 ]
             ) {
-                state.exercises[action.payload.exerciseIndex].sets.splice(
-                    action.payload.index,
-                    1,
-                );
+                state.exercises[action.payload.exerciseIndex].sets = [
+                    ...state.exercises[action.payload.exerciseIndex].sets.slice(
+                        0,
+                        action.payload.index,
+                    ),
+                    ...state.exercises[action.payload.exerciseIndex].sets.slice(
+                        action.payload.index + 1,
+                    ),
+                ];
             }
         },
     },

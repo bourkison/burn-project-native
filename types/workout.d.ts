@@ -34,6 +34,7 @@ export type RecordedSet = {
     weightAmount: number;
     measureAmount: number;
     measureBy: TMeasureBy;
+    uid?: string;
 };
 
 // API

@@ -1,5 +1,3 @@
-import {useAppDispatch} from '@/store/hooks';
-import {REMOVE_SET} from '@/store/slices/activeWorkout';
 import {RecordedSet} from '@/types/workout';
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -15,21 +13,15 @@ import Animated, {
 } from 'react-native-reanimated';
 
 type SetRecorderProps = {
-    set: RecordedSet;
     index: number;
-    exerciseIndex: number;
+    onDismiss: (i: number) => void;
+    set: RecordedSet;
 };
 
 const SET_HEIGHT = 32;
 const DELETE_OFFSET = 100;
 
-const SetRecorder: React.FC<SetRecorderProps> = ({
-    set,
-    index,
-    exerciseIndex,
-}) => {
-    const dispatch = useAppDispatch();
-
+const SetRecorder: React.FC<SetRecorderProps> = ({index, onDismiss, set}) => {
     const [width, setWidth] = useState(0); // Element width, used for calculating delete slide.
 
     const sContTranslateX = useSharedValue(0);
@@ -60,17 +52,6 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
             height: sHeight.value,
         };
     });
-
-    const deleteSet = () => {
-        dispatch(REMOVE_SET({index, exerciseIndex}));
-
-        // Reset values.
-        sContTranslateX.value = 0;
-        sHeight.value = SET_HEIGHT;
-        sDelTranslateX.value = DELETE_OFFSET;
-        isDeleting.value = false;
-        context.value = 0;
-    };
 
     const panGesture = Gesture.Pan()
         .onStart(() => {
@@ -137,7 +118,7 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
                                 easing: Easing.bezier(0.25, 1, 0.25, 1),
                             },
                             () => {
-                                runOnJS(deleteSet)();
+                                runOnJS(onDismiss)(index);
                             },
                         );
                     },
@@ -161,7 +142,7 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
             <GestureDetector gesture={panGesture}>
                 <Animated.View style={[rContStyle, styles.inputContainer]}>
                     <View style={styles.column}>
-                        <Text style={styles.text}>{index}</Text>
+                        <Text style={styles.text}>{index + 1}</Text>
                     </View>
                     <View style={styles.column}>
                         <Text style={styles.text}>{set.measureAmount}</Text>
@@ -173,17 +154,15 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
 };
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         overflow: 'hidden',
-        flexBasis: SET_HEIGHT,
+        marginVertical: 2,
     },
     inputContainer: {
-        flex: 1,
         flexDirection: 'row',
         backgroundColor: '#1A1F25',
     },
     deleteContainer: {
-        height: SET_HEIGHT,
+        height: '100%',
         width: '100%',
         position: 'absolute',
         backgroundColor: 'red',
