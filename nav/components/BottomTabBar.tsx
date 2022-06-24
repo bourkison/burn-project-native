@@ -85,6 +85,12 @@ const BottomTabBar: React.FC<BottomTabBarProps> = ({
                                 name: route.name,
                                 params: {merge: true},
                             });
+                        } else if (
+                            isFocused &&
+                            !event.defaultPrevented &&
+                            route.name === 'Workout'
+                        ) {
+                            setPopoverExpanded(!popoverExpanded);
                         }
                     };
 
