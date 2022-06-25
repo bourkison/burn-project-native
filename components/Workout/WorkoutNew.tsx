@@ -3,7 +3,7 @@ import {ADD_EXERCISE} from '@/store/slices/activeWorkout';
 import {ExerciseReference} from '@/types/exercise';
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text} from 'react-native-elements';
+import {ScrollView} from 'react-native-gesture-handler';
 import ExerciseSearchModal from '../Exercise/ExerciseSearchModal';
 import AnimatedButton from '../Utility/AnimatedButton';
 import ExerciseRecorder from './ExerciseRecorder';
@@ -30,20 +30,21 @@ const WorkoutNew = () => {
                 setVisible={setExerciseSearchModal}
                 addExercise={addExercise}
             />
-            <Text style={styles.content}>CONTENT</Text>
-            <View style={styles.exercisesContainer}>
-                {exercises.map((e, i) => {
-                    return <ExerciseRecorder index={i} key={i} />;
-                })}
-            </View>
-            <View style={styles.buttonCont}>
-                <AnimatedButton
-                    onPress={addExerciseButton}
-                    style={styles.addExerciseButton}
-                    textStyle={styles.addExerciseButtonText}>
-                    Add Exercise
-                </AnimatedButton>
-            </View>
+            <ScrollView>
+                <View style={styles.exercisesContainer}>
+                    {exercises.map((e, i) => {
+                        return <ExerciseRecorder index={i} key={i} />;
+                    })}
+                </View>
+                <View style={styles.buttonCont}>
+                    <AnimatedButton
+                        onPress={addExerciseButton}
+                        style={styles.addExerciseButton}
+                        textStyle={styles.addExerciseButtonText}>
+                        Add Exercise
+                    </AnimatedButton>
+                </View>
+            </ScrollView>
         </View>
     );
 };

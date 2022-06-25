@@ -4,6 +4,7 @@ import SetRecorder from './SetRecorder';
 import AnimatedButton from '@/components/Utility/AnimatedButton';
 import {useAppDispatch, useAppSelector} from '@/store/hooks';
 import {ADD_SET, REMOVE_SET} from '@/store/slices/activeWorkout';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 type ExerciseRecorderProps = {
     index: number;
@@ -35,6 +36,20 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
         <View style={styles.container}>
             <Text style={styles.title}>{exercise.exerciseReference.name}</Text>
             <View style={styles.setContainer}>
+                <View style={styles.setsHeader}>
+                    <View style={styles.headerColumn}>
+                        <Text style={styles.headerText}>#</Text>
+                    </View>
+                    <View style={styles.headerColumn}>
+                        <Text style={styles.headerText}>Weight</Text>
+                    </View>
+                    <View style={styles.headerColumn}>
+                        <Text style={styles.headerText}>Reps</Text>
+                    </View>
+                    <View style={styles.headerColumn}>
+                        <Icon name="check" size={12} color="#f3fcf0" />
+                    </View>
+                </View>
                 {exercise.sets.map((set, i) => {
                     return (
                         <SetRecorder
@@ -42,6 +57,7 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
                             key={set.uid}
                             set={set}
                             onDismiss={deleteSet}
+                            exerciseIndex={index}
                         />
                     );
                 })}
@@ -71,6 +87,7 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         flexWrap: 'nowrap',
         alignContent: 'flex-start',
+        marginBottom: 5,
     },
     title: {
         color: '#f3fcf0',
@@ -88,6 +105,23 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         alignSelf: 'center',
         fontWeight: 'bold',
+    },
+    setsHeader: {
+        marginTop: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    headerColumn: {
+        flex: 1,
+        marginBottom: 5,
+        alignItems: 'center',
+    },
+    headerText: {
+        color: '#f3fcf0',
+        fontSize: 12,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
 

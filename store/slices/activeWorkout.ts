@@ -6,6 +6,7 @@ import {
 import {RecordedExercise, RecordedSet} from '@/types/workout';
 import {ExerciseReference} from '@/types/exercise';
 import uuid from 'react-native-uuid';
+import {TMeasureBy} from '@/types';
 
 const activeWorkoutAdapter = createEntityAdapter();
 
@@ -24,6 +25,13 @@ type AddSetPayload = {
 type DeleteSetPayload = {
     exerciseIndex: number;
     index: number;
+};
+
+type UpdateSetPayload = {
+    exerciseIndex: number;
+    index: number;
+    key: 'measureAmount' | 'weightAmount' | 'measureBy';
+    value: string | TMeasureBy;
 };
 
 const activeWorkoutSlice = createSlice({
@@ -96,6 +104,36 @@ const activeWorkoutSlice = createSlice({
                 ];
             }
         },
+
+        UPDATE_SET(state, action: PayloadAction<UpdateSetPayload>) {
+            if (
+                state.exercises[action.payload.exerciseIndex] &&
+                state.exercises[action.payload.exerciseIndex].sets[
+                    action.payload.index
+                ]
+            ) {
+                if (
+                    action.payload.key === 'measureBy' &&
+                    action.payload.value === 'repsWeight'
+                ) {
+                    state.exercises[action.payload.exerciseIndex].sets[
+                        action.payload.index
+                    ][action.payload.key] = action.payload.value;
+                } else if (action.payload.key !== 'measureBy') {
+                    state.exercises[action.payload.exerciseIndex].sets[
+                        action.payload.index
+                    ][action.payload.key] =
+                        parseFloat(action.payload.value) || 0;
+                }
+
+                console.log(
+                    'SET UPDATED:',
+                    state.exercises[action.payload.exerciseIndex].sets[
+                        action.payload.index
+                    ],
+                );
+            }
+        },
     },
 });
 
@@ -105,5 +143,6 @@ export const {
     ADD_EXERCISE,
     ADD_SET,
     REMOVE_SET,
+    UPDATE_SET,
 } = activeWorkoutSlice.actions;
 export default activeWorkoutSlice.reducer;

@@ -51,7 +51,7 @@ const ExerciseSearch: React.FC<ExerciseSearchType> = ({addExercise}) => {
         i: number,
         l: number,
     ): ViewStyle => {
-        let r: ViewStyle = JSON.parse(JSON.stringify(s));
+        let r: ViewStyle = {...s};
 
         if (i === 0) {
             r.borderTopStartRadius = 3;
@@ -89,6 +89,7 @@ const ExerciseSearch: React.FC<ExerciseSearchType> = ({addExercise}) => {
             <View style={styles.optionsContainer}>
                 {isLoading ? (
                     <Spinner
+                        style={styles.spinner}
                         diameter={28}
                         spinnerWidth={4}
                         backgroundColor="#f3fcf0"
@@ -112,7 +113,8 @@ const ExerciseSearch: React.FC<ExerciseSearchType> = ({addExercise}) => {
                                             styles.exerciseOption,
                                             i,
                                             arr.length,
-                                        )}>
+                                        )}
+                                        key={e.exerciseId}>
                                         <Text style={styles.text}>
                                             {e.name}
                                         </Text>
@@ -159,6 +161,9 @@ const styles = StyleSheet.create({
     text: {
         color: '#f3fcf0',
         fontSize: 12,
+    },
+    spinner: {
+        alignSelf: 'center',
     },
 });
 
