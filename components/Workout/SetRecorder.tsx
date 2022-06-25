@@ -196,7 +196,16 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
                 <Text style={styles.deleteText}>Delete</Text>
             </Animated.View>
             <GestureDetector gesture={panGesture}>
-                <Animated.View style={[rContStyle, styles.inputContainer]}>
+                <Animated.View
+                    style={[
+                        rContStyle,
+                        !completed
+                            ? styles.inputContainer
+                            : {
+                                  ...styles.inputContainer,
+                                  ...styles.completedInputContainer,
+                              },
+                    ]}>
                     <View style={styles.column}>
                         <Text style={styles.text}>{index + 1}</Text>
                     </View>
@@ -208,7 +217,14 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
                             autoCorrect={false}
                             placeholderTextColor="#97A5B6"
                             placeholder="Weight"
-                            style={styles.textInput}
+                            style={
+                                !completed
+                                    ? styles.textInput
+                                    : {
+                                          ...styles.textInput,
+                                          ...styles.completedTextInput,
+                                      }
+                            }
                             onChangeText={updateWeight}
                             selectTextOnFocus={true}
                             contextMenuHidden={true}
@@ -222,7 +238,14 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
                             autoCorrect={false}
                             placeholderTextColor="#97A5B6"
                             placeholder="Reps"
-                            style={styles.textInput}
+                            style={
+                                !completed
+                                    ? styles.textInput
+                                    : {
+                                          ...styles.textInput,
+                                          ...styles.completedTextInput,
+                                      }
+                            }
                             onChangeText={updateMeasure}
                             selectTextOnFocus={true}
                             contextMenuHidden={true}
@@ -233,7 +256,14 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
                             onPress={() => {
                                 toggleCompleted(!completed);
                             }}
-                            style={styles.checkbox}>
+                            style={
+                                !completed
+                                    ? styles.checkbox
+                                    : {
+                                          ...styles.checkbox,
+                                          ...styles.completedCheckBox,
+                                      }
+                            }>
                             <Icon name="check" size={12} color="#f3fcf0" />
                         </Pressable>
                     </View>
@@ -245,16 +275,19 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
-        marginVertical: 2,
     },
     inputContainer: {
         flexDirection: 'row',
         backgroundColor: '#1A1F25',
     },
+    completedInputContainer: {
+        backgroundColor: 'rgba(42, 157, 143, 1)',
+        paddingVertical: 2,
+    },
     deleteContainer: {
+        position: 'absolute',
         height: '100%',
         width: '100%',
-        position: 'absolute',
         backgroundColor: 'red',
         alignItems: 'flex-end',
         justifyContent: 'center',
@@ -278,12 +311,27 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 1,
         padding: 10,
+        marginVertical: 2,
         fontSize: 12,
+        fontWeight: 'bold',
+    },
+    completedTextInput: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
     },
     checkbox: {
         backgroundColor: '#343E4B',
         borderRadius: 3,
         padding: 2,
+    },
+    completedCheckBox: {
+        shadowColor: '#f3fcf0',
+        shadowOffset: {
+            height: 1,
+            width: 1,
+        },
+        shadowOpacity: 0.9,
+        elevation: 4,
     },
 });
 

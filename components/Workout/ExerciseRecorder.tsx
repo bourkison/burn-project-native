@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     container: {
         marginHorizontal: 10,
         borderColor: '#f3fcf0',
-        padding: 10,
+        paddingVertical: 10,
         borderRadius: 3,
         borderWidth: 1,
     },
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#f3fcf0',
         fontWeight: 'bold',
+        paddingHorizontal: 10,
     },
     addSetButton: {
         width: '90%',

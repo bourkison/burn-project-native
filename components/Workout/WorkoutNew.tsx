@@ -33,7 +33,11 @@ const WorkoutNew = () => {
             <ScrollView>
                 <View style={styles.exercisesContainer}>
                     {exercises.map((e, i) => {
-                        return <ExerciseRecorder index={i} key={i} />;
+                        return (
+                            <View style={styles.exerciseContainer}>
+                                <ExerciseRecorder index={i} key={e.uid || i} />
+                            </View>
+                        );
                     })}
                 </View>
                 <View style={styles.buttonCont}>
@@ -63,6 +67,9 @@ const styles = StyleSheet.create({
     exercisesContainer: {
         alignItems: 'stretch',
         flexDirection: 'column',
+    },
+    exerciseContainer: {
+        marginBottom: 10,
     },
     buttonCont: {
         paddingHorizontal: 20,
