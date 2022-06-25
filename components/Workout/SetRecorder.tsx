@@ -42,7 +42,7 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
     const sHeight = useSharedValue(SET_HEIGHT);
     const isDeleting = useSharedValue(false);
 
-    const context = useSharedValue(0);
+    const touchStart = useSharedValue({x: 0, y: 0, context: 0});
 
     const rContStyle = useAnimatedStyle(() => {
         return {
@@ -70,11 +70,27 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
     });
 
     const panGesture = Gesture.Pan()
-        .onStart(() => {
-            context.value = sContTranslateX.value;
+        .manualActivation(true)
+        .onTouchesDown(e => {
+            touchStart.value = {
+                x: e.changedTouches[0].absoluteX,
+                y: e.changedTouches[0].absoluteY,
+                context: sContTranslateX.value,
+            };
+        })
+        .onTouchesMove((e, state) => {
+            // Check the difference in X is greater than the distance in Y (and thus user is swiping left to right).
+            if (
+                Math.abs(e.changedTouches[0].absoluteX - touchStart.value.x) >
+                Math.abs(e.changedTouches[0].absoluteY - touchStart.value.y)
+            ) {
+                state.activate();
+            } else {
+                state.fail();
+            }
         })
         .onUpdate(e => {
-            let v = e.translationX + context.value;
+            let v = e.translationX + touchStart.value.context;
 
             // Prevent right swipe.
             if (v > 0) {
@@ -106,9 +122,11 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
             }
             // Else run normally.
             else if (!isDeleting.value) {
-                sContTranslateX.value = e.translationX + context.value;
+                sContTranslateX.value =
+                    e.translationX + touchStart.value.context;
 
-                let delVal = e.translationX + context.value + DELETE_OFFSET;
+                let delVal =
+                    e.translationX + touchStart.value.context + DELETE_OFFSET;
 
                 if (delVal < 0) {
                     delVal = 0;
@@ -117,8 +135,9 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
                 sDelTranslateX.value = delVal;
             }
         })
-        .onEnd(() => {
-            if (isDeleting.value) {
+        .onEnd(e => {
+            // State === 5 when active
+            if (isDeleting.value && e.state === 5) {
                 // Run delete animation then remove from store.
                 sContTranslateX.value = withTiming(
                     -width,
@@ -173,7 +192,7 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
 
         if (v) {
             sContScaleX.value = withTiming(
-                1.1,
+                1.05,
                 {
                     duration: 75,
                 },
@@ -206,7 +225,7 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
                                   ...styles.completedInputContainer,
                               },
                     ]}>
-                    <View style={styles.column}>
+                    <View style={{...styles.column, ...styles.smallColumn}}>
                         <Text style={styles.text}>{index + 1}</Text>
                     </View>
                     <View style={styles.column}>
@@ -230,6 +249,7 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
                             contextMenuHidden={true}
                         />
                     </View>
+                    <View style={{...styles.column, ...styles.columnBreak}} />
                     <View style={styles.column}>
                         <TextInput
                             keyboardType="decimal-pad"
@@ -251,7 +271,7 @@ const SetRecorder: React.FC<SetRecorderProps> = ({
                             contextMenuHidden={true}
                         />
                     </View>
-                    <View style={styles.column}>
+                    <View style={{...styles.column, ...styles.smallColumn}}>
                         <Pressable
                             onPress={() => {
                                 toggleCompleted(!completed);
@@ -300,11 +320,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    smallColumn: {
+        flexBasis: 40,
+        flexGrow: 0,
+    },
+    columnBreak: {
+        flexBasis: 10,
+        flexGrow: 0,
+    },
     text: {
         color: '#f3fcf0',
     },
     textInput: {
-        marginHorizontal: '2%',
+        marginHorizontal: 12,
         backgroundColor: '#343E4B',
         color: '#f3fcf0',
         borderColor: '#97A5B6',
@@ -314,6 +342,10 @@ const styles = StyleSheet.create({
         marginVertical: 2,
         fontSize: 12,
         fontWeight: 'bold',
+        lineHeight: 16,
+        flex: 1,
+        width: '100%',
+        textAlign: 'center',
     },
     completedTextInput: {
         backgroundColor: 'transparent',

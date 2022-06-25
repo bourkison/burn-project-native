@@ -37,16 +37,30 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
             <Text style={styles.title}>{exercise.exerciseReference.name}</Text>
             <View style={styles.setContainer}>
                 <View style={styles.setsHeader}>
-                    <View style={styles.headerColumn}>
+                    <View
+                        style={{
+                            ...styles.headerColumn,
+                            ...styles.smallHeaderColumn,
+                        }}>
                         <Text style={styles.headerText}>#</Text>
                     </View>
                     <View style={styles.headerColumn}>
                         <Text style={styles.headerText}>Weight</Text>
                     </View>
+                    <View
+                        style={{
+                            ...styles.headerColumn,
+                            ...styles.headerColumnBreak,
+                        }}
+                    />
                     <View style={styles.headerColumn}>
                         <Text style={styles.headerText}>Reps</Text>
                     </View>
-                    <View style={styles.headerColumn}>
+                    <View
+                        style={{
+                            ...styles.headerColumn,
+                            ...styles.smallHeaderColumn,
+                        }}>
                         <Icon name="check" size={12} color="#f3fcf0" />
                     </View>
                 </View>
@@ -117,6 +131,14 @@ const styles = StyleSheet.create({
         flex: 1,
         marginBottom: 5,
         alignItems: 'center',
+    },
+    smallHeaderColumn: {
+        flexBasis: 40,
+        flexGrow: 0,
+    },
+    headerColumnBreak: {
+        flexBasis: 10,
+        flexGrow: 0,
     },
     headerText: {
         color: '#f3fcf0',
