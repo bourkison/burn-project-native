@@ -21,8 +21,8 @@ export type Offset = {
     height: SharedValue<number>;
     x: SharedValue<number>;
     y: SharedValue<number>;
-    originalX: number;
-    originalY: number;
+    originalX: SharedValue<number>; // Seems to always be 0.
+    originalY: SharedValue<number>;
     uid: string;
     ready: boolean;
 };
@@ -87,8 +87,8 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
         let tempArr = offsets!;
 
         tempArr.forEach(offset => {
-            offset.y.value = offset.originalY;
-            offset.x.value = offset.originalX;
+            offset.y.value = offset.originalY.value;
+            offset.x.value = offset.originalX.value;
         });
 
         runOnJS(setOffsets)(tempArr);
@@ -121,11 +121,11 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
             }
 
             console.log('Y:', offset.order.value, y);
-            offset.originalY = y;
+            offset.originalY.value = y;
             offset.y.value = spring ? withSpring(y) : y;
             offset.x.value = spring
-                ? withSpring(offset.originalX)
-                : offset.originalX;
+                ? withSpring(offset.originalX.value)
+                : offset.originalX.value;
         }
 
         runOnJS(setOffsets)(tempArr);

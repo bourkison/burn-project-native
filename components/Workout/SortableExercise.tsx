@@ -40,22 +40,19 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
     const order = useSharedValue(-1);
     const offsetX = useSharedValue(0);
     const offsetY = useSharedValue(0);
+    const originalY = useSharedValue(0);
+    const originalX = useSharedValue(0);
     const height = useSharedValue(0);
 
-    const buildOffsetObject = (
-        width: number,
-        x: number,
-        y: number,
-        ready: boolean,
-    ): Offset => {
+    const buildOffsetObject = (width: number, ready: boolean): Offset => {
         return {
             order: order,
             width: width,
             height: height,
             x: offsetX,
             y: offsetY,
-            originalX: x,
-            originalY: y,
+            originalX: originalX,
+            originalY: originalY,
             uid: uid,
             ready: ready,
         };
@@ -80,7 +77,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
     });
 
     useEffect(() => {
-        onMount(buildOffsetObject(0, 0, 0, false));
+        onMount(buildOffsetObject(0, false));
 
         return () => {
             onUnmount(uid);
@@ -116,7 +113,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
                 // If we are higher than the previous orders y value.
                 if (
                     offsets[i].order.value < currentOffset.order.value &&
-                    offsets[index].y.value <= offsets[i].originalY
+                    offsets[index].y.value <= offsets[i].originalY.value
                 ) {
                     changeOrder(
                         currentOffset.order.value,
@@ -125,7 +122,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
                     recalculateLayout(currentOffset.order.value);
                 } else if (
                     offsets[i].order.value > currentOffset.order.value &&
-                    offsets[index].y.value >= offsets[i].originalY
+                    offsets[index].y.value >= offsets[i].originalY.value
                 ) {
                     changeOrder(
                         currentOffset.order.value,
@@ -151,14 +148,11 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
                     height.value = e.nativeEvent.layout.height;
                     offsetX.value = e.nativeEvent.layout.x;
                     offsetY.value = e.nativeEvent.layout.y;
+                    originalX.value = e.nativeEvent.layout.x;
+                    originalY.value = e.nativeEvent.layout.y;
 
                     onReady(
-                        buildOffsetObject(
-                            e.nativeEvent.layout.width,
-                            e.nativeEvent.layout.x,
-                            e.nativeEvent.layout.y,
-                            true,
-                        ),
+                        buildOffsetObject(e.nativeEvent.layout.width, true),
                     );
                 }}>
                 {children}
