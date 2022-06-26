@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {ComponentProps, useCallback} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import SetRecorder from './SetRecorder';
 import AnimatedButton from '@/components/Utility/AnimatedButton';
@@ -6,33 +6,22 @@ import {useAppDispatch, useAppSelector} from '@/store/hooks';
 import {ADD_SET, REMOVE_SET} from '@/store/slices/activeWorkout';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {GestureDetector} from 'react-native-gesture-handler';
-import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+import {ReactElement} from 'react';
 
-type ExerciseRecorderProps = {
+export type ExerciseRecorderProps = {
     index: number;
-    gesture?: typeof GestureDetector;
+    gesture?: ReactElement<ComponentProps<typeof GestureDetector>>;
 };
 
-const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
+const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({
+    index,
+    gesture,
+}) => {
     const dispatch = useAppDispatch();
     const exercise = useAppSelector(
         state => state.activeWorkout.exercises[index],
     );
-
-    const sTranslateY = useSharedValue(0);
-
-    const rContStyle = useAnimatedStyle(() => {
-        return {
-            transform: [
-                {
-                    translateY: sTranslateY.value,
-                },
-            ],
-        };
-    });
 
     const addSet = () => {
         dispatch(
@@ -51,14 +40,24 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
     );
 
     return (
-        <Animated.View style={[rContStyle, styles.container]}>
-            <GestureDetector>
+        <View style={styles.container}>
+            {gesture ? (
+                React.cloneElement<ComponentProps<typeof GestureDetector>>(
+                    gesture,
+                    gesture.props,
+                    <View>
+                        <Text style={styles.title}>
+                            {exercise.exerciseReference.name}
+                        </Text>
+                    </View>,
+                )
+            ) : (
                 <View>
                     <Text style={styles.title}>
                         {exercise.exerciseReference.name}
                     </Text>
                 </View>
-            </GestureDetector>
+            )}
             <Animated.View>
                 <View>
                     <View style={styles.setContainer}>
@@ -112,7 +111,7 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
                     </View>
                 </View>
             </Animated.View>
-        </Animated.View>
+        </View>
     );
 };
 

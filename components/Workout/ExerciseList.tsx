@@ -7,12 +7,13 @@ import {
     SharedValue,
     withSpring,
 } from 'react-native-reanimated';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
+import {ExerciseRecorderProps} from './ExerciseRecorder';
 
 type ExerciseListProps = {
     exercises: RecordedExercise[];
-    children: ReactElement[];
+    children: ReactElement<ExerciseRecorderProps>[];
 };
 
 export type Offset = {
@@ -173,7 +174,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
             <View>
                 {offsets.map(o => {
                     return (
-                        <Text style={{marginTop: 10, color: 'white'}}>
+                        <Text style={styles.debugText}>
                             {JSON.stringify(o)}
                         </Text>
                     );
@@ -182,5 +183,12 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    debugText: {
+        marginTop: 10,
+        color: 'white',
+    },
+});
 
 export default ExerciseList;

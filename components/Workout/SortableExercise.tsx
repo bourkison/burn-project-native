@@ -7,9 +7,10 @@ import Animated, {
     useSharedValue,
 } from 'react-native-reanimated';
 import {Offset} from './ExerciseList';
+import {ExerciseRecorderProps} from './ExerciseRecorder';
 
 type SortableExerciseProps = {
-    children: ReactElement;
+    children: ReactElement<ExerciseRecorderProps>;
     index: number;
     uid: string;
     onReady: (offset: Offset) => void;
@@ -161,18 +162,17 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
     }
 
     return (
-        <GestureDetector gesture={panGesture}>
-            <Animated.View style={rStyle}>
-                <View
-                    onLayout={e => {
-                        heightChange(
-                            e.nativeEvent.layout.height + PADDING_BOTTOM,
-                        );
-                    }}>
-                    {children}
-                </View>
-            </Animated.View>
-        </GestureDetector>
+        <Animated.View style={rStyle}>
+            <View
+                onLayout={e => {
+                    heightChange(e.nativeEvent.layout.height + PADDING_BOTTOM);
+                }}>
+                {React.cloneElement<ExerciseRecorderProps>(children, {
+                    ...children.props,
+                    gesture: <GestureDetector gesture={panGesture} />,
+                })}
+            </View>
+        </Animated.View>
     );
 };
 
