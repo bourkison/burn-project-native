@@ -8,6 +8,7 @@ import {
     withSpring,
 } from 'react-native-reanimated';
 import {View} from 'react-native';
+import {Text} from 'react-native-elements';
 
 type ExerciseListProps = {
     exercises: RecordedExercise[];
@@ -17,7 +18,7 @@ type ExerciseListProps = {
 export type Offset = {
     order: SharedValue<number>;
     width: number;
-    height: number;
+    height: SharedValue<number>;
     x: SharedValue<number>;
     y: SharedValue<number>;
     originalX: number;
@@ -92,12 +93,12 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
 
         runOnJS(setOffsets)(tempArr);
 
-        const calcHeight = tempArr.reduce((acc, o) => acc + o.height, 0);
+        const calcHeight = tempArr.reduce((acc, o) => acc + o.height.value, 0);
         runOnJS(setHeight)(calcHeight);
     };
 
-    // Called on reorder.
-    const recalculateLayout = (order?: number) => {
+    // Called on reorder or height change.
+    const recalculateLayout = (order?: number, spring = true) => {
         'worklet';
 
         let tempArr = offsets!;
@@ -116,13 +117,15 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
                     continue;
                 }
 
-                y += tempArr[j].height;
+                y += tempArr[j].height.value;
             }
 
             console.log('Y:', offset.order.value, y);
             offset.originalY = y;
-            offset.y.value = withSpring(y);
-            offset.x.value = withSpring(offset.originalX);
+            offset.y.value = spring ? withSpring(y) : y;
+            offset.x.value = spring
+                ? withSpring(offset.originalX)
+                : offset.originalX;
         }
 
         runOnJS(setOffsets)(tempArr);
@@ -130,14 +133,18 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
 
     // Called when the container view changes.
     const updateHeight = (i: number, h: number) => {
-        let tempArr: Offset[] = JSON.parse(JSON.stringify(offsets));
-        console.log('HEIGHT UPDATED FROM:', tempArr[i].height, 'TO:', h);
-        tempArr[i].height = h;
-        setOffsets(tempArr);
+        'worklet';
 
-        runOnUI(recalculateLayout)();
+        let tempArr = offsets!;
 
-        const calcHeight = tempArr.reduce((acc, o) => acc + o.height, 0);
+        console.log('HEIGHT UPDATED FROM:', tempArr[i].height.value, 'TO:', h);
+        tempArr[i].height.value = h;
+
+        runOnJS(setOffsets)(tempArr);
+
+        recalculateLayout(undefined, false);
+
+        const calcHeight = tempArr.reduce((acc, o) => acc + o.height.value, 0);
         runOnJS(setHeight)(calcHeight);
     };
 
@@ -160,6 +167,15 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
                             offsets={offsets}>
                             {child}
                         </SortableExercise>
+                    );
+                })}
+            </View>
+            <View>
+                {offsets.map(o => {
+                    return (
+                        <Text style={{marginTop: 10, color: 'white'}}>
+                            {JSON.stringify(o)}
+                        </Text>
                     );
                 })}
             </View>

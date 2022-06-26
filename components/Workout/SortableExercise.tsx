@@ -2,6 +2,7 @@ import React, {ReactElement, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
+    runOnUI,
     useAnimatedStyle,
     useSharedValue,
 } from 'react-native-reanimated';
@@ -39,10 +40,10 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
     const order = useSharedValue(-1);
     const offsetX = useSharedValue(0);
     const offsetY = useSharedValue(0);
+    const height = useSharedValue(0);
 
     const buildOffsetObject = (
         width: number,
-        height: number,
         x: number,
         y: number,
         ready: boolean,
@@ -79,7 +80,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
     });
 
     useEffect(() => {
-        onMount(buildOffsetObject(0, 0, 0, 0, false));
+        onMount(buildOffsetObject(0, 0, 0, false));
 
         return () => {
             onUnmount(uid);
@@ -87,9 +88,9 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const heightChange = (height: number) => {
-        if (Math.abs(height - offsets[index].height) > 1) {
-            onHeightChange(index, height);
+    const heightChange = (h: number) => {
+        if (Math.abs(h - offsets[index].height.value) > 1) {
+            runOnUI(onHeightChange)(index, h);
         }
     };
 
@@ -147,13 +148,13 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
                 style={styles.sortable}
                 onLayout={e => {
                     order.value = index;
+                    height.value = e.nativeEvent.layout.height;
                     offsetX.value = e.nativeEvent.layout.x;
                     offsetY.value = e.nativeEvent.layout.y;
 
                     onReady(
                         buildOffsetObject(
                             e.nativeEvent.layout.width,
-                            e.nativeEvent.layout.height,
                             e.nativeEvent.layout.x,
                             e.nativeEvent.layout.y,
                             true,
