@@ -16,7 +16,7 @@ type ExerciseListProps = {
 };
 
 export type Offset = {
-    order: number;
+    order: SharedValue<number>;
     width: number;
     height: number;
     x: SharedValue<number>;
@@ -84,16 +84,18 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
     };
 
     const changeOrder = (from: number, to: number) => {
-        const fromIndex = offsets.findIndex(x => x.order === from);
-        const toIndex = offsets.findIndex(x => x.order === to);
+        'worklet';
+
+        const fromIndex = offsets.findIndex(x => x.order.value === from);
+        const toIndex = offsets.findIndex(x => x.order.value === to);
 
         if (fromIndex > -1 && toIndex > -1) {
-            let temp = JSON.parse(JSON.stringify(offsets));
+            let tempArr = offsets;
 
-            temp[fromIndex].order = to;
-            temp[toIndex].order = from;
+            tempArr[fromIndex].order.value = to;
+            tempArr[toIndex].order.value = from;
 
-            setOffsets(temp);
+            runOnJS(setOffsets)(tempArr);
         }
     };
 
@@ -121,21 +123,21 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
         for (let i = 0; i < tempArr.length; i++) {
             const offset = tempArr[i];
 
-            if (order && i === order) {
+            if (order && tempArr[i].order.value === order) {
                 continue;
             }
 
             let y = 0;
 
             for (let j = 0; j < tempArr.length; j++) {
-                if (tempArr[j].order >= offset.order) {
+                if (tempArr[j].order.value >= offset.order.value) {
                     continue;
                 }
 
                 y += tempArr[j].height;
             }
 
-            console.log('Y:', offset.order, y);
+            console.log('Y:', offset.order.value, y);
             offset.originalY = y;
             offset.y.value = withSpring(y);
             offset.x.value = withSpring(offset.originalX);
