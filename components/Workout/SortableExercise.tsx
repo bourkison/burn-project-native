@@ -13,7 +13,7 @@ type SortableExerciseProps = {
     children: ReactElement<ExerciseRecorderProps>;
     index: number;
     uid: string;
-    onReady: (offset: Offset) => void;
+    onReady: (offset: Offset, index: number) => void;
     onMount: (offset: Offset) => void;
     onUnmount: (uid: string) => void;
     changeOrder: (from: number, to: number) => void;
@@ -38,7 +38,8 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
     allElementsReady,
     offsets,
 }) => {
-    const order = useSharedValue(-1);
+    const isGestureActive = useSharedValue(false);
+    const order = useSharedValue(index);
     const offsetX = useSharedValue(0);
     const offsetY = useSharedValue(0);
     const originalY = useSharedValue(0);
@@ -74,6 +75,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
                 {translateX: offsetX.value},
                 {translateY: offsetY.value},
             ],
+            zIndex: isGestureActive.value ? 100 : 10,
         };
     });
 
@@ -99,7 +101,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
                 y: offsetY.value,
             };
 
-            console.log('PAN START', ctx);
+            isGestureActive.value = true;
         })
         .onUpdate(e => {
             offsetX.value = e.translationX + ctx.value.x;
@@ -137,9 +139,14 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
         })
         .onFinalize(() => {
             recalculateLayout();
+            isGestureActive.value = false;
         });
 
+    // TODO: Bug here as this should cause all elements to rearrange while awaiting
+    // elements to be ready, but it doesn't.
     if (!allElementsReady) {
+        console.log('ALL ELEMENTS NOT READY:', index);
+
         return (
             <View
                 key={index}
@@ -154,6 +161,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
 
                     onReady(
                         buildOffsetObject(e.nativeEvent.layout.width, true),
+                        index,
                     );
                 }}>
                 {children}

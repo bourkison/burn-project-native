@@ -66,6 +66,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'stretch',
         flex: 1,
+        zIndex: 9,
+        elevation: 9,
     },
     content: {
         color: '#f3fcf0',
@@ -77,9 +79,12 @@ const styles = StyleSheet.create({
     },
     exerciseContainer: {
         marginBottom: 10,
+        zIndex: 10,
     },
     buttonCont: {
         paddingHorizontal: 20,
+        zIndex: 9,
+        elevation: 9,
     },
     addExerciseButton: {
         backgroundColor: '#f3fcf0',

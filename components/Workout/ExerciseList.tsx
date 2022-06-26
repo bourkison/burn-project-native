@@ -8,7 +8,6 @@ import {
     withSpring,
 } from 'react-native-reanimated';
 import {StyleSheet, View} from 'react-native';
-import {Text} from 'react-native-elements';
 import {ExerciseRecorderProps} from './ExerciseRecorder';
 
 type ExerciseListProps = {
@@ -34,35 +33,27 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
     const [height, setHeight] = useState(1);
 
     const onChildMount = (offset: Offset) => {
-        setOffsets([...offsets, offset]);
-        setAllElementsReady(false);
+        if (offsets.filter(o => o.uid === offset.uid).length === 0) {
+            setOffsets([...offsets, offset]);
+            setAllElementsReady(false);
+        }
     };
 
-    const onChildReady = (offset: Offset) => {
-        const index = offsets.findIndex(o => o.uid === offset.uid);
+    const onChildReady = (offset: Offset, index: number) => {
+        let items = offsets;
+        items[index] = offset;
+        setOffsets(items);
 
-        console.log('ON CHILD READY.', offsets.length);
-
-        if (index > -1) {
-            let items = offsets;
-            items[index] = offset;
-            setOffsets(items);
-
-            console.log('INDEX FOUND:', offset);
-
-            if (items.filter(i => !i.ready).length === 0) {
-                setAllElementsReady(true);
-                runOnUI(initCalculateLayout)();
-                // console.log('ALL ELEMENTS READY:', height);
-            }
-        } else {
-            console.error('Error finding index.');
+        if (items.filter(i => !i.ready).length === 0) {
+            setAllElementsReady(true);
+            runOnUI(calculateHeight)();
         }
     };
 
     const onChildUnmount = (uid: string) => {
         const index = offsets.findIndex(o => o.uid === uid);
-        console.log('INDEX:', index);
+        console.log('UNMOUNT:', index);
+        // TODO: Remove from offsets array. Update all other order variables to account for one less.
     };
 
     const changeOrder = (from: number, to: number) => {
@@ -82,19 +73,10 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
     };
 
     // Called when all children are ready.
-    const initCalculateLayout = () => {
+    const calculateHeight = () => {
         'worklet';
 
-        let tempArr = offsets!;
-
-        tempArr.forEach(offset => {
-            offset.y.value = offset.originalY.value;
-            offset.x.value = offset.originalX.value;
-        });
-
-        runOnJS(setOffsets)(tempArr);
-
-        const calcHeight = tempArr.reduce((acc, o) => acc + o.height.value, 0);
+        const calcHeight = offsets.reduce((acc, o) => acc + o.height.value, 0);
         runOnJS(setHeight)(calcHeight);
     };
 
@@ -121,7 +103,6 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
                 y += tempArr[j].height.value;
             }
 
-            console.log('Y:', offset.order.value, y);
             offset.originalY.value = y;
             offset.y.value = spring ? withSpring(y) : y;
             offset.x.value = spring
@@ -137,21 +118,22 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
         'worklet';
 
         let tempArr = offsets!;
-
-        console.log('HEIGHT UPDATED FROM:', tempArr[i].height.value, 'TO:', h);
         tempArr[i].height.value = h;
 
         runOnJS(setOffsets)(tempArr);
 
         recalculateLayout(undefined, false);
-
-        const calcHeight = tempArr.reduce((acc, o) => acc + o.height.value, 0);
-        runOnJS(setHeight)(calcHeight);
+        calculateHeight();
     };
 
     return (
         <View>
-            <View style={allElementsReady ? {height: height} : {}}>
+            <View
+                style={
+                    allElementsReady
+                        ? {...styles.container, height: height}
+                        : {}
+                }>
                 {children.map((child, index) => {
                     return (
                         <SortableExercise
@@ -171,24 +153,12 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
                     );
                 })}
             </View>
-            <View>
-                {offsets.map(o => {
-                    return (
-                        <Text style={styles.debugText}>
-                            {JSON.stringify(o)}
-                        </Text>
-                    );
-                })}
-            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    debugText: {
-        marginTop: 10,
-        color: 'white',
-    },
+    container: {overflow: 'hidden'},
 });
 
 export default ExerciseList;
