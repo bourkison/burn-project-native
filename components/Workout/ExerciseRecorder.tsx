@@ -5,17 +5,15 @@ import AnimatedButton from '@/components/Utility/AnimatedButton';
 import {useAppDispatch, useAppSelector} from '@/store/hooks';
 import {ADD_SET, REMOVE_SET} from '@/store/slices/activeWorkout';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import {GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
-    useAnimatedRef,
     useAnimatedStyle,
     useSharedValue,
-    withSpring,
-    measure,
 } from 'react-native-reanimated';
 
 type ExerciseRecorderProps = {
     index: number;
+    gesture?: typeof GestureDetector;
 };
 
 const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
@@ -25,9 +23,6 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
     );
 
     const sTranslateY = useSharedValue(0);
-    const context = useSharedValue(0);
-
-    const contentRef = useAnimatedRef<View>();
 
     const rContStyle = useAnimatedStyle(() => {
         return {
@@ -55,24 +50,9 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
         [dispatch, index],
     );
 
-    const panGesture = Gesture.Pan()
-        .onTouchesDown(() => {
-            context.value = sTranslateY.value;
-        })
-        .onUpdate(e => {
-            sTranslateY.value = context.value + e.translationY;
-        })
-        .onEnd(() => {
-            sTranslateY.value = withSpring(0, {
-                overshootClamping: index > 0,
-            });
-
-            console.log('MEASURE:', measure(contentRef));
-        });
-
     return (
         <Animated.View style={[rContStyle, styles.container]}>
-            <GestureDetector gesture={panGesture}>
+            <GestureDetector>
                 <View>
                     <Text style={styles.title}>
                         {exercise.exerciseReference.name}
@@ -80,11 +60,7 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
                 </View>
             </GestureDetector>
             <Animated.View>
-                <View
-                    ref={contentRef}
-                    onLayout={e => {
-                        console.log('HEIGHT:', e.nativeEvent.layout.height);
-                    }}>
+                <View>
                     <View style={styles.setContainer}>
                         <View style={styles.setsHeader}>
                             <View

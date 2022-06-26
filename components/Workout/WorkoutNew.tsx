@@ -6,6 +6,7 @@ import {StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import ExerciseSearchModal from '../Exercise/ExerciseSearchModal';
 import AnimatedButton from '../Utility/AnimatedButton';
+import ExerciseList from './ExerciseList';
 import ExerciseRecorder from './ExerciseRecorder';
 
 const WorkoutNew = () => {
@@ -32,13 +33,13 @@ const WorkoutNew = () => {
             />
             <ScrollView>
                 <View style={styles.exercisesContainer}>
-                    {exercises.map((e, i) => {
-                        return (
-                            <View style={styles.exerciseContainer}>
+                    <ExerciseList exercises={exercises}>
+                        {exercises.map((e, i) => {
+                            return (
                                 <ExerciseRecorder index={i} key={e.uid || i} />
-                            </View>
-                        );
-                    })}
+                            );
+                        })}
+                    </ExerciseList>
                 </View>
                 <View style={styles.buttonCont}>
                     <AnimatedButton

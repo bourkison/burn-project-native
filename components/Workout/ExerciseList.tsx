@@ -1,0 +1,186 @@
+import React, {ReactElement, useState} from 'react';
+import {RecordedExercise} from '@/types/workout';
+import SortableExercise from './SortableExercise';
+import Animated, {
+    runOnJS,
+    SharedValue,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+} from 'react-native-reanimated';
+import {View} from 'react-native';
+
+type ExerciseListProps = {
+    exercises: RecordedExercise[];
+    children: ReactElement[];
+};
+
+export type Offset = {
+    order: number;
+    width: number;
+    height: number;
+    x: SharedValue<number>;
+    y: SharedValue<number>;
+    originalX: number;
+    originalY: number;
+    uid: string;
+    ready: boolean;
+};
+
+const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
+    const [allElementsReady, setAllElementsReady] = useState(false);
+    const [offsets, setOffsets] = useState<Offset[]>([]);
+
+    const sHeight = useSharedValue(1);
+
+    const rStyle = useAnimatedStyle(() => {
+        return {
+            flex: 1,
+            height: sHeight.value,
+            flexShrink: 0,
+            flexGrow: 0,
+            overflow: 'hidden',
+            backgroundColor: 'blue',
+            width: '100%',
+        };
+    });
+
+    const onChildMount = (offset: Offset) => {
+        setOffsets([...offsets, offset]);
+        setAllElementsReady(false);
+    };
+
+    const onChildReady = (offset: Offset) => {
+        const index = offsets.findIndex(o => o.uid === offset.uid);
+
+        console.log('ON CHILD READY.', offsets.length);
+
+        if (index > -1) {
+            let items = offsets;
+            items[index] = offset;
+            setOffsets(items);
+
+            console.log('INDEX FOUND:', offset);
+
+            if (items.filter(i => !i.ready).length === 0) {
+                setAllElementsReady(true);
+                initCalculateLayout();
+                // console.log('ALL ELEMENTS READY:', height);
+            }
+        } else {
+            console.error('Error finding index.');
+        }
+    };
+
+    const onChildUnmount = (uid: string) => {
+        const index = offsets.findIndex(o => o.uid === uid);
+        console.log('INDEX:', index);
+    };
+
+    const onChildDrag = (offset: Offset, x: number, y: number) => {
+        'worklet';
+
+        console.log('CHILD MOVING', offsets, offset, x, y);
+    };
+
+    const changeOrder = (from: number, to: number) => {
+        const fromIndex = offsets.findIndex(x => x.order === from);
+        const toIndex = offsets.findIndex(x => x.order === to);
+
+        if (fromIndex > -1 && toIndex > -1) {
+            let temp = JSON.parse(JSON.stringify(offsets));
+
+            temp[fromIndex].order = to;
+            temp[toIndex].order = from;
+
+            setOffsets(temp);
+        }
+    };
+
+    // Called when all children are ready.
+    const initCalculateLayout = () => {
+        let tempArr = offsets;
+        tempArr.forEach(offset => {
+            offset.y.value = offset.originalY;
+            offset.x.value = offset.originalX;
+        });
+        setOffsets(tempArr);
+
+        const height = offsets.reduce((acc, o) => acc + o.height, 0);
+        sHeight.value = height;
+    };
+
+    // Called on reorder.
+    const recalculateLayout = (order?: number) => {
+        'worklet';
+
+        let tempArr = offsets!;
+        // let sortedArr = offsets.sort((a, b) => (a.order > b.order ? 1 : -1));
+        if (!order) console.log('PRECALCULATE', tempArr);
+
+        for (let i = 0; i < tempArr.length; i++) {
+            const offset = tempArr[i];
+
+            if (order && i === order) {
+                continue;
+            }
+
+            let y = 0;
+
+            for (let j = 0; j < tempArr.length; j++) {
+                if (tempArr[j].order >= offset.order) {
+                    continue;
+                }
+
+                y += tempArr[j].height;
+            }
+
+            console.log('Y:', offset.order, y);
+            offset.originalY = y;
+            offset.y.value = withSpring(y);
+            offset.x.value = withSpring(offset.originalX);
+        }
+
+        runOnJS(setOffsets)(tempArr);
+        if (!order) console.log('POSTCALCULATE', tempArr);
+        // console.log(
+        //     'RECALCULATE:',
+        //     tempArr.map(o => {
+        //         return {
+        //             uid: o.uid,
+        //             order: o.order,
+        //             y: o.originalY,
+        //             actualY: o.y.value,
+        //             height: o.height,
+        //         };
+        //     }),
+        // );
+    };
+
+    return (
+        <View>
+            <Animated.View style={allElementsReady ? rStyle : {}}>
+                {children.map((child, index) => {
+                    return (
+                        <SortableExercise
+                            key={exercises[index].uid || index}
+                            index={index}
+                            uid={exercises[index].uid || index.toString()}
+                            onMount={onChildMount}
+                            onReady={onChildReady}
+                            onUnmount={onChildUnmount}
+                            onDrag={onChildDrag}
+                            changeOrder={changeOrder}
+                            recalculateLayout={recalculateLayout}
+                            allElementsReady={allElementsReady}
+                            offsets={offsets}>
+                            {child}
+                        </SortableExercise>
+                    );
+                })}
+            </Animated.View>
+        </View>
+    );
+};
+
+export default ExerciseList;
