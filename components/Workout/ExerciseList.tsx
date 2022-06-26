@@ -3,6 +3,7 @@ import {RecordedExercise} from '@/types/workout';
 import SortableExercise from './SortableExercise';
 import Animated, {
     runOnJS,
+    runOnUI,
     SharedValue,
     useAnimatedStyle,
     useSharedValue,
@@ -36,10 +37,10 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
     const rStyle = useAnimatedStyle(() => {
         return {
             flex: 1,
-            height: sHeight.value,
+            height: allElementsReady ? sHeight.value : '100%',
             flexShrink: 0,
             flexGrow: 0,
-            overflow: 'hidden',
+            overflow: allElementsReady ? 'visible' : 'hidden',
             backgroundColor: 'blue',
             width: '100%',
         };
@@ -64,7 +65,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
 
             if (items.filter(i => !i.ready).length === 0) {
                 setAllElementsReady(true);
-                initCalculateLayout();
+                runOnUI(initCalculateLayout)();
                 // console.log('ALL ELEMENTS READY:', height);
             }
         } else {
@@ -95,14 +96,18 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
 
     // Called when all children are ready.
     const initCalculateLayout = () => {
-        let tempArr = offsets;
+        'worklet';
+
+        let tempArr = offsets!;
+
         tempArr.forEach(offset => {
             offset.y.value = offset.originalY;
             offset.x.value = offset.originalX;
         });
-        setOffsets(tempArr);
 
-        const height = offsets.reduce((acc, o) => acc + o.height, 0);
+        runOnJS(setOffsets)(tempArr);
+
+        const height = tempArr.reduce((acc, o) => acc + o.height, 0);
         sHeight.value = height;
     };
 
@@ -140,7 +145,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
 
     return (
         <View>
-            <Animated.View style={allElementsReady ? rStyle : {}}>
+            <Animated.View style={rStyle}>
                 {children.map((child, index) => {
                     return (
                         <SortableExercise

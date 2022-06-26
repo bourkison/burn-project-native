@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     exercisesContainer: {
         alignItems: 'stretch',
         flexDirection: 'column',
+        backgroundColor: 'blue',
     },
     exerciseContainer: {
         marginBottom: 10,

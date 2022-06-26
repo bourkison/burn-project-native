@@ -66,6 +66,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
             position: 'absolute',
             top: 0,
             left: 0,
+            height: 100,
             width: '100%',
             transform: [
                 {translateX: offsetX.value},
