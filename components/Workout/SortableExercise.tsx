@@ -1,9 +1,7 @@
 import React, {ReactElement, useEffect} from 'react';
-import {View} from 'react-native';
-import {Text} from 'react-native-elements';
+import {StyleSheet, View} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
-    runOnJS,
     useAnimatedStyle,
     useSharedValue,
 } from 'react-native-reanimated';
@@ -16,11 +14,6 @@ type SortableExerciseProps = {
     onReady: (offset: Offset) => void;
     onMount: (offset: Offset) => void;
     onUnmount: (uid: string) => void;
-    onDrag: (
-        offset: Offset,
-        translationX: number,
-        translationY: number,
-    ) => void;
     changeOrder: (from: number, to: number) => void;
     recalculateLayout: (index?: number) => void;
     allElementsReady: boolean;
@@ -39,18 +32,9 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
     allElementsReady,
     offsets,
 }) => {
-    // const offsetWidth = useRef(0);
-    // const offsetHeight = useRef(0);
     const order = useSharedValue(-1);
     const offsetX = useSharedValue(0);
     const offsetY = useSharedValue(0);
-    // const offsetOriginalX = useRef(0);
-    // const offsetOriginalY = useRef(0);
-    // const offsetUid = useRef(uid);
-
-    // const [isReady, setIsReady] = useState(false);
-    // const [height, setHeight] = useState(0);
-    // let isReady = false;
 
     const buildOffsetObject = (
         width: number,
@@ -76,9 +60,6 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
         x: 0,
         y: 0,
     });
-
-    // const translationX = useSharedValue(0);
-    // const translationY = useSharedValue(0);
 
     const rStyle = useAnimatedStyle(() => {
         return {
@@ -153,6 +134,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
         return (
             <View
                 key={index}
+                style={styles.sortable}
                 onLayout={e => {
                     order.value = index;
                     offsetX.value = e.nativeEvent.layout.x;
@@ -175,23 +157,15 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
 
     return (
         <GestureDetector gesture={panGesture}>
-            <Animated.View style={rStyle}>
-                {offsets[index] ? (
-                    <View style={{height: 30, backgroundColor: 'white'}}>
-                        <Text>
-                            {offsets[index].uid +
-                                ' ' +
-                                offsets[index].order.value.toString()}
-                        </Text>
-                    </View>
-                ) : (
-                    <View style={{height: 30}} />
-                )}
-
-                {children}
-            </Animated.View>
+            <Animated.View style={rStyle}>{children}</Animated.View>
         </GestureDetector>
     );
 };
+
+const styles = StyleSheet.create({
+    sortable: {
+        paddingBottom: 10,
+    },
+});
 
 export default SortableExercise;

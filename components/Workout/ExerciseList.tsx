@@ -77,12 +77,6 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
         console.log('INDEX:', index);
     };
 
-    const onChildDrag = (offset: Offset, x: number, y: number) => {
-        'worklet';
-
-        console.log('CHILD MOVING', offsets, offset, x, y);
-    };
-
     const changeOrder = (from: number, to: number) => {
         'worklet';
 
@@ -117,8 +111,6 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
         'worklet';
 
         let tempArr = offsets!;
-        // let sortedArr = offsets.sort((a, b) => (a.order > b.order ? 1 : -1));
-        if (!order) console.log('PRECALCULATE', tempArr);
 
         for (let i = 0; i < tempArr.length; i++) {
             const offset = tempArr[i];
@@ -144,19 +136,6 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
         }
 
         runOnJS(setOffsets)(tempArr);
-        if (!order) console.log('POSTCALCULATE', tempArr);
-        // console.log(
-        //     'RECALCULATE:',
-        //     tempArr.map(o => {
-        //         return {
-        //             uid: o.uid,
-        //             order: o.order,
-        //             y: o.originalY,
-        //             actualY: o.y.value,
-        //             height: o.height,
-        //         };
-        //     }),
-        // );
     };
 
     return (
@@ -171,7 +150,6 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
                             onMount={onChildMount}
                             onReady={onChildReady}
                             onUnmount={onChildUnmount}
-                            onDrag={onChildDrag}
                             changeOrder={changeOrder}
                             recalculateLayout={recalculateLayout}
                             allElementsReady={allElementsReady}
