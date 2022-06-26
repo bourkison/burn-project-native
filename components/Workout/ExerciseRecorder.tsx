@@ -5,6 +5,14 @@ import AnimatedButton from '@/components/Utility/AnimatedButton';
 import {useAppDispatch, useAppSelector} from '@/store/hooks';
 import {ADD_SET, REMOVE_SET} from '@/store/slices/activeWorkout';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import Animated, {
+    useAnimatedRef,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+    measure,
+} from 'react-native-reanimated';
 
 type ExerciseRecorderProps = {
     index: number;
@@ -15,6 +23,21 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
     const exercise = useAppSelector(
         state => state.activeWorkout.exercises[index],
     );
+
+    const sTranslateY = useSharedValue(0);
+    const context = useSharedValue(0);
+
+    const contentRef = useAnimatedRef<View>();
+
+    const rContStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateY: sTranslateY.value,
+                },
+            ],
+        };
+    });
 
     const addSet = () => {
         dispatch(
@@ -32,59 +55,88 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({index}) => {
         [dispatch, index],
     );
 
+    const panGesture = Gesture.Pan()
+        .onTouchesDown(() => {
+            context.value = sTranslateY.value;
+        })
+        .onUpdate(e => {
+            sTranslateY.value = context.value + e.translationY;
+        })
+        .onEnd(() => {
+            sTranslateY.value = withSpring(0, {
+                overshootClamping: index > 0,
+            });
+
+            console.log('MEASURE:', measure(contentRef));
+        });
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{exercise.exerciseReference.name}</Text>
-            <View style={styles.setContainer}>
-                <View style={styles.setsHeader}>
-                    <View
-                        style={{
-                            ...styles.headerColumn,
-                            ...styles.smallHeaderColumn,
-                        }}>
-                        <Text style={styles.headerText}>#</Text>
+        <Animated.View style={[rContStyle, styles.container]}>
+            <GestureDetector gesture={panGesture}>
+                <View>
+                    <Text style={styles.title}>
+                        {exercise.exerciseReference.name}
+                    </Text>
+                </View>
+            </GestureDetector>
+            <Animated.View>
+                <View
+                    ref={contentRef}
+                    onLayout={e => {
+                        console.log('HEIGHT:', e.nativeEvent.layout.height);
+                    }}>
+                    <View style={styles.setContainer}>
+                        <View style={styles.setsHeader}>
+                            <View
+                                style={{
+                                    ...styles.headerColumn,
+                                    ...styles.smallHeaderColumn,
+                                }}>
+                                <Text style={styles.headerText}>#</Text>
+                            </View>
+                            <View style={styles.headerColumn}>
+                                <Text style={styles.headerText}>Weight</Text>
+                            </View>
+                            <View
+                                style={{
+                                    ...styles.headerColumn,
+                                    ...styles.headerColumnBreak,
+                                }}
+                            />
+                            <View style={styles.headerColumn}>
+                                <Text style={styles.headerText}>Reps</Text>
+                            </View>
+                            <View
+                                style={{
+                                    ...styles.headerColumn,
+                                    ...styles.smallHeaderColumn,
+                                }}>
+                                <Icon name="check" size={12} color="#f3fcf0" />
+                            </View>
+                        </View>
+                        {exercise.sets.map((set, i) => {
+                            return (
+                                <SetRecorder
+                                    index={i}
+                                    key={set.uid}
+                                    set={set}
+                                    onDismiss={deleteSet}
+                                    exerciseIndex={index}
+                                />
+                            );
+                        })}
                     </View>
-                    <View style={styles.headerColumn}>
-                        <Text style={styles.headerText}>Weight</Text>
-                    </View>
-                    <View
-                        style={{
-                            ...styles.headerColumn,
-                            ...styles.headerColumnBreak,
-                        }}
-                    />
-                    <View style={styles.headerColumn}>
-                        <Text style={styles.headerText}>Reps</Text>
-                    </View>
-                    <View
-                        style={{
-                            ...styles.headerColumn,
-                            ...styles.smallHeaderColumn,
-                        }}>
-                        <Icon name="check" size={12} color="#f3fcf0" />
+                    <View>
+                        <AnimatedButton
+                            style={styles.addSetButton}
+                            textStyle={styles.addSetButtonText}
+                            onPress={addSet}>
+                            Add Set
+                        </AnimatedButton>
                     </View>
                 </View>
-                {exercise.sets.map((set, i) => {
-                    return (
-                        <SetRecorder
-                            index={i}
-                            key={set.uid}
-                            set={set}
-                            onDismiss={deleteSet}
-                            exerciseIndex={index}
-                        />
-                    );
-                })}
-            </View>
-            <View>
-                <AnimatedButton
-                    style={styles.addSetButton}
-                    textStyle={styles.addSetButtonText}
-                    onPress={addSet}>
-                    Add Set
-                </AnimatedButton>
-            </View>
-        </View>
+            </Animated.View>
+        </Animated.View>
     );
 };
 

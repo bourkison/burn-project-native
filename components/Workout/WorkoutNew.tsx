@@ -47,6 +47,12 @@ const WorkoutNew = () => {
                         textStyle={styles.addExerciseButtonText}>
                         Add Exercise
                     </AnimatedButton>
+                    <AnimatedButton
+                        onPress={addExerciseButton}
+                        style={styles.cancelWorkoutButton}
+                        textStyle={styles.cancelWorkoutButtonText}>
+                        Cancel Workout
+                    </AnimatedButton>
                 </View>
             </ScrollView>
         </View>
@@ -76,14 +82,29 @@ const styles = StyleSheet.create({
     },
     addExerciseButton: {
         backgroundColor: '#f3fcf0',
-        marginTop: 20,
-        height: 30,
+        marginTop: 15,
+        height: 25,
         width: '100%',
         borderRadius: 5,
+        justifyContent: 'center',
     },
     addExerciseButtonText: {
-        color: 'black',
+        color: '#343E4B',
         textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    cancelWorkoutButton: {
+        backgroundColor: '#CF3C48',
+        marginTop: 7,
+        height: 25,
+        width: '100%',
+        borderRadius: 5,
+        justifyContent: 'center',
+    },
+    cancelWorkoutButtonText: {
+        color: '#f3fcf0',
+        textAlign: 'center',
+        fontWeight: 'bold',
     },
 });
 

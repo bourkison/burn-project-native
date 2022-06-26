@@ -301,19 +301,22 @@ const styles = StyleSheet.create({
         backgroundColor: '#1A1F25',
     },
     completedInputContainer: {
-        backgroundColor: 'rgba(42, 157, 143, 1)',
+        backgroundColor: 'rgb(42, 157, 143)',
         paddingVertical: 2,
     },
     deleteContainer: {
         position: 'absolute',
         height: '100%',
         width: '100%',
-        backgroundColor: 'red',
+        backgroundColor: '#CF3C48',
         alignItems: 'flex-end',
         justifyContent: 'center',
     },
     deleteText: {
         color: '#f3fcf0',
+        marginRight: 10,
+        fontWeight: 'bold',
+        fontSize: 12,
     },
     column: {
         flex: 1,
