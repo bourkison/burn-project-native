@@ -1,12 +1,10 @@
 import React, {ReactElement, useState} from 'react';
 import {RecordedExercise} from '@/types/workout';
 import SortableExercise from './SortableExercise';
-import Animated, {
+import {
     runOnJS,
     runOnUI,
     SharedValue,
-    useAnimatedStyle,
-    useSharedValue,
     withSpring,
 } from 'react-native-reanimated';
 import {View} from 'react-native';
@@ -31,20 +29,7 @@ export type Offset = {
 const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
     const [allElementsReady, setAllElementsReady] = useState(false);
     const [offsets, setOffsets] = useState<Offset[]>([]);
-
-    const sHeight = useSharedValue(1);
-
-    const rStyle = useAnimatedStyle(() => {
-        return {
-            flex: 1,
-            height: allElementsReady ? sHeight.value : '100%',
-            flexShrink: 0,
-            flexGrow: 0,
-            overflow: allElementsReady ? 'visible' : 'hidden',
-            backgroundColor: 'blue',
-            width: '100%',
-        };
-    });
+    const [height, setHeight] = useState(1);
 
     const onChildMount = (offset: Offset) => {
         setOffsets([...offsets, offset]);
@@ -107,8 +92,8 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
 
         runOnJS(setOffsets)(tempArr);
 
-        const height = tempArr.reduce((acc, o) => acc + o.height, 0);
-        sHeight.value = height;
+        const calcHeight = tempArr.reduce((acc, o) => acc + o.height, 0);
+        runOnJS(setHeight)(calcHeight);
     };
 
     // Called on reorder.
@@ -143,9 +128,22 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
         runOnJS(setOffsets)(tempArr);
     };
 
+    // Called when the container view changes.
+    const updateHeight = (i: number, h: number) => {
+        let tempArr: Offset[] = JSON.parse(JSON.stringify(offsets));
+        console.log('HEIGHT UPDATED FROM:', tempArr[i].height, 'TO:', h);
+        tempArr[i].height = h;
+        setOffsets(tempArr);
+
+        runOnUI(recalculateLayout)();
+
+        const calcHeight = tempArr.reduce((acc, o) => acc + o.height, 0);
+        runOnJS(setHeight)(calcHeight);
+    };
+
     return (
         <View>
-            <Animated.View style={rStyle}>
+            <View style={allElementsReady ? {height: height} : {}}>
                 {children.map((child, index) => {
                     return (
                         <SortableExercise
@@ -155,6 +153,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
                             onMount={onChildMount}
                             onReady={onChildReady}
                             onUnmount={onChildUnmount}
+                            onHeightChange={updateHeight}
                             changeOrder={changeOrder}
                             recalculateLayout={recalculateLayout}
                             allElementsReady={allElementsReady}
@@ -163,7 +162,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({children, exercises}) => {
                         </SortableExercise>
                     );
                 })}
-            </Animated.View>
+            </View>
         </View>
     );
 };

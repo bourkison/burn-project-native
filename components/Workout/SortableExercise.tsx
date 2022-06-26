@@ -16,9 +16,12 @@ type SortableExerciseProps = {
     onUnmount: (uid: string) => void;
     changeOrder: (from: number, to: number) => void;
     recalculateLayout: (index?: number) => void;
+    onHeightChange: (index: number, height: number) => void;
     allElementsReady: boolean;
     offsets: Offset[];
 };
+
+const PADDING_BOTTOM = 10;
 
 const SortableExercise: React.FC<SortableExerciseProps> = ({
     children,
@@ -27,6 +30,7 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
     onReady,
     onMount,
     onUnmount,
+    onHeightChange,
     changeOrder,
     recalculateLayout,
     allElementsReady,
@@ -66,7 +70,6 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
             position: 'absolute',
             top: 0,
             left: 0,
-            height: 100,
             width: '100%',
             transform: [
                 {translateX: offsetX.value},
@@ -83,6 +86,12 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const heightChange = (height: number) => {
+        if (Math.abs(height - offsets[index].height) > 1) {
+            onHeightChange(index, height);
+        }
+    };
 
     const panGesture = Gesture.Pan()
         .onStart(() => {
@@ -158,14 +167,23 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
 
     return (
         <GestureDetector gesture={panGesture}>
-            <Animated.View style={rStyle}>{children}</Animated.View>
+            <Animated.View style={rStyle}>
+                <View
+                    onLayout={e => {
+                        heightChange(
+                            e.nativeEvent.layout.height + PADDING_BOTTOM,
+                        );
+                    }}>
+                    {children}
+                </View>
+            </Animated.View>
         </GestureDetector>
     );
 };
 
 const styles = StyleSheet.create({
     sortable: {
-        paddingBottom: 10,
+        paddingBottom: PADDING_BOTTOM,
     },
 });
 

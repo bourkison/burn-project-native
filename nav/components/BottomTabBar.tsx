@@ -106,7 +106,7 @@ const BottomTabBar: React.FC<BottomTabBarProps> = ({
                             <Pressable
                                 onPress={onPress}
                                 onLongPress={onLongPress}
-                                key={route.key}
+                                key={index}
                                 style={styles.pressable}>
                                 <View style={styles.icon}>{icon}</View>
                                 <Text style={styles.label}>{label}</Text>
