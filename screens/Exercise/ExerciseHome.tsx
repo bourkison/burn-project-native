@@ -11,6 +11,7 @@ import Animated, {
     withSpring,
     withTiming,
     Easing,
+    runOnUI,
 } from 'react-native-reanimated';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 
@@ -38,7 +39,7 @@ const ExerciseHome = () => {
 
     const switchPage = (index: number) => {
         setPageIndex(index);
-        normaliseTracker(index);
+        runOnUI(normaliseTracker)(index);
     };
 
     const normaliseTracker = (index: number) => {
