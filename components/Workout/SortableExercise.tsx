@@ -145,8 +145,6 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
     // TODO: Bug here as this should cause all elements to rearrange while awaiting
     // elements to be ready, but it doesn't.
     if (!allElementsReady) {
-        console.log('ALL ELEMENTS NOT READY:', index);
-
         return (
             <View
                 key={index}
@@ -173,6 +171,8 @@ const SortableExercise: React.FC<SortableExerciseProps> = ({
         <Animated.View style={rStyle}>
             <View
                 onLayout={e => {
+                    // TODO: Instead of changing height here, potentially look at number of
+                    // sets and set the height based on that? Might look smoother.
                     heightChange(e.nativeEvent.layout.height + PADDING_BOTTOM);
                 }}>
                 {React.cloneElement<ExerciseRecorderProps>(children, {

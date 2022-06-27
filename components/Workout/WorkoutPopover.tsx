@@ -143,6 +143,7 @@ const WorkoutPopover: React.FC<WorkoutPopoverProps> = ({
         }
 
         return () => {
+            console.log('CLEARED INTERVAL');
             if (intervalId) {
                 clearInterval(intervalId);
             }
@@ -189,7 +190,7 @@ const WorkoutPopover: React.FC<WorkoutPopoverProps> = ({
                             onPress={finishWorkoutButton}
                             style={styles.finishButton}
                             textStyle={styles.finishButtonText}>
-                            Finish Workout
+                            Finish
                         </AnimatedButton>
                     </View>
                 </View>
@@ -229,6 +230,7 @@ const styles = StyleSheet.create({
     headerTextContainer: {
         flexDirection: 'row',
         marginTop: 10,
+        justifyContent: 'center',
     },
     column: {
         flex: 1,
@@ -251,13 +253,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#29955B',
         borderRadius: 5,
         alignSelf: 'flex-end',
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
         paddingVertical: 2,
         marginRight: 10,
     },
     finishButtonText: {
         color: '#f3fcf0',
         textAlign: 'center',
+        fontWeight: 'bold',
     },
 });
 
