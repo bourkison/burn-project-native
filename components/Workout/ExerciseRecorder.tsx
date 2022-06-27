@@ -1,4 +1,4 @@
-import React, {ComponentProps, useCallback} from 'react';
+import React, {ComponentProps, useCallback, ReactElement} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import SetRecorder from './SetRecorder';
 import AnimatedButton from '@/components/Utility/AnimatedButton';
@@ -7,7 +7,7 @@ import {ADD_SET, REMOVE_SET} from '@/store/slices/activeWorkout';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {GestureDetector} from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import {ReactElement} from 'react';
+import ExercisePopover from './ExercisePopover';
 
 export type ExerciseRecorderProps = {
     index: number;
@@ -22,7 +22,6 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({
     const exercise = useAppSelector(
         state => state.activeWorkout.exercises[index],
     );
-
     const addSet = () => {
         dispatch(
             ADD_SET({
@@ -39,25 +38,27 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({
         [dispatch, index],
     );
 
+    const header = (
+        <View style={styles.headerContainer}>
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>
+                    {exercise.exerciseReference.name}
+                </Text>
+            </View>
+
+            <ExercisePopover />
+        </View>
+    );
+
     return (
         <View style={styles.container}>
-            {gesture ? (
-                React.cloneElement<ComponentProps<typeof GestureDetector>>(
-                    gesture,
-                    gesture.props,
-                    <View>
-                        <Text style={styles.title}>
-                            {exercise.exerciseReference.name}
-                        </Text>
-                    </View>,
-                )
-            ) : (
-                <View>
-                    <Text style={styles.title}>
-                        {exercise.exerciseReference.name}
-                    </Text>
-                </View>
-            )}
+            {gesture
+                ? React.cloneElement<ComponentProps<typeof GestureDetector>>(
+                      gesture,
+                      gesture.props,
+                      header,
+                  )
+                : header}
             <Animated.View>
                 <View>
                     <View style={styles.setContainer}>
@@ -130,6 +131,13 @@ const styles = StyleSheet.create({
         flexWrap: 'nowrap',
         alignContent: 'flex-start',
         marginBottom: 5,
+    },
+    headerContainer: {
+        flexDirection: 'row',
+    },
+    titleContainer: {
+        flex: 1,
+        alignSelf: 'flex-start',
     },
     title: {
         color: '#f3fcf0',

@@ -1,6 +1,6 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, RefObject} from 'react';
 import {useEffect} from 'react';
-import {StyleProp, ViewStyle, Text, TextStyle} from 'react-native';
+import {StyleProp, ViewStyle, Text, TextStyle, View} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
     useAnimatedStyle,
@@ -17,6 +17,7 @@ type AnimatedButtonType = {
     disabledColor?: string;
     textStyle: StyleProp<ViewStyle> | StyleProp<TextStyle>;
     scale?: number;
+    ref?: RefObject<View>;
     children: string | ReactElement;
 };
 
@@ -29,6 +30,7 @@ const AnimatedButton: React.FC<AnimatedButtonType> = ({
     disabledColor,
     scale = 0.98,
     children,
+    ref,
 }) => {
     const sScaleX = useSharedValue(1);
     const sScaleY = useSharedValue(1);
@@ -85,15 +87,17 @@ const AnimatedButton: React.FC<AnimatedButtonType> = ({
         });
 
     return (
-        <GestureDetector gesture={tapGesture}>
-            <Animated.View style={[style, animatedStyle]}>
-                {typeof children === 'string' ? (
-                    <Text style={textStyle}>{children}</Text>
-                ) : (
-                    children
-                )}
-            </Animated.View>
-        </GestureDetector>
+        <View ref={ref}>
+            <GestureDetector gesture={tapGesture}>
+                <Animated.View style={[style, animatedStyle]}>
+                    {typeof children === 'string' ? (
+                        <Text style={textStyle}>{children}</Text>
+                    ) : (
+                        children
+                    )}
+                </Animated.View>
+            </GestureDetector>
+        </View>
     );
 };
 
