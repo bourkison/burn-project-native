@@ -6,7 +6,6 @@ import {
     View,
 } from 'react-native';
 import Animated, {
-    runOnJS,
     useAnimatedStyle,
     useSharedValue,
     withSpring,
@@ -21,7 +20,7 @@ import AnimatedButton from '@/components/Utility/AnimatedButton';
 const ExerciseHome = () => {
     const [pageIndex, setPageIndex] = useState(0);
     const {width} = useWindowDimensions();
-    const context = useSharedValue({navX: 0, pageX: 0});
+    const context = useSharedValue({navX: 0, pageX: 0, x: 0, y: 0});
 
     const sNavTranslateX = useSharedValue(0);
     const sPageTranslateX = useSharedValue(0);
@@ -43,6 +42,8 @@ const ExerciseHome = () => {
     };
 
     const normaliseTracker = (index: number) => {
+        'worklet';
+
         sNavTranslateX.value = withSpring(index * (width / 2));
         sPageTranslateX.value = withTiming(index * -width, {
             duration: 300,
@@ -51,11 +52,25 @@ const ExerciseHome = () => {
     };
 
     const panGesture = Gesture.Pan()
-        .onStart(() => {
+        .manualActivation(true)
+        .onTouchesDown(e => {
             context.value = {
                 navX: sNavTranslateX.value,
                 pageX: sPageTranslateX.value,
+                x: e.changedTouches[0].absoluteX,
+                y: e.changedTouches[0].absoluteY,
             };
+        })
+        .onTouchesMove((e, state) => {
+            // Check the difference in X is greater than the distance in Y (and thus user is swiping left to right).
+            if (
+                Math.abs(e.changedTouches[0].absoluteX - context.value.x) >
+                Math.abs(e.changedTouches[0].absoluteY - context.value.y)
+            ) {
+                state.activate();
+            } else {
+                state.fail();
+            }
         })
         .onUpdate(e => {
             sNavTranslateX.value = context.value.navX - e.translationX;
@@ -63,9 +78,9 @@ const ExerciseHome = () => {
         })
         .onEnd(() => {
             if (sNavTranslateX.value > width / 4) {
-                runOnJS(normaliseTracker)(1);
+                normaliseTracker(1);
             } else {
-                runOnJS(normaliseTracker)(0);
+                normaliseTracker(0);
             }
         });
 
