@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Modal, StyleSheet, View} from 'react-native';
+import {Modal, Pressable, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
 import ExerciseSearch from '@/components/Exercise/ExerciseSearch';
 import AnimatedButton from '../Utility/AnimatedButton';
@@ -23,34 +23,37 @@ const ExerciseSearchModal: React.FC<ExerciseSearchModalType> = ({
     return (
         <Modal
             visible={visible}
-            animationType="slide"
+            animationType="fade"
             onRequestClose={closeModal}
-            transparent={true}>
-            <View style={styles.modalContainer}>
-                <View style={styles.addExerciseModal}>
-                    <View style={styles.modalHeader}>
-                        <View style={styles.modalTitleContainer}>
-                            <Text style={styles.modalTitle}>
-                                Exercise Search
-                            </Text>
+            transparent={true}
+            supportedOrientations={['landscape', 'portrait']}>
+            <Pressable onPress={closeModal} style={styles.modalBackdrop}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.addExerciseModal}>
+                        <View style={styles.modalHeader}>
+                            <View style={styles.modalTitleContainer}>
+                                <Text style={styles.modalTitle}>
+                                    Exercise Search
+                                </Text>
+                            </View>
+                            <View style={styles.closeButtonContainer}>
+                                <AnimatedButton
+                                    onPress={closeModal}
+                                    style={styles.closeButton}
+                                    textStyle={styles.closeButtonText}>
+                                    x
+                                </AnimatedButton>
+                            </View>
                         </View>
-                        <View style={styles.closeButtonContainer}>
-                            <AnimatedButton
-                                onPress={closeModal}
-                                style={styles.closeButton}
-                                textStyle={styles.closeButtonText}>
-                                x
-                            </AnimatedButton>
-                        </View>
+                        <ExerciseSearch
+                            addExercise={e => {
+                                addExercise(e);
+                                closeModal();
+                            }}
+                        />
                     </View>
-                    <ExerciseSearch
-                        addExercise={e => {
-                            addExercise(e);
-                            closeModal();
-                        }}
-                    />
                 </View>
-            </View>
+            </Pressable>
         </Modal>
     );
 };
@@ -76,6 +79,14 @@ const styles = StyleSheet.create({
     },
     modalTitleContainer: {
         flex: 1,
+    },
+    modalBackdrop: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        position: 'absolute',
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
     },
     modalTitle: {
         color: '#f3fcf0',

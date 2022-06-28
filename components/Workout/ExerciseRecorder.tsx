@@ -46,7 +46,9 @@ const ExerciseRecorder: React.FC<ExerciseRecorderProps> = ({
                 </Text>
             </View>
 
-            <ExercisePopover />
+            <View style={styles.popoverContainer}>
+                <ExercisePopover />
+            </View>
         </View>
     );
 
@@ -134,15 +136,29 @@ const styles = StyleSheet.create({
     },
     headerContainer: {
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        maxHeight: 32,
     },
     titleContainer: {
         flex: 1,
         alignSelf: 'flex-start',
+        flexGrow: 1,
+        height: '100%',
+        justifyContent: 'center',
     },
     title: {
         color: '#f3fcf0',
         fontWeight: 'bold',
         paddingHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlignVertical: 'center',
+    },
+    popoverContainer: {
+        flex: 1,
+        flexBasis: 38,
+        flexGrow: 0,
     },
     addSetButton: {
         width: '90%',
